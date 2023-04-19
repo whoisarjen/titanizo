@@ -1,5 +1,5 @@
 import { Navbar } from '@/components/Navbar'
-import './globals.css'
+import '@/styles/globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 export default function RootLayout({
