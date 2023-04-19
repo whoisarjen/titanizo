@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
-import slugify from 'slugify'
 import { getData } from '@/utils/api.utils'
+import { transformObjectToPathname } from '@/utils/global.utils'
 
 type GetData = {
     data: Category[]
@@ -49,24 +49,22 @@ export const Navbar = async () => {
                         >
                             <Link
                                 className="mx-4 uppercase transition-colors hover:text-white"
-                                href={`/${category.id}--${slugify(
-                                    category.attributes.name
-                                )}`}
+                                href={transformObjectToPathname(category)}
                             >
                                 {category.attributes.name}
                             </Link>
                             <div className="absolute left-0 top-[60px] hidden min-h-[40vh] w-full bg-black/40 group-hover:block">
                                 {category.attributes.subcategories.data.map(
-                                    (subcategories) => (
+                                    (subcategory) => (
                                         <Link
-                                            key={subcategories.id}
-                                            href={`/${category.id}--${slugify(
-                                                category.attributes.name
-                                            )}/${subcategories.id}--${slugify(
-                                                subcategories.attributes.name
+                                            key={subcategory.id}
+                                            href={`${transformObjectToPathname(
+                                                category
+                                            )}${transformObjectToPathname(
+                                                subcategory
                                             )}`}
                                         >
-                                            {subcategories.attributes.name}
+                                            {subcategory.attributes.name}
                                         </Link>
                                     )
                                 )}
