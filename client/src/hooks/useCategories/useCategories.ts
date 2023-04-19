@@ -8,6 +8,6 @@ interface UseCategoriesResponse {
 export const useCategories = async (): Promise<UseCategoriesResponse> => {
     const { get } = useFetch()
     const response = await get('/categories?populate=*')
-
+    console.log({ response })
     return response
 }
