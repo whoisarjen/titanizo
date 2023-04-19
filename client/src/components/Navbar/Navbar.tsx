@@ -9,7 +9,7 @@ export const Navbar = async () => {
     const { data } = await useCategories()
 
     return (
-        <nav className="fixed top-0 z-10 flex w-full flex-col bg-black text-white">
+        <nav className="sticky top-0 z-10 flex w-full flex-col bg-black text-white">
             <div className="flex items-center border-b border-white/20 px-6 py-2">
                 <span className="text-sm">
                     Darmowa dostawa zamówień od 500 PLN!

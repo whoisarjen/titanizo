@@ -9,10 +9,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="pl">
-            <body className="container mx-auto">
+            <body>
                 {/* @ts-expect-error Async Server Component */}
                 <Navbar />
-                {children}
+                <div className="container mx-auto">{children}</div>
             </body>
         </html>
     )
