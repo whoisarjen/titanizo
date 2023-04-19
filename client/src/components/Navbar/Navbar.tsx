@@ -3,74 +3,87 @@ import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 import { useCategories } from '@/hooks/useCategories'
-import { Fragment } from 'react'
+import slugify from 'slugify'
 
 export const Navbar = async () => {
     const { data } = await useCategories()
 
     return (
-        <>
-            <nav className="sticky z-50">
-                <div className="flex items-center border-b border-white/20 bg-black px-6 py-2 text-white">
-                    <span className="text-sm">
-                        Darmowa dostawa zamówień od 500 PLN!
-                    </span>
-                    <div className="flex flex-grow"></div>
-                    <a
-                        href="tel: +48 883 705 815"
-                        className="mr-3 font-medium tracking-tighter"
-                    >
-                        <FontAwesomeIcon
-                            icon={faPhoneVolume}
-                            className="mr-2 text-white/50"
-                        />
-                        883 705 815
-                    </a>
-                    <small className="text-white/80">9:00 - 19:00</small>
-                </div>
-                <div>
-                    <div className="flex min-h-[60px] w-full items-center bg-black px-6 py-4 ">
-                        <img
-                            src="https://deante.pl/brand/white.svg"
-                            alt="Logo Deante"
-                            width="120px"
-                            className="mr-10"
-                        />
-                        {data.map(
-                            ({ attributes: { name, subcategories }, id }) => (
-                                <Fragment key={id}>
-                                    <Link
-                                        className="mx-4 uppercase text-white/75 transition-colors hover:text-white"
-                                        href="#"
-                                    >
-                                        {name}
-                                    </Link>
-                                    <div className="absolute left-0 top-[60px] z-10 min-h-[40vh] w-full bg-black/40 text-white">
-                                        {subcategories.data.map(
-                                            ({ id, attributes: { name } }) => (
-                                                <div key={id}>{name}</div>
-                                            )
-                                        )}
-                                    </div>
-                                </Fragment>
-                            )
-                        )}
-                        {MENU_ICONS.map(({ name, icon }) => (
+        <nav className="fixed top-0 z-10 flex w-full flex-col bg-black text-white">
+            <div className="flex items-center border-b border-white/20 px-6 py-2">
+                <span className="text-sm">
+                    Darmowa dostawa zamówień od 500 PLN!
+                </span>
+                <div className="flex flex-grow"></div>
+                <a
+                    href="tel: +48 883 705 815"
+                    className="mr-3 font-medium tracking-tighter"
+                >
+                    <FontAwesomeIcon
+                        icon={faPhoneVolume}
+                        className="mr-2 text-white/50"
+                    />
+                    883 705 815
+                </a>
+                <small className="text-white/80">9:00 - 19:00</small>
+            </div>
+            <div className="relative flex min-h-[60px] w-full items-center bg-black px-6">
+                <Link href="/">
+                    <img
+                        src="https://deante.pl/brand/white.svg"
+                        alt="Logo Deante"
+                        width={120}
+                        height={30}
+                    />
+                </Link>
+                <div className="z-20 flex h-[60px] flex-row items-center">
+                    {data.map((category) => (
+                        <div
+                            key={category.id}
+                            className="group flex h-full items-center"
+                        >
                             <Link
-                                className="mx-2 uppercase text-white/75 transition-colors hover:text-white"
-                                href="#"
-                                key={name}
+                                className="mx-4 uppercase transition-colors hover:text-white"
+                                href={`/${category.id}--${slugify(
+                                    category.attributes.name
+                                )}`}
                             >
-                                <FontAwesomeIcon
-                                    icon={icon}
-                                    className="text-white"
-                                ></FontAwesomeIcon>
+                                {category.attributes.name}
                             </Link>
-                        ))}
-                    </div>
+                            <div className="absolute left-0 top-[60px] hidden min-h-[40vh] w-full bg-black/40 group-hover:block">
+                                {category.attributes.subcategories.data.map(
+                                    (subcategories) => (
+                                        <Link
+                                            key={subcategories.id}
+                                            href={`/${category.id}--${slugify(
+                                                category.attributes.name
+                                            )}/${subcategories.id}--${slugify(
+                                                subcategories.attributes.name
+                                            )}`}
+                                        >
+                                            {subcategories.attributes.name}
+                                        </Link>
+                                    )
+                                )}
+                            </div>
+                        </div>
+                    ))}
                 </div>
-            </nav>
-            <div className="fixed inset-0 z-40 backdrop-blur-xl"></div>
-        </>
+                <div className="flex flex-1 flex-row-reverse items-center">
+                    {MENU_ICONS.map(({ name, icon }) => (
+                        <Link
+                            className="p-2 text-white/75 transition-colors hover:text-white"
+                            href="#"
+                            key={name}
+                        >
+                            <FontAwesomeIcon
+                                icon={icon}
+                                className="text-white"
+                            ></FontAwesomeIcon>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </nav>
     )
 }
