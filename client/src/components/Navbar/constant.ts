@@ -1,23 +1,18 @@
-import { IconDefinition, faMagnifyingGlass, faCartShopping, faUser } from "@fortawesome/free-solid-svg-icons"
-
-type MenuLink = {
-    name: string
-}
-
-export const MENU_LINKS = [
-    { name: 'Produkty' },
-    { name: 'Kolekcje' },
-    { name: 'Inspiracje' },
-    { name: 'Kontakt' },
-] as const satisfies Readonly<MenuLink[]>
+import {
+    IconDefinition,
+    faMagnifyingGlass,
+    faCartShopping,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons'
 
 type MenuIcon = {
     name: string
+    href: string
     icon: IconDefinition
 }
 
 export const MENU_ICONS = [
-    { name: 'Wyszukiwarka', icon: faMagnifyingGlass},
-    { name: 'Koszyk', icon: faCartShopping},
-    { name: 'Moje konto', icon: faUser},
+    { name: 'Wyszukiwarka', href: '/search', icon: faMagnifyingGlass },
+    { name: 'Koszyk', href: '/bag', icon: faCartShopping },
+    { name: 'Moje konto', href: '/account', icon: faUser },
 ] as const satisfies Readonly<MenuIcon[]>

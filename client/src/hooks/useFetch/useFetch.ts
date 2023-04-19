@@ -5,8 +5,6 @@ export const useFetch = () => {
     const get = async (slug: string) =>
         await fetch(`http://127.0.0.1:1337/api${slug}`, {
             method: 'GET',
-            // mode: 'no-cors',
-            // credentials: "include",
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
             },

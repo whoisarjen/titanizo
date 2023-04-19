@@ -70,10 +70,10 @@ export const Navbar = async () => {
                     ))}
                 </div>
                 <div className="flex flex-1 flex-row-reverse items-center">
-                    {MENU_ICONS.map(({ name, icon }) => (
+                    {MENU_ICONS.map(({ name, href, icon }) => (
                         <Link
                             className="p-2 text-white/75 transition-colors hover:text-white"
-                            href="#"
+                            href={href}
                             key={name}
                         >
                             <FontAwesomeIcon
