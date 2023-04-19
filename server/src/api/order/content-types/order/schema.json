@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user_address": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-address.user-address",
+      "inversedBy": "orders"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "orders"
+    },
+    "order_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-product.order-product",
+      "mappedBy": "order"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "Zamówienie złożone",
+        "Zamówienie zaakceptowane",
+        "Zamówienie pakowane",
+        "Zamówienie wysłane",
+        "Zamówienie dostarczone"
+      ],
+      "default": "Zamówienie złożone",
+      "required": true
+    },
+    "provider_option": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::provider-option.provider-option",
+      "inversedBy": "orders"
+    }
+  }
+}
