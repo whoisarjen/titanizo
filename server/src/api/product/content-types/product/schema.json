@@ -58,14 +58,6 @@
       "target": "api::product.product",
       "inversedBy": "recommended_products"
     },
-    "currency": {
-      "type": "enumeration",
-      "enum": [
-        "PLN"
-      ],
-      "default": "PLN",
-      "required": true
-    },
     "manufacturer_net_price": {
       "type": "decimal",
       "required": true,
@@ -121,6 +113,18 @@
     },
     "is_designed": {
       "type": "boolean"
+    },
+    "order_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-product.order-product",
+      "mappedBy": "product"
+    },
+    "currency": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::currency.currency",
+      "inversedBy": "products"
     }
   }
 }

@@ -1,0 +1,4 @@
+Do zrobiona po postawieniu sklepu:
+- bag (koszyk w DB)
+- discounts
+- promotions codes
