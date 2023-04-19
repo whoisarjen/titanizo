@@ -2,11 +2,16 @@ import Link from 'next/link'
 import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
-import { useCategories } from '@/hooks/useCategories'
 import slugify from 'slugify'
+import { getData } from '@/utils/utils.api'
+
+type GetData = {
+    data: Category[]
+    meta: Meta
+}
 
 export const Navbar = async () => {
-    const { data } = await useCategories()
+    const response = await getData<GetData>('/categories?populate=*')
 
     return (
         <nav className="sticky top-0 z-10 flex w-full flex-col bg-black text-white">
@@ -37,7 +42,7 @@ export const Navbar = async () => {
                     />
                 </Link>
                 <div className="z-20 flex h-[60px] flex-row items-center">
-                    {data.map((category) => (
+                    {response.data.map((category) => (
                         <div
                             key={category.id}
                             className="group flex h-full items-center"
