@@ -1,4 +1,4 @@
-import { getData } from "@/utils/utils.api"
+import { getData } from "@/utils/api.utils"
 
 type GetData = {
     data: Product
