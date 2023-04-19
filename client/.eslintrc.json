@@ -1,0 +1,5 @@
+{
+  "extends": "next/core-web-vitals",
+  "indent": [4, "tab"],
+  "no-tabs": 0
+}
