@@ -9,20 +9,28 @@ type DefaultDataWrapper<Attributes> = {
 
 type Subcategory = DefaultDataWrapper<{
     name: string
+    description?: string
+    category: {
+        data: Category
+    }
+    products: {
+        data: Product[]
+    }
 }>
 
 type Category = DefaultDataWrapper<{
     name: string
+    description?: string
     subcategories: {
-        data: Subcategory[]
+        data: (Omit<Subcategory, 'attributes'> & {
+            attributes: Omit<Subcategory['attributes'], 'category'>
+        })[]
     }
 }>
 
 type Product = DefaultDataWrapper<{
     name: string
-    subcategory: {
-        data: Category
-    }
+    description?: string
 }>
 
 type Meta = {

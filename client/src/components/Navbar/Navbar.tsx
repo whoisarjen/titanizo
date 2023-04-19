@@ -3,7 +3,7 @@ import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 import { getData } from '@/utils/api.utils'
-import { transformObjectToPathname } from '@/utils/global.utils'
+import { transformObjectToPathname } from '@/utils/product.utils'
 
 type GetData = {
     data: Category[]
