@@ -1,25 +1,29 @@
-type Subcategory = {
+type DefaultDataWrapper<Attributes> = {
     id: number
-    attributes: {
-        name: string
+    attributes: Attributes & {
         createdAt: string
         updatedAt: string
         publishedAt: string
     }
 }
 
-type Category = {
-    id: number
-    attributes: {
-        name: string
-        createdAt: string
-        updatedAt: string
-        publishedAt: string
-        subcategories: {
-            data: Subcategory[]
-        }
+type Subcategory = DefaultDataWrapper<{
+    name: string
+}>
+
+type Category = DefaultDataWrapper<{
+    name: string
+    subcategories: {
+        data: Subcategory[]
     }
-}
+}>
+
+type Product = DefaultDataWrapper<{
+    name: string
+    subcategory: {
+        data: Category
+    }
+}>
 
 type Meta = {
     pagination: {
