@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import { MENU_ICONS, MENU_LINKS } from './constant'
+import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 import { useCategories } from '@/hooks/useCategories'
-import { Subcategories } from './Subcategories'
 import { Fragment } from 'react'
 
 export const Navbar = async () => {
@@ -46,14 +45,16 @@ export const Navbar = async () => {
                                     >
                                         {name}
                                     </Link>
-                                    {/* <Subcategories
-                                        subcategories={subcategories.data}
-                                    /> */}
+                                    <div className="absolute left-0 top-[60px] z-10 min-h-[40vh] w-full bg-black/40 text-white">
+                                        {subcategories.data.map(
+                                            ({ id, attributes: { name } }) => (
+                                                <div key={id}>{name}</div>
+                                            )
+                                        )}
+                                    </div>
                                 </Fragment>
                             )
                         )}
-                        <div className="flex flex-grow"></div>
-
                         {MENU_ICONS.map(({ name, icon }) => (
                             <Link
                                 className="mx-2 uppercase text-white/75 transition-colors hover:text-white"
