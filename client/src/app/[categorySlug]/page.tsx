@@ -1,6 +1,6 @@
 import { getData } from '@/utils/api.utils'
+import { transformObjectToPathname } from '@/utils/global.utils'
 import Link from 'next/link'
-import slugify from 'slugify'
 
 type GetData = {
     data: Product[]
@@ -29,11 +29,9 @@ export default async function CategorySlug({
             <h2>Products for category:</h2>
             {response.data.map((product) => (
                 <Link
-                    href={`/${categorySlug}/${
-                        product.attributes.subcategory.data.id
-                    }--${slugify(
-                        product.attributes.subcategory.data.attributes.name
-                    )}/${product.id}--${slugify(product.attributes.name)}`}
+                    href={`/${categorySlug}${transformObjectToPathname(
+                        product.attributes.subcategory.data
+                    )}${transformObjectToPathname(product)}`}
                 >
                     {product.attributes.name}
                 </Link>
