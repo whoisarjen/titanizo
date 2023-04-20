@@ -16,6 +16,11 @@ interface CategorySlugProps {
 export default async function CategorySlug({
     params: { categorySlug },
 }: CategorySlugProps) {
+    // TODO remove after they fix sw.js on initial render
+    if (categorySlug.indexOf('--') === -1) {
+        return null
+    }
+
     const { data } = await getData<GetCategory>(
         `/categories/${categorySlug.substring(
             0,
