@@ -28,9 +28,33 @@ type Category = DefaultDataWrapper<{
     }
 }>
 
+type Currency = DefaultDataWrapper<{
+    name: string
+    code_iso_4217: string
+}>
+
 type Product = DefaultDataWrapper<{
     name: string
     description?: string
+    ean: null | string
+    cn: null | string
+    manufacturer_id: null | string
+    warranty_in_months: number
+    vat: number
+    gross_price: number
+    net_price: number
+    promotion_price: number
+    collection: null | string
+    is_designed: null | boolean
+    currency: {
+        data: Currency
+    }
+    subcategory: {
+        data: Subcategory
+    }
+    recommended_products: {
+        data: Product[]
+    }
 }>
 
 type Meta = {
