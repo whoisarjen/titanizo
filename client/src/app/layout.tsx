@@ -1,6 +1,8 @@
+import { Footer } from '@/components/Footer'
 import { Navbar } from '@/components/Navbar'
 import '@/styles/globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import BagContextWrapper from '@/containers/BagContextWrapper/BagContextWrapper'
 
 export default function RootLayout({
     children,
@@ -12,7 +14,11 @@ export default function RootLayout({
             <body>
                 {/* @ts-expect-error Async Server Component */}
                 <Navbar />
-                <div className="container mx-auto">{children}</div>
+                <div className="container mx-auto pt-[100px]">
+
+                    <BagContextWrapper>{children}</BagContextWrapper>
+                </div>
+                {/* <Footer /> */}
             </body>
         </html>
     )
