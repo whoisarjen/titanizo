@@ -22,17 +22,22 @@ export default async function ProductSlug({
         )}?populate=*`
     )
 
-    const { name } = product.data.attributes
+    const { name, description } = product.data.attributes
 
     return (
-        <div className="flec-row flex items-center justify-center">
-            <Image
-                src="/lazienkaPlaceholder.jpg"
-                alt={name}
-                width={1024}
-                height={576}
-            />
-            <h1 className="flex flex-1 items-center justify-center font-bold text-4xl">{name}</h1>
+        <div className="flex flex-col w-full">
+            <div className="flex flex-row items-center justify-center">
+                <Image
+                    src="/lazienkaPlaceholder.jpg"
+                    alt={name}
+                    width={1024}
+                    height={576}
+                />
+                <h1 className="flex flex-1 items-center justify-center text-4xl font-bold">
+                    {name}
+                </h1>
+            </div>
+            <div>{description}</div>
         </div>
     )
 }
