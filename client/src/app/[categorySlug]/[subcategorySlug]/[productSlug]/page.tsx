@@ -1,4 +1,5 @@
-import { getData } from "@/utils/api.utils"
+import { getData } from '@/utils/api.utils'
+import Image from 'next/image'
 
 type GetData = {
     data: Product
@@ -14,17 +15,24 @@ interface ProductSlugProps {
 export default async function ProductSlug({
     params: { productSlug },
 }: ProductSlugProps) {
-    const response = await getData<GetData>(
+    const product = await getData<GetData>(
         `/products/${productSlug.substring(
             0,
             productSlug.indexOf('--')
         )}?populate=*`
     )
 
+    const { name } = product.data.attributes
+
     return (
-        <div>
-            <h1>Product</h1>
-            {response.data.attributes.name}
+        <div className="flec-row flex items-center justify-center">
+            <Image
+                src="/lazienkaPlaceholder.jpg"
+                alt={name}
+                width={1024}
+                height={576}
+            />
+            <h1 className="flex flex-1 items-center justify-center font-bold text-4xl">{name}</h1>
         </div>
     )
 }
