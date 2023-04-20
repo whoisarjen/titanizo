@@ -6,9 +6,6 @@ export async function getData<GetData>(slug: string) {
         headers: {
             Authorization: `Bearer ${env.NEXT_PUBLIC_API_TOKEN}`,
         },
-        next: {
-            revalidate: 10,
-        },
     })
 
     return res.json() as GetData
