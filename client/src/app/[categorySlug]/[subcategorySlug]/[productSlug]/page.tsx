@@ -137,6 +137,10 @@ export default async function ProductSlug({
                         <p>Wykończenie szkła: transparentne</p>
                         <p>Grubość szkła hartowanego [mm]: 5</p>
                     </div>
+                    <div className="text-sm">
+                        Zdjęcia mają charakter poglądowy i nie stanowią oferty w
+                        rozumieniu prawa.
+                    </div>
                     <div>
                         <ButtonAddToBag product={product.data} />
                     </div>
