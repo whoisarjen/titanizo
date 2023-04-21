@@ -16,7 +16,7 @@ const BagSidebar = () => {
 
     return (
         <div className="w-full max-w-sm">
-            <div className="flex flex-1 flex-col divide-y">
+            <div className="flex flex-1 flex-col divide-y sticky top-[124px]">
                 <div className="flex flex-1 flex-col gap-4 pb-4">
                     <div className="text-xl font-bold">Do zapłaty</div>
                     <div className="flex flex-1 items-center justify-between">
