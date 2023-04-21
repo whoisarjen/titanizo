@@ -10,7 +10,7 @@ import {
 
 const DEFAULT_VALUE = {
     bag: [] as Product[],
-    setBag: (() => {}) as unknown as Dispatch<SetStateAction<Product[]>>,
+    addItemToBeg: (product: Product) => {},
 }
 
 export const BagContext = createContext(DEFAULT_VALUE)
@@ -23,9 +23,14 @@ function BagContextProvider({ children }: BagContextProviderProps) {
     const [bag, setBag] = useState<Product[]>([])
     const isClientSide = typeof window !== 'undefined'
 
-    useEffect(() => {
-        localStorage.setItem('bag', JSON.stringify(bag))
-    }, [bag.length])
+    const addItemToBeg = (product: Product) => {
+        setBag((state) => {
+            const newBeg = [product, ...state]
+            localStorage.setItem('bag', JSON.stringify(newBeg))
+
+            return newBeg
+        })
+    }
 
     useEffect(() => {
         if (isClientSide) {
@@ -38,7 +43,7 @@ function BagContextProvider({ children }: BagContextProviderProps) {
     }, [isClientSide])
 
     return (
-        <BagContext.Provider value={{ bag, setBag }}>
+        <BagContext.Provider value={{ bag, addItemToBeg }}>
             {children}
         </BagContext.Provider>
     )
