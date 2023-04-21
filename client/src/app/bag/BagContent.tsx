@@ -1,16 +1,67 @@
 'use client'
 
 import { BagContext } from '@/containers/BagContextWrapper/BagContext'
-import { useContext, useMemo } from 'react'
-import { uniqBy } from 'lodash'
+import { useContext, useMemo, useEffect } from 'react'
+import { uniqBy, capitalize } from 'lodash'
 import Image from 'next/image'
 import { formatPrice, getProductHref } from '@/utils/product.utils'
 import Link from 'next/link'
+import { useForm, type FieldErrors } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Zod from 'zod'
+
+const orderSchema = Zod.object({
+    email: Zod.string().email({ message: "Niepoprawny adres email!" }),
+    name: Zod.string().min(3, { message: "Imię musi mieć conajmniej 3 litery" }),
+    surname: Zod.string().min(3, { message: "Nazwisko musi mieć conajmniej 3 litery" }),
+    country: Zod.string().min(3).default("Polska"),
+    postcode: Zod.string().refine(val => val.length === 5 && /^\d+$/.test(val), { message: "Podaj poprawny kod pocztowy" }).transform(val => Number(val)),
+    town: Zod.string().min(3, { message: "Miasto musi mieć conajmniej 3 litery" }),
+    address: Zod.string().min(3, { message: "Adres musi mieć conajmniej 3 litery" }),
+    house: Zod.string().min(1, { message: "Budynek musi mieć conajmniej 1 literę" }),
+    telephone: Zod.string().refine(val => val.length === 9 && /^\d+$/.test(val), { message: "Podaj poprawny numer telefonu!" }).transform(val => Number(val)),
+    rule: Zod.boolean().refine(val => !!val, { message: "Musisz zaakceptować!" }),
+    rule2: Zod.boolean().refine(val => !!val, { message: "Musisz zaakceptować!" }),
+})
+
+type OrderSchema = Zod.infer<typeof orderSchema>
+
+type FieldTranslate = {
+    [key in keyof OrderSchema]: string
+}
 
 const uniqueBagMapping = (bag: Product[]) => (product: Product) => ({
     ...product,
     quantity: bag.filter(({ id }) => id === product.id).length,
 })
+
+const FIELD_TRANSLATE = {
+    email: 'Email',
+    name: 'Imię',
+    surname: 'Nazwisko',
+    country: 'Kraj',
+    postcode: 'Kod pocztowy',
+    town: 'Miasto',
+    address: 'Ulica',
+    house: 'Numer domu / lokalu',
+    telephone: 'Telefon',
+    rule: "",
+    rule2: "",
+} as const satisfies FieldTranslate
+
+const getInput = (register: any, errors: FieldErrors<OrderSchema>) => (field: keyof OrderSchema, options: object = {}) => (
+    <>
+        <label htmlFor={field}>{capitalize(FIELD_TRANSLATE[field])}</label>
+        <input
+            id={field}
+            className="input"
+            required
+            {...options}
+            {...register(field)}
+        />
+        {errors[field]?.message && <div className="text-red-500">{errors[field]?.message}</div>}
+    </>
+)
 
 const BagContent = () => {
     const { bag, removeProductFromBag } = useContext(BagContext)
@@ -21,6 +72,16 @@ const BagContent = () => {
     )
     const delieverPrice = 10.49
 
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        control,
+        reset,
+    } = useForm<OrderSchema>({ resolver: zodResolver(orderSchema) })
+
+    const onSubmit = (data: OrderSchema) => console.log({ data })
+
     const preparedBag = useMemo(() => {
         const uniqueBag = uniqBy(bag, 'id')
         const uniqueBagWithQuanitity = uniqueBag.map(uniqueBagMapping(bag))
@@ -28,8 +89,14 @@ const BagContent = () => {
         return uniqueBagWithQuanitity
     }, [bag.length])
 
+    useEffect(() => {
+        reset({ country: "Polska" })
+    }, [])
+
+    const getInputWrapper = getInput(register, errors)
+
     return (
-        <div className="mx-auto flex w-full max-w-7xl gap-6 p-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto flex w-full max-w-7xl gap-6 p-6">
             <div className="flex flex-1 flex-col gap-6 divide-y">
                 <div className="flex flex-1 flex-col gap-6">
                     <h1 className="text-xl font-bold">
@@ -83,73 +150,17 @@ const BagContent = () => {
                         ))}
                     </div>
                 </div>
-                <div className="flex flex-1 flex-col gap-6 pt-6">
+                <div onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">1. Adres dostawy</h1>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        className="input"
-                    />
-                    <label htmlFor="name">Imię</label>
-                    <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="surname">Nazwisko</label>
-                    <input
-                        id="surname"
-                        name="surname"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="country">Kraj</label>
-                    <input
-                        id="country"
-                        name="country"
-                        type="text"
-                        className="input"
-                        disabled
-                        value="Polska"
-                    />
-                    <label htmlFor="postcode">Kod pocztowy</label>
-                    <input
-                        id="postcode"
-                        name="postcode"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="town">Miasto</label>
-                    <input
-                        id="town"
-                        name="town"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="address">Ulica</label>
-                    <input
-                        id="address"
-                        name="address"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="house">Nr domu / lokalu</label>
-                    <input
-                        id="house"
-                        name="house"
-                        type="text"
-                        className="input"
-                    />
-                    <label htmlFor="telephone">Telefon</label>
-                    <input
-                        id="telephone"
-                        name="telephone"
-                        type="tel"
-                        className="input"
-                    />
+                    {getInputWrapper('email')}
+                    {getInputWrapper('name')}
+                    {getInputWrapper('surname')}
+                    {getInputWrapper('country', { disabled: true })}
+                    {getInputWrapper('postcode')}
+                    {getInputWrapper('town')}
+                    {getInputWrapper('address')}
+                    {getInputWrapper('house')}
+                    {getInputWrapper('telephone', { placeholder: "123-456-789" })}
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">2. Dostawa</h1>
@@ -229,34 +240,40 @@ const BagContent = () => {
                             <div>Do zapłaty (w tym VAT)</div>
                             <div>{formatPrice(grossPrice + delieverPrice)}</div>
                         </div>
-                        <Link href="/checkout" className="button w-full">
+                        <button className="button w-full">
                             Przejdź do kasy
-                        </Link>
-                        <div className="flex flex-row items-center gap-4 text-xs">
-                            <input type="checkbox" id="rule" name="rule" />
-                            <label htmlFor="rule">
-                                Wyrażam zgodę na przetwarzanie moich danych
-                                osobowych w celu korzystania z Serwisu Deante.pl
-                                (w tym zakupu towarów lub usług) przez okres
-                                korzystania z serwisu. Oświadczam, że
-                                zapoznałem/am się z informacjami dotyczącymi
-                                korzystania z moich danych osobowych
-                                wyjaśnionymi w Polityce Prywatności.
-                            </label>
+                        </button>
+                        <div className="flex flex-col gap-4 text-xs">
+                            <div className="flex flex-row gap-4 items-center ">
+                                <input type="checkbox" id="rule" {...register("rule")} />
+                                <label htmlFor="rule">
+                                    Wyrażam zgodę na przetwarzanie moich danych
+                                    osobowych w celu korzystania z Serwisu Deante.pl
+                                    (w tym zakupu towarów lub usług) przez okres
+                                    korzystania z serwisu. Oświadczam, że
+                                    zapoznałem/am się z informacjami dotyczącymi
+                                    korzystania z moich danych osobowych
+                                    wyjaśnionymi w Polityce Prywatności.
+                                </label>
+                            </div>
+                            {errors.rule?.message && <div className="text-red-500">{errors.rule?.message}</div>}
                         </div>
-                        <div className="flex flex-row items-center gap-4 text-xs">
-                            <input type="checkbox" id="rule2" name="rule2" />
-                            <label htmlFor="rule2">
-                                Zgadzam się z Warunkami Świadczenia Usługi i
-                                podporządkuję się im bezwarunkowo. (Przeczytaj
-                                Warunki Świadczenia Usługi) i przeczytałem
-                                politykę prywatności
-                            </label>
+                        <div className="flex flex-col gap-4 text-xs">
+                            <div className="flex flex-row gap-4 items-center ">
+                                <input type="checkbox" id="rule2" {...register("rule2")} />
+                                <label htmlFor="rule2">
+                                    Zgadzam się z Warunkami Świadczenia Usługi i
+                                    podporządkuję się im bezwarunkowo. (Przeczytaj
+                                    Warunki Świadczenia Usługi) i przeczytałem
+                                    politykę prywatności
+                                </label>
+                            </div>
+                            {errors.rule2?.message && <div className="text-red-500">{errors.rule2?.message}</div>}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

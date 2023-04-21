@@ -100,20 +100,78 @@ export default async function ProductSlug({
         `/products/${productSlug.substring(
             0,
             productSlug.indexOf('--')
-        )}?populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
+        )}?populate[0]=manufacturer&populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
     )
+
+    const photos = [
+        { src: "https://media.deante.pl/decor/AKCESORIA%20%C5%81AZIENKOWE/ADR_N511.jpg", type: 'mainPhoto'},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_ADR_N511.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_ADR_N511_2.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_ADR_N511_3.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_KerriaPlus_nero_Brodzik_Arnika_Round.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_small_KerriaPlus_BXYZNEBT_odplyw_Round.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_small_KerriaPlus_nero_Arnika_nero_odplyw_Round.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_small_KerriaPlus_nero_BXY_NQAM_odplyw_Round.jpg", type: "decor"},
+        { src: "https://media.deante.pl/decor/ARANZE/RGB_KTM_N11P%2C%20NAC_N1QK%2C%20KQR_T41B%2C%20ADR_N511%2C%20ADM_N622.jpg", type: "decor"},
+    ]
 
     const {
         name,
         description,
         gross_price,
+        collection,
+        manufacturer,
         manufacturer_id,
         recommended_products,
     } = product.data.attributes
 
     return (
-        <div className="flex w-full flex-col items-center gap-6">
-            <div className="flex w-full max-w-7xl flex-col place-content-evenly gap-6 md:flex-row">
+        <div className="flex w-full flex-col items-center mt-4">
+            <div className="flex flex-col md:flex-row w-full justify-stretch">
+                <div className='flex-1 bg-red grid-cols-2 gap-4 hidden md:grid'>
+                    {
+                        photos.slice(0, 8).map(photo => (
+                            <div className='relative aspect-square' key={photo.src}>
+                                <Image src={photo.src} alt="Zdjecie produktowe" fill className={photo.type === 'mainPhoto' ? 'object-contain' : 'object-cover'}></Image>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className='flex-1 aspect-square block md:hidden'>
+                    {
+                        photos.slice(0, 1).map(photo => (
+                            <div className='relative aspect-square' key={photo.src}>
+                                <Image src={photo.src} alt="Zdjecie produktowe" fill className={photo.type === 'mainPhoto' ? 'object-contain' : 'object-cover'}></Image>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className='flex-1'>
+                    <div className='px-1 md:px-4 sticky top-[110px] pb-10'>
+                        <div>
+                            {collection && (
+                                <span className=' block tracking-tight text-black/70'>Kolekcja produktów <span className='text-lg font-bold text-black/80'>{manufacturer?.data?.attributes?.name} {collection}</span></span>
+                            )}
+                            <div className="flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 my-3 ">
+                                <h1 className="flex text-4xl font-bold tracking-tight">{name}</h1>
+                                <span className='font-bold text-3xl tracking-tighter text-right md:text-none'>{formatPrice(gross_price)}</span>
+                            </div>
+                            <div className='flex flex-row justify-between tracking-tight text-black/70'>
+                                {manufacturer?.data?.attributes?.name && (
+                                    <span className='block'>Producent: {manufacturer.data.attributes.name}</span>
+                                )}
+                                {manufacturer_id && (
+                                    <span className='block'>Kod producenta: {manufacturer_id}</span>
+                                )}
+                            </div>
+                            <div className="prose mt-4">
+                                <ReactMarkdown children={description || ''} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* <div className="flex w-full max-w-7xl flex-col place-content-evenly gap-6 md:flex-row">
                 <Image
                     src="/lazienkaPlaceholder.jpg"
                     alt={name}
@@ -145,10 +203,9 @@ export default async function ProductSlug({
                         <ButtonAddToBag product={product.data} />
                     </div>
                 </div>
-            </div>
-            <div className="prose">
-                <ReactMarkdown children={description || ''} />
-            </div>
+            </div> */}
+
+
             <div className="flex w-full items-start justify-evenly">
                 {recommended_products.data.map((product) => (
                     <ProductBoxSmall
