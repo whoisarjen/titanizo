@@ -12,13 +12,14 @@ export default function RootLayout({
     return (
         <html lang="pl">
             <body>
-                {/* @ts-expect-error Async Server Component */}
-                <Navbar />
-                <div className="container mx-auto pt-[100px]">
-
-                    <BagContextWrapper>{children}</BagContextWrapper>
-                </div>
-                {/* <Footer /> */}
+                <BagContextWrapper>
+                    {/* @ts-expect-error Async Server Component */}
+                    <Navbar />
+                    <div className="container mx-auto pt-[100px]">
+                        {children}
+                    </div>
+                    {/* <Footer /> */}
+                </BagContextWrapper>
             </body>
         </html>
     )

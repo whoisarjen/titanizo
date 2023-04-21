@@ -6,3 +6,7 @@ export const transformObjectToPathname = ({
 }: DefaultDataWrapper<{ name: string }>): string => {
     return `/${id}--${slugify(attributes.name)}`
 }
+
+export const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('pl', { style: 'currency', currency: 'PLN' }).format(price)
+}

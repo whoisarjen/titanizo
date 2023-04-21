@@ -1,9 +1,15 @@
-import Link from "next/link";
-import BagList from "./BagList";
+import BagList from './BagList'
+import BagSidebar from './BagSidebar'
 
-export default function Bag() {
-    return <div>
-        <BagList />
-        <Link href="/checkout" className="bg-red-500">Przejdź do kasy</Link>
-    </div>
+const Bag = () => {
+    return (
+        <div className="mx-auto flex w-full max-w-7xl gap-6 p-6">
+            <div className="flex-1">
+                <BagList />
+            </div>
+            <BagSidebar />
+        </div>
+    )
 }
+
+export default Bag

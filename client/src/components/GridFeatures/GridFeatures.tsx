@@ -44,7 +44,7 @@ export const GridFeatures = ({
                                     </p>
                                     {
                                         feature.cta &&
-                                        <button className="mt-5 border-4 border-black text-black px-5 py-3 font-medium transition-colors hover:bg-black hover:text-white">
+                                        <button className="button">
                                             {feature.cta.title}
                                             <FontAwesomeIcon
                                                 className="ml-2"
