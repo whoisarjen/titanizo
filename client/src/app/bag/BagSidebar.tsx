@@ -16,7 +16,7 @@ const BagSidebar = () => {
 
     return (
         <div className="w-full max-w-sm">
-            <div className="flex flex-1 flex-col divide-y sticky top-[124px]">
+            <div className="sticky top-[124px] flex flex-1 flex-col divide-y">
                 <div className="flex flex-1 flex-col gap-4 pb-4">
                     <div className="text-xl font-bold">Do zapłaty</div>
                     <div className="flex flex-1 items-center justify-between">
@@ -36,6 +36,27 @@ const BagSidebar = () => {
                     <Link href="/checkout" className="button w-full">
                         Przejdź do kasy
                     </Link>
+                    <div className="text-xs flex flex-row items-center gap-4">
+                        <input type="checkbox" />
+                        <div>
+                            Wyrażam zgodę na przetwarzanie moich danych
+                            osobowych w celu korzystania z Serwisu Deante.pl (w
+                            tym zakupu towarów lub usług) przez okres
+                            korzystania z serwisu. Oświadczam, że zapoznałem/am
+                            się z informacjami dotyczącymi korzystania z moich
+                            danych osobowych wyjaśnionymi w Polityce
+                            Prywatności.
+                        </div>
+                    </div>
+                    <div className="text-xs flex flex-row items-center gap-4">
+                        <input type="checkbox" />
+                        <div>
+                            Zgadzam się z Warunkami Świadczenia Usługi i
+                            podporządkuję się im bezwarunkowo. (Przeczytaj
+                            Warunki Świadczenia Usługi) i przeczytałem politykę
+                            prywatności
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
