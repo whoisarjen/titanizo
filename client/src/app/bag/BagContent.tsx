@@ -74,7 +74,7 @@ const BagContent = () => {
                 </div>
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
-                <h1 className="text-xl font-bold">Adres dostawy</h1>
+                <h1 className="text-xl font-bold">1. Adres dostawy</h1>
                 <label htmlFor="email">Email</label>
                 <input id="email" name="email" type="email" className="input" />
                 <label htmlFor="name">Imię</label>
@@ -95,7 +95,7 @@ const BagContent = () => {
                 <input id="telephone" name="telephone" type="tel" className="input" />
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
-                <h1 className="text-xl font-bold">Dostawa</h1>
+                <h1 className="text-xl font-bold">2. Dostawa</h1>
                 <p>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
@@ -108,6 +108,21 @@ const BagContent = () => {
                     passages, and more recently with desktop publishing software
                     like Aldus PageMaker including versions of Lorem Ipsum.
                 </p>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+            <div className="flex flex-1 flex-col gap-6 pt-6">
+                <h1 className="text-xl font-bold">3. Płatność</h1>
                 <p>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
