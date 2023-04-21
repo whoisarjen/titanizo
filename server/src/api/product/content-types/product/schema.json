@@ -105,7 +105,7 @@
     "promotion_price": {
       "required": false,
       "default": 0,
-      "unique": true,
+      "unique": false,
       "type": "decimal"
     },
     "collection": {
@@ -119,12 +119,6 @@
       "relation": "oneToMany",
       "target": "api::order-product.order-product",
       "mappedBy": "product"
-    },
-    "currency": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::currency.currency",
-      "inversedBy": "products"
     }
   }
 }

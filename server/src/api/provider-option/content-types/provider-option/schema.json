@@ -45,12 +45,6 @@
     "depth": {
       "type": "decimal",
       "required": true
-    },
-    "currency": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::currency.currency",
-      "inversedBy": "provider_options"
     }
   }
 }

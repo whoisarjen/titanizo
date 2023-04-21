@@ -1,6 +1,6 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { getData } from '@/utils/api.utils'
-import { transformObjectToPathname } from '@/utils/product.utils'
+import { getProductHref } from '@/utils/product.utils'
 
 type GetCategory = {
     data: Category
@@ -25,7 +25,7 @@ export default async function CategorySlug({
         `/categories/${categorySlug.substring(
             0,
             categorySlug.indexOf('--')
-        )}?populate[subcategories][populate][0]=products`
+        )}?populate[0]=subcategories&populate[1]=subcategories.products&populate[2]=subcategories.products.subcategory&populate[3]=subcategories.products.subcategory.category`
     )
 
     const { name, description, subcategories } = data.attributes
@@ -43,11 +43,7 @@ export default async function CategorySlug({
                     <ProductBoxSmall
                         key={product.id}
                         product={product}
-                        href={`${transformObjectToPathname(
-                            data
-                        )}${transformObjectToPathname(
-                            subcategory
-                        )}${transformObjectToPathname(product)}`}
+                        href={getProductHref(product)}
                     />
                 ))
             })}

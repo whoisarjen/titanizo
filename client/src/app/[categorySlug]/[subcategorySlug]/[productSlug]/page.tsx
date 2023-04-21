@@ -2,7 +2,7 @@ import { getData } from '@/utils/api.utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
-import { transformObjectToPathname } from '@/utils/product.utils'
+import { getProductHref, formatPrice } from '@/utils/product.utils'
 import ButtonAddToBag from './ButtonAddToBag'
 import { GridFeatures } from '@/components/GridFeatures'
 
@@ -100,13 +100,12 @@ export default async function ProductSlug({
         `/products/${productSlug.substring(
             0,
             productSlug.indexOf('--')
-        )}?populate[0]=currency&populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
+        )}?populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
     )
 
     const {
         name,
         description,
-        currency,
         gross_price,
         manufacturer_id,
         recommended_products,
@@ -127,8 +126,7 @@ export default async function ProductSlug({
                         <div>Kod produktu: {manufacturer_id}</div>
                     )}
                     <div>
-                        {gross_price}
-                        {currency.data.attributes.code_iso_4217}
+                        {formatPrice(gross_price)}
                     </div>
                     <div className="item-center flex flex-col">
                         <p>Wykończenie: chrom</p>
@@ -151,12 +149,7 @@ export default async function ProductSlug({
                 {recommended_products.data.map((product) => (
                     <ProductBoxSmall
                         key={product.id}
-                        href={`${transformObjectToPathname(
-                            product.attributes.subcategory.data.attributes
-                                .category.data
-                        )}${transformObjectToPathname(
-                            product.attributes.subcategory.data
-                        )}${transformObjectToPathname(product)}`}
+                        href={getProductHref(product)}
                         product={product}
                     />
                 ))}
