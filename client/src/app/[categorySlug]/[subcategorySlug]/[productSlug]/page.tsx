@@ -17,32 +17,6 @@ interface ProductSlugProps {
     }
 }
 
-export default async function ProductSlug({
-    params: { productSlug },
-}: ProductSlugProps) {
-    // TODO remove after they fix sw.js on initial render
-    if (productSlug.indexOf('--') === -1) {
-        return null
-    }
-
-    const product = await getData<GetData>(
-        `/products/${productSlug.substring(
-            0,
-            productSlug.indexOf('--')
-        )}?populate[0]=currency&populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
-    )
-
-    const {
-        name,
-        description,
-        currency,
-        gross_price,
-        manufacturer_id,
-        recommended_products,
-    } = product.data.attributes
-
-
-
 const features = [
     {
         name: 'Design pełen piękna i harmonii',
@@ -113,14 +87,39 @@ const features = [
         image: 'https://media.deante.pl/decor/_MARKETING/WYROZNIKI/AGAWA/pochylony-korpus.jpg',
     },
 ]
+
+export default async function ProductSlug({
+    params: { productSlug },
+}: ProductSlugProps) {
+    // TODO remove after they fix sw.js on initial render
+    if (productSlug.indexOf('--') === -1) {
+        return null
+    }
+
+    const product = await getData<GetData>(
+        `/products/${productSlug.substring(
+            0,
+            productSlug.indexOf('--')
+        )}?populate[0]=currency&populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
+    )
+
+    const {
+        name,
+        description,
+        currency,
+        gross_price,
+        manufacturer_id,
+        recommended_products,
+    } = product.data.attributes
+
     return (
         <div className="flex w-full flex-col items-center gap-6">
-            <div className="flex w-full max-w-7xl flex-col place-content-evenly gap-3 md:flex-row">
+            <div className="flex w-full max-w-7xl flex-col place-content-evenly gap-6 md:flex-row">
                 <Image
                     src="/lazienkaPlaceholder.jpg"
                     alt={name}
-                    width={640}
-                    height={360}
+                    width={800}
+                    height={450}
                 />
                 <div className="flex flex-1 flex-col justify-evenly gap-3">
                     <h1 className="flex text-4xl font-bold">{name}</h1>

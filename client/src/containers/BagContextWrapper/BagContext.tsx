@@ -1,16 +1,11 @@
 'use client'
-import {
-    createContext,
-    useContext,
-    useState,
-    useEffect,
-    type Dispatch,
-    type SetStateAction,
-} from 'react'
+
+import { createContext, useState, useEffect } from 'react'
 
 const DEFAULT_VALUE = {
     bag: [] as Product[],
-    addItemToBeg: (product: Product) => {},
+    addProductToBag: (product: Product) => {},
+    removeProductFromBag: (product: Product) => {},
 }
 
 export const BagContext = createContext(DEFAULT_VALUE)
@@ -23,12 +18,22 @@ function BagContextProvider({ children }: BagContextProviderProps) {
     const [bag, setBag] = useState<Product[]>([])
     const isClientSide = typeof window !== 'undefined'
 
-    const addItemToBeg = (product: Product) => {
+    const addProductToBag = (product: Product) => {
         setBag((state) => {
-            const newBeg = [product, ...state]
-            localStorage.setItem('bag', JSON.stringify(newBeg))
+            const newBag = [product, ...state]
+            localStorage.setItem('bag', JSON.stringify(newBag))
 
-            return newBeg
+            return newBag
+        })
+    }
+
+    const removeProductFromBag = (product: Product) => {
+        setBag((state) => {
+            const indexToFilter = state.findIndex(({ id }) => id === product.id)
+            const newBag = state.filter((_, index) => index !== indexToFilter)
+            localStorage.setItem('bag', JSON.stringify(newBag))
+
+            return newBag
         })
     }
 
@@ -43,7 +48,7 @@ function BagContextProvider({ children }: BagContextProviderProps) {
     }, [isClientSide])
 
     return (
-        <BagContext.Provider value={{ bag, addItemToBeg }}>
+        <BagContext.Provider value={{ bag, addProductToBag, removeProductFromBag }}>
             {children}
         </BagContext.Provider>
     )

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 import { getData } from '@/utils/api.utils'
 import { transformObjectToPathname } from '@/utils/product.utils'
+import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 
 type GetData = {
     data: Category[]
@@ -74,6 +75,7 @@ export const Navbar = async () => {
                         ))}
                     </div>
                     <div className="flex flex-1 flex-row-reverse items-center">
+                        <NavbarIconBag />
                         {MENU_ICONS.map(({ name, href, icon }) => (
                             <Link
                                 className="p-2 text-white/75 transition-colors hover:text-white"

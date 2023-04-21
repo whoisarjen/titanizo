@@ -16,10 +16,10 @@ export const Hero = () => {
                     <h1 className="text-8xl font-semibold leading-tight tracking-tight">
                         Hiacynt
                     </h1>
-                    <h2 className="mt-2 text-2xl font-thin">
+                    <h2 className="my-2 text-2xl font-thin">
                         Biżuteria marki Deante do Twojej Łazienki
                     </h2>
-                    <button className="mt-5 border-4 border-white px-5 py-3 font-medium transition-colors hover:bg-white hover:text-black">
+                    <button className="button hover:bg-white hover:text-black border-white text-white">
                         Zobacz kolekcję Hiacynt{' '}
                         <FontAwesomeIcon
                             className="ml-2"
