@@ -75,42 +75,24 @@ const BagContent = () => {
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
                 <h1 className="text-xl font-bold">Adres dostawy</h1>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries,
-                    but also the leap into electronic typesetting, remaining
-                    essentially unchanged. It was popularised in the 1960s with
-                    the release of Letraset sheets containing Lorem Ipsum
-                    passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
+                <label for="email">Email</label>
+                <input name="email" type="email" className="input" />
+                <label for="name">Imię</label>
+                <input name="name" type="text" className="input" />
+                <label for="surname">Nazwisko</label>
+                <input name="surname" type="text" className="input" />
+                <label for="country">Kraj</label>
+                <input name="country" type="text" className="input" disabled value="Polska" />
+                <label for="postcode">Kod pocztowy</label>
+                <input name="postcode" type="text" className="input" />
+                <label for="town">Miasto</label>
+                <input name="town" type="text" className="input" />
+                <label for="address">Ulica</label>
+                <input name="address" type="text" className="input" />
+                <label for="house">Nr domu / lokalu</label>
+                <input name="house" type="text" className="input" />
+                <label for="telephone">Telefon</label>
+                <input name="telephone" type="tel" className="input" />
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
                 <h1 className="text-xl font-bold">Dostawa</h1>
