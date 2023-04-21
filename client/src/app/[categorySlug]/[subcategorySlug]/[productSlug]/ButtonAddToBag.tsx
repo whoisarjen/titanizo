@@ -11,12 +11,12 @@ interface ButtonAddToBagProps {
 }
 
 const ButtonAddToBag = ({ product }: ButtonAddToBagProps) => {
-    const { setBag } = useContext(BagContext)
+    const { addItemToBeg } = useContext(BagContext)
 
     return (
         <button
             className="border-4 border-black text-black px-5 py-3 font-medium transition-colors hover:bg-black hover:text-white inline-block"
-            onClick={() => setBag(state => [product, ...state])}
+            onClick={() => addItemToBeg(product)}
         >
             Dodaj do koszyka
             <FontAwesomeIcon icon={faBagShopping}  className='ml-2'/>
