@@ -28,11 +28,6 @@ type Category = DefaultDataWrapper<{
     }
 }>
 
-type Currency = DefaultDataWrapper<{
-    name: string
-    code_iso_4217: string
-}>
-
 type Product = DefaultDataWrapper<{
     name: string
     description?: string
@@ -46,9 +41,6 @@ type Product = DefaultDataWrapper<{
     promotion_price: number
     collection: null | string
     is_designed: null | boolean
-    currency: {
-        data: Currency
-    }
     subcategory: {
         data: Subcategory
     }

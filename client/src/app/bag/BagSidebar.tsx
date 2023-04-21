@@ -8,30 +8,36 @@ import { formatPrice } from '@/utils/product.utils'
 const BagSidebar = () => {
     const { bag } = useContext(BagContext)
 
-    const grossPrice = bag.reduce((prev, product) => prev + product.attributes.gross_price, 0)
+    const grossPrice = bag.reduce(
+        (prev, product) => prev + product.attributes.gross_price,
+        0
+    )
     const delieverPrice = 10.49
 
     return (
-        <div className="w-full max-w-sm flex flex-col gap-6">
-            <div className="text-xl font-bold">Do zapłaty</div>
-            <div className="flex justify-between flex-1">
-                <div>Wartość produktów</div>
-                <div>{formatPrice(grossPrice)}</div>
+        <div className="w-full max-w-sm">
+            <div className="flex flex-1 flex-col divide-y">
+                <div className="flex flex-1 flex-col gap-4 pb-4">
+                    <div className="text-xl font-bold">Do zapłaty</div>
+                    <div className="flex flex-1 items-center justify-between">
+                        <div>Wartość produktów</div>
+                        <div>{formatPrice(grossPrice)}</div>
+                    </div>
+                    <div className="flex flex-1 items-center justify-between">
+                        <div>Dostawa</div>
+                        <div>{formatPrice(delieverPrice)}</div>
+                    </div>
+                </div>
+                <div className="flex flex-1 flex-col gap-4 pt-4">
+                    <div className="flex flex-1 items-center justify-between">
+                        <div>Do zapłaty (w tym VAT)</div>
+                        <div>{formatPrice(grossPrice + delieverPrice)}</div>
+                    </div>
+                    <Link href="/checkout" className="button w-full">
+                        Przejdź do kasy
+                    </Link>
+                </div>
             </div>
-            <div className="flex justify-between flex-1">
-                <div>Dostawa</div>
-                <div>{formatPrice(delieverPrice)}</div>
-            </div>
-            <div className="flex justify-between flex-1 border-t-2 pt-6">
-                <div>Do zapłaty (w tym VAT)</div>
-                <div>{formatPrice(grossPrice + delieverPrice)}</div>
-            </div>
-            <Link
-                href="/checkout"
-                className="button w-full"
-            >
-                Przejdź do kasy
-            </Link>
         </div>
     )
 }

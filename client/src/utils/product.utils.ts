@@ -10,3 +10,9 @@ export const transformObjectToPathname = ({
 export const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pl', { style: 'currency', currency: 'PLN' }).format(price)
 }
+
+export const getProductHref = (product: Product): string => `
+${transformObjectToPathname(product.attributes.subcategory.data.attributes.category.data)}
+${transformObjectToPathname(product.attributes.subcategory.data)}
+${transformObjectToPathname(product)}
+`
