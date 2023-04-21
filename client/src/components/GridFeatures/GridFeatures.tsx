@@ -44,7 +44,7 @@ export const GridFeatures = ({
                                     </p>
                                     {
                                         feature.cta &&
-                                        <button className="button">
+                                        <button className="button mt-5">
                                             {feature.cta.title}
                                             <FontAwesomeIcon
                                                 className="ml-2"

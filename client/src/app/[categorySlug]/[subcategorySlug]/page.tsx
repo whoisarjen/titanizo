@@ -20,7 +20,7 @@ export default async function SubcategorySlug({
         `/subcategories/${subcategorySlug.substring(
             0,
             subcategorySlug.indexOf('--')
-        )}?populate[0]=products&populate[1]=products.subcategory&populate[2]=products.subcategory.category`
+        )}?populate[0]=products&populate[1]=products.subcategory&populate[2]=products.subcategory.category&populate[3]=products.manufacturer`
     )
 
     const { name, description, products } = data.attributes

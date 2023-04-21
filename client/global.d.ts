@@ -28,6 +28,11 @@ type Category = DefaultDataWrapper<{
     }
 }>
 
+type Manufacturer = DefaultDataWrapper<{
+    name: string
+    description?: string
+}>
+
 type Product = DefaultDataWrapper<{
     name: string
     description?: string
@@ -41,6 +46,9 @@ type Product = DefaultDataWrapper<{
     promotion_price: number
     collection: null | string
     is_designed: null | boolean
+    manufacturer: {
+        data: Manufacturer
+    }
     subcategory: {
         data: Subcategory
     }

@@ -16,3 +16,4 @@ ${transformObjectToPathname(product.attributes.subcategory.data.attributes.categ
 ${transformObjectToPathname(product.attributes.subcategory.data)}
 ${transformObjectToPathname(product)}
 `
+
