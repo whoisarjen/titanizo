@@ -36,9 +36,9 @@ const BagSidebar = () => {
                     <Link href="/checkout" className="button w-full">
                         Przejdź do kasy
                     </Link>
-                    <div className="text-xs flex flex-row items-center gap-4">
-                        <input type="checkbox" />
-                        <div>
+                    <div className="flex flex-row items-center gap-4 text-xs">
+                        <input type="checkbox" id="rule" name="rule" />
+                        <label htmlFor="rule">
                             Wyrażam zgodę na przetwarzanie moich danych
                             osobowych w celu korzystania z Serwisu Deante.pl (w
                             tym zakupu towarów lub usług) przez okres
@@ -46,16 +46,16 @@ const BagSidebar = () => {
                             się z informacjami dotyczącymi korzystania z moich
                             danych osobowych wyjaśnionymi w Polityce
                             Prywatności.
-                        </div>
+                        </label>
                     </div>
-                    <div className="text-xs flex flex-row items-center gap-4">
-                        <input type="checkbox" />
-                        <div>
+                    <div className="flex flex-row items-center gap-4 text-xs">
+                        <input type="checkbox" id="rule2" name="rule2" />
+                        <label htmlFor="rule2">
                             Zgadzam się z Warunkami Świadczenia Usługi i
                             podporządkuję się im bezwarunkowo. (Przeczytaj
                             Warunki Świadczenia Usługi) i przeczytałem politykę
                             prywatności
-                        </div>
+                        </label>
                     </div>
                 </div>
             </div>

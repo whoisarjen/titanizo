@@ -75,24 +75,24 @@ const BagContent = () => {
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
                 <h1 className="text-xl font-bold">Adres dostawy</h1>
-                <label for="email">Email</label>
-                <input name="email" type="email" className="input" />
-                <label for="name">Imię</label>
-                <input name="name" type="text" className="input" />
-                <label for="surname">Nazwisko</label>
-                <input name="surname" type="text" className="input" />
-                <label for="country">Kraj</label>
-                <input name="country" type="text" className="input" disabled value="Polska" />
-                <label for="postcode">Kod pocztowy</label>
-                <input name="postcode" type="text" className="input" />
-                <label for="town">Miasto</label>
-                <input name="town" type="text" className="input" />
-                <label for="address">Ulica</label>
-                <input name="address" type="text" className="input" />
-                <label for="house">Nr domu / lokalu</label>
-                <input name="house" type="text" className="input" />
-                <label for="telephone">Telefon</label>
-                <input name="telephone" type="tel" className="input" />
+                <label htmlFor="email">Email</label>
+                <input id="email" name="email" type="email" className="input" />
+                <label htmlFor="name">Imię</label>
+                <input id="name" name="name" type="text" className="input" />
+                <label htmlFor="surname">Nazwisko</label>
+                <input id="surname" name="surname" type="text" className="input" />
+                <label htmlFor="country">Kraj</label>
+                <input id="country" name="country" type="text" className="input" disabled value="Polska" />
+                <label htmlFor="postcode">Kod pocztowy</label>
+                <input id="postcode" name="postcode" type="text" className="input" />
+                <label htmlFor="town">Miasto</label>
+                <input id="town" name="town" type="text" className="input" />
+                <label htmlFor="address">Ulica</label>
+                <input id="address" name="address" type="text" className="input" />
+                <label htmlFor="house">Nr domu / lokalu</label>
+                <input id="house" name="house" type="text" className="input" />
+                <label htmlFor="telephone">Telefon</label>
+                <input id="telephone" name="telephone" type="tel" className="input" />
             </div>
             <div className="flex flex-1 flex-col gap-6 pt-6">
                 <h1 className="text-xl font-bold">Dostawa</h1>
