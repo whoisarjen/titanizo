@@ -7,6 +7,6 @@
         @apply inline-block border border-black px-5 py-3 font-medium text-black transition-colors;
     }
     .button {
-        @apply inline-block border-4 border-black px-5 py-3 text-center font-medium text-black transition-colors hover:bg-black hover:text-white;
+        @apply inline-block border-4 border-black px-5 py-3 text-center font-medium text-black transition-colors hover:bg-black hover:text-white cursor-pointer;
     }
 }

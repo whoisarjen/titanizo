@@ -7,6 +7,24 @@ type DefaultDataWrapper<Attributes> = {
     }
 }
 
+type ProviderOption = DefaultDataWrapper<{
+    name: string
+    description?: string
+    net_price: number
+    gross_price: number
+    height: number
+    weight: number
+    depth: number
+    width: number
+}>
+
+type Provider = DefaultDataWrapper<{
+    name: string
+    provider_options: {
+        data: ProviderOption[]
+    }
+}>
+
 type Subcategory = DefaultDataWrapper<{
     name: string
     description?: string

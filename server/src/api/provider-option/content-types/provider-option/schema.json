@@ -4,7 +4,8 @@
   "info": {
     "singularName": "provider-option",
     "pluralName": "provider-options",
-    "displayName": "provider_option"
+    "displayName": "provider_option",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -30,7 +31,7 @@
     "description": {
       "type": "richtext"
     },
-    "price": {
+    "gross_price": {
       "type": "decimal",
       "required": true
     },
@@ -45,6 +46,16 @@
     "depth": {
       "type": "decimal",
       "required": true
+    },
+    "width": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "net_price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
     }
   }
 }

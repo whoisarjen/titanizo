@@ -3,8 +3,8 @@ import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { getProductHref, formatPrice } from '@/utils/product.utils'
-import ButtonAddToBag from './ButtonAddToBag'
 import { GridFeatures } from '@/components/GridFeatures'
+import ButtonAddToBag from './ButtonAddToBag'
 
 type GetData = {
     data: Product
@@ -164,6 +164,7 @@ export default async function ProductSlug({
                                     <span className='block'>Kod producenta: {manufacturer_id}</span>
                                 )}
                             </div>
+                            <ButtonAddToBag product={product.data} />
                             <div className="prose mt-4">
                                 <ReactMarkdown children={description || ''} />
                             </div>
