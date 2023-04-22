@@ -72,7 +72,6 @@ const BagContent = ({ providers }: BagContentProps) => {
         register,
         formState: { errors },
         handleSubmit,
-        reset,
         control,
         setValue,
         getValues,
@@ -200,7 +199,7 @@ const BagContent = ({ providers }: BagContentProps) => {
                                         (providerOption) => (
                                             <div
                                                 key={providerOption.id}
-                                                className={`button text-start ${
+                                                className={`button text-start flex justify-between ${
                                                     providerOption.id ===
                                                         getValues(
                                                             'providerOptionId'
@@ -215,7 +214,8 @@ const BagContent = ({ providers }: BagContentProps) => {
                                                     )
                                                 }
                                             >
-                                                {providerOption.attributes.name}
+                                                <div>{providerOption.attributes.name}</div>
+                                                <div>{formatPrice(providerOption.attributes.gross_price)}</div>
                                             </div>
                                         )
                                     )}
