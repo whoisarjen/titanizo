@@ -25,6 +25,10 @@ type Provider = DefaultDataWrapper<{
     }
 }>
 
+type Payment = DefaultDataWrapper<{
+    name: string
+}>
+
 type Subcategory = DefaultDataWrapper<{
     name: string
     description?: string

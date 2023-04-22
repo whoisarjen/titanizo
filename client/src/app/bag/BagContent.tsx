@@ -33,6 +33,7 @@ const FIELD_TRANSLATE = {
     rule2: '',
     products: '',
     providerOptionId: '',
+    paymentId: '',
 } as const satisfies FieldTranslate
 
 const getInput =
@@ -58,9 +59,10 @@ const getInput =
 
 interface BagContentProps {
     providers: Provider[]
+    payments: Payment[]
 }
 
-const BagContent = ({ providers }: BagContentProps) => {
+const BagContent = ({ providers, payments }: BagContentProps) => {
     const { bag, removeProductFromBag } = useContext(BagContext)
 
     const grossPrice = bag.reduce(
@@ -231,32 +233,32 @@ const BagContent = ({ providers }: BagContentProps) => {
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">3. Płatność</h1>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                        It was popularised in the 1960s with the release of
-                        Letraset sheets containing Lorem Ipsum passages, and
-                        more recently with desktop publishing software like
-                        Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                        It was popularised in the 1960s with the release of
-                        Letraset sheets containing Lorem Ipsum passages, and
-                        more recently with desktop publishing software like
-                        Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
+                    {payments.map(payment => (
+                        <div
+                            key={payment.id}
+                            className={`button text-start flex justify-between ${
+                                payment.id ===
+                                    getValues(
+                                        'paymentId'
+                                    ) &&
+                                'bg-black text-white'
+                            }`}
+                            onClick={() =>
+                                setValue(
+                                    'paymentId',
+                                    payment.id,
+                                    { shouldValidate: true }
+                                )
+                            }
+                        >
+                            {payment.attributes.name}
+                        </div>
+                    ))}
+                    {errors.paymentId?.message && (
+                        <div className="text-red-500">
+                            {errors.paymentId?.message}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -279,7 +281,7 @@ const BagContent = ({ providers }: BagContentProps) => {
                             <div>{formatPrice(grossPrice + delieverPrice)}</div>
                         </div>
                         <button className="button w-full">
-                            Przejdź do kasy
+                            Złóż zamówienie
                         </button>
                         {!!Object.keys(errors).length && (
                             <div className="text-red-500">

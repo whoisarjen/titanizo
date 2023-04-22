@@ -164,10 +164,10 @@ export default async function ProductSlug({
                                     <span className='block'>Kod producenta: {manufacturer_id}</span>
                                 )}
                             </div>
-                            <ButtonAddToBag product={product.data} />
                             <div className="prose mt-4">
                                 <ReactMarkdown children={description || ''} />
                             </div>
+                            <ButtonAddToBag product={product.data} />
                         </div>
                     </div>
                 </div>

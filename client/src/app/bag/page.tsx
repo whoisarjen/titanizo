@@ -1,17 +1,27 @@
 import BagContent from './BagContent'
 import { getData } from '@/utils/api.utils'
 
-type GetData = {
+type GetDataProviders = {
     data: Provider[]
     meta: Meta
 }
 
-const Bag = async () => {
-    const providers = await getData<GetData>(
-        `/providers?populate[0]=provider_options`
-    )
+type GetDataPayments = {
+    data: Payment[]
+    meta: Meta
+}
 
-    return <BagContent providers={providers.data} />
+const Bag = async () => {
+    const [providers, payments] = await Promise.all([
+        getData<GetDataProviders>(
+            `/providers?populate[0]=provider_options`
+        ),
+        getData<GetDataPayments>(
+            `/payments`
+        ),
+    ])
+
+    return <BagContent providers={providers.data} payments={payments.data} />
 }
 
 export default Bag
