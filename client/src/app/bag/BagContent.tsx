@@ -11,17 +11,37 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Zod from 'zod'
 
 const orderSchema = Zod.object({
-    email: Zod.string().email({ message: "Niepoprawny adres email!" }),
-    name: Zod.string().min(3, { message: "Imię musi mieć conajmniej 3 litery" }),
-    surname: Zod.string().min(3, { message: "Nazwisko musi mieć conajmniej 3 litery" }),
-    country: Zod.string().min(3).default("Polska"),
-    postcode: Zod.string().refine(val => val.length === 5 && /^\d+$/.test(val), { message: "Podaj poprawny kod pocztowy" }).transform(val => Number(val)),
-    town: Zod.string().min(3, { message: "Miasto musi mieć conajmniej 3 litery" }),
-    address: Zod.string().min(3, { message: "Adres musi mieć conajmniej 3 litery" }),
-    house: Zod.string().min(1, { message: "Budynek musi mieć conajmniej 1 literę" }),
-    telephone: Zod.string().refine(val => val.length === 9 && /^\d+$/.test(val), { message: "Podaj poprawny numer telefonu!" }).transform(val => Number(val)),
-    rule: Zod.boolean().refine(val => !!val, { message: "Musisz zaakceptować!" }),
-    rule2: Zod.boolean().refine(val => !!val, { message: "Musisz zaakceptować!" }),
+    email: Zod.string().email({ message: 'Niepoprawny adres email!' }),
+    name: Zod.string().min(3, {
+        message: 'Imię musi mieć conajmniej 3 litery',
+    }),
+    surname: Zod.string().min(3, {
+        message: 'Nazwisko musi mieć conajmniej 3 litery',
+    }),
+    country: Zod.string().min(3).default('Polska'),
+    postcode: Zod.string()
+        .min(1, { message: 'Kod musi mieć conajmniej 1 literę' })
+        .max(32, { message: 'Kod musi mieć maksymalnie 32 litery' }),
+    town: Zod.string().min(3, {
+        message: 'Miasto musi mieć conajmniej 3 litery',
+    }),
+    address: Zod.string().min(3, {
+        message: 'Adres musi mieć conajmniej 3 litery',
+    }),
+    house: Zod.string().min(1, {
+        message: 'Budynek musi mieć conajmniej 1 literę',
+    }),
+    phone: Zod.string()
+        .refine((val) => val.length === 9 && /^\d+$/.test(val), {
+            message: 'Podaj poprawny numer telefonu!',
+        })
+        .transform((val) => Number(val)),
+    rule: Zod.boolean().refine((val) => !!val, {
+        message: 'Musisz zaakceptować!',
+    }),
+    rule2: Zod.boolean().refine((val) => !!val, {
+        message: 'Musisz zaakceptować!',
+    }),
 })
 
 type OrderSchema = Zod.infer<typeof orderSchema>
@@ -44,24 +64,31 @@ const FIELD_TRANSLATE = {
     town: 'Miasto',
     address: 'Ulica',
     house: 'Numer domu / lokalu',
-    telephone: 'Telefon',
-    rule: "",
-    rule2: "",
+    phone: 'Telefon',
+    rule: '',
+    rule2: '',
 } as const satisfies FieldTranslate
 
-const getInput = (register: any, errors: FieldErrors<OrderSchema>) => (field: keyof OrderSchema, options: object = {}) => (
-    <>
-        <label htmlFor={field}>{capitalize(FIELD_TRANSLATE[field])}</label>
-        <input
-            id={field}
-            className="input"
-            required
-            {...options}
-            {...register(field)}
-        />
-        {errors[field]?.message && <div className="text-red-500">{errors[field]?.message}</div>}
-    </>
-)
+const getInput =
+    (register: any, errors: FieldErrors<OrderSchema>) =>
+    (field: keyof OrderSchema, options: object = {}) =>
+        (
+            <>
+                <label htmlFor={field}>
+                    {capitalize(FIELD_TRANSLATE[field])}
+                </label>
+                <input
+                    id={field}
+                    className="input"
+                    required
+                    {...options}
+                    {...register(field)}
+                />
+                {errors[field]?.message && (
+                    <div className="text-red-500">{errors[field]?.message}</div>
+                )}
+            </>
+        )
 
 const BagContent = () => {
     const { bag, removeProductFromBag } = useContext(BagContext)
@@ -90,13 +117,16 @@ const BagContent = () => {
     }, [bag.length])
 
     useEffect(() => {
-        reset({ country: "Polska" })
+        reset({ country: 'Polska' })
     }, [])
 
     const getInputWrapper = getInput(register, errors)
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto flex w-full max-w-7xl gap-6 p-6">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mx-auto flex w-full max-w-7xl gap-6 p-6"
+        >
             <div className="flex flex-1 flex-col gap-6 divide-y">
                 <div className="flex flex-1 flex-col gap-6">
                     <h1 className="text-xl font-bold">
@@ -150,7 +180,10 @@ const BagContent = () => {
                         ))}
                     </div>
                 </div>
-                <div onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6 pt-6">
+                <div
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-1 flex-col gap-6 pt-6"
+                >
                     <h1 className="text-xl font-bold">1. Adres dostawy</h1>
                     {getInputWrapper('email')}
                     {getInputWrapper('name')}
@@ -160,7 +193,9 @@ const BagContent = () => {
                     {getInputWrapper('town')}
                     {getInputWrapper('address')}
                     {getInputWrapper('house')}
-                    {getInputWrapper('telephone', { placeholder: "123-456-789" })}
+                    {getInputWrapper('phone', {
+                        placeholder: '123-456-789',
+                    })}
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">2. Dostawa</h1>
@@ -244,31 +279,48 @@ const BagContent = () => {
                             Przejdź do kasy
                         </button>
                         <div className="flex flex-col gap-4 text-xs">
-                            <div className="flex flex-row gap-4 items-center ">
-                                <input type="checkbox" id="rule" {...register("rule")} />
+                            <div className="flex flex-row items-center gap-4 ">
+                                <input
+                                    type="checkbox"
+                                    id="rule"
+                                    {...register('rule')}
+                                />
                                 <label htmlFor="rule">
                                     Wyrażam zgodę na przetwarzanie moich danych
-                                    osobowych w celu korzystania z Serwisu Deante.pl
-                                    (w tym zakupu towarów lub usług) przez okres
-                                    korzystania z serwisu. Oświadczam, że
-                                    zapoznałem/am się z informacjami dotyczącymi
-                                    korzystania z moich danych osobowych
-                                    wyjaśnionymi w Polityce Prywatności.
+                                    osobowych w celu korzystania z Serwisu
+                                    Deante.pl (w tym zakupu towarów lub usług)
+                                    przez okres korzystania z serwisu.
+                                    Oświadczam, że zapoznałem/am się z
+                                    informacjami dotyczącymi korzystania z moich
+                                    danych osobowych wyjaśnionymi w Polityce
+                                    Prywatności.
                                 </label>
                             </div>
-                            {errors.rule?.message && <div className="text-red-500">{errors.rule?.message}</div>}
+                            {errors.rule?.message && (
+                                <div className="text-red-500">
+                                    {errors.rule?.message}
+                                </div>
+                            )}
                         </div>
                         <div className="flex flex-col gap-4 text-xs">
-                            <div className="flex flex-row gap-4 items-center ">
-                                <input type="checkbox" id="rule2" {...register("rule2")} />
+                            <div className="flex flex-row items-center gap-4 ">
+                                <input
+                                    type="checkbox"
+                                    id="rule2"
+                                    {...register('rule2')}
+                                />
                                 <label htmlFor="rule2">
                                     Zgadzam się z Warunkami Świadczenia Usługi i
-                                    podporządkuję się im bezwarunkowo. (Przeczytaj
-                                    Warunki Świadczenia Usługi) i przeczytałem
-                                    politykę prywatności
+                                    podporządkuję się im bezwarunkowo.
+                                    (Przeczytaj Warunki Świadczenia Usługi) i
+                                    przeczytałem politykę prywatności
                                 </label>
                             </div>
-                            {errors.rule2?.message && <div className="text-red-500">{errors.rule2?.message}</div>}
+                            {errors.rule2?.message && (
+                                <div className="text-red-500">
+                                    {errors.rule2?.message}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

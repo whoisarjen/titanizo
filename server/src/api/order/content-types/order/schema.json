@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "user_address": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::user-address.user-address",
-      "inversedBy": "orders"
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
@@ -47,6 +41,42 @@
       "relation": "manyToOne",
       "target": "api::provider-option.provider-option",
       "inversedBy": "orders"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "surname": {
+      "type": "string",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "required": true
+    },
+    "postcode": {
+      "type": "string",
+      "required": true
+    },
+    "town": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "required": true
+    },
+    "house": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "integer",
+      "required": true
     }
   }
 }
