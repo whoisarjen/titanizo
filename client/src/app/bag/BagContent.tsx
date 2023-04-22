@@ -6,45 +6,9 @@ import { uniqBy, capitalize } from 'lodash'
 import Image from 'next/image'
 import { formatPrice, getProductHref } from '@/utils/product.utils'
 import Link from 'next/link'
-import { useForm, type FieldErrors } from 'react-hook-form'
+import { useForm, type FieldErrors, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Zod from 'zod'
-
-const orderSchema = Zod.object({
-    email: Zod.string().email({ message: 'Niepoprawny adres email!' }),
-    name: Zod.string().min(3, {
-        message: 'Imię musi mieć conajmniej 3 litery',
-    }),
-    surname: Zod.string().min(3, {
-        message: 'Nazwisko musi mieć conajmniej 3 litery',
-    }),
-    country: Zod.string().min(3).default('Polska'),
-    postcode: Zod.string()
-        .min(1, { message: 'Kod musi mieć conajmniej 1 literę' })
-        .max(32, { message: 'Kod musi mieć maksymalnie 32 litery' }),
-    town: Zod.string().min(3, {
-        message: 'Miasto musi mieć conajmniej 3 litery',
-    }),
-    address: Zod.string().min(3, {
-        message: 'Adres musi mieć conajmniej 3 litery',
-    }),
-    house: Zod.string().min(1, {
-        message: 'Budynek musi mieć conajmniej 1 literę',
-    }),
-    phone: Zod.string()
-        .refine((val) => val.length === 9 && /^\d+$/.test(val), {
-            message: 'Podaj poprawny numer telefonu!',
-        })
-        .transform((val) => Number(val)),
-    rule: Zod.boolean().refine((val) => !!val, {
-        message: 'Musisz zaakceptować!',
-    }),
-    rule2: Zod.boolean().refine((val) => !!val, {
-        message: 'Musisz zaakceptować!',
-    }),
-})
-
-type OrderSchema = Zod.infer<typeof orderSchema>
+import { orderSchema, type OrderSchema } from '@/schemas/order.schema'
 
 type FieldTranslate = {
     [key in keyof OrderSchema]: string
@@ -67,6 +31,8 @@ const FIELD_TRANSLATE = {
     phone: 'Telefon',
     rule: '',
     rule2: '',
+    products: '',
+    providerOptionId: '',
 } as const satisfies FieldTranslate
 
 const getInput =
@@ -90,22 +56,33 @@ const getInput =
             </>
         )
 
-const BagContent = () => {
+interface BagContentProps {
+    providers: Provider[]
+}
+
+const BagContent = ({ providers }: BagContentProps) => {
     const { bag, removeProductFromBag } = useContext(BagContext)
 
     const grossPrice = bag.reduce(
         (prev, product) => prev + product.attributes.gross_price,
         0
     )
-    const delieverPrice = 10.49
 
     const {
         register,
         formState: { errors },
         handleSubmit,
-        control,
         reset,
+        control,
+        setValue,
+        getValues,
     } = useForm<OrderSchema>({ resolver: zodResolver(orderSchema) })
+
+    const { replace } = useFieldArray({
+        control,
+        name: 'products',
+        keyName: 'uuid',
+    })
 
     const onSubmit = (data: OrderSchema) => console.log({ data })
 
@@ -113,14 +90,19 @@ const BagContent = () => {
         const uniqueBag = uniqBy(bag, 'id')
         const uniqueBagWithQuanitity = uniqueBag.map(uniqueBagMapping(bag))
 
+        replace(uniqueBagWithQuanitity)
+
         return uniqueBagWithQuanitity
     }, [bag.length])
 
     useEffect(() => {
-        reset({ country: 'Polska' })
+        setValue('country', 'Polska')
     }, [])
 
     const getInputWrapper = getInput(register, errors)
+    const delieverPrice = providers.flatMap(({ attributes }) => attributes.provider_options.data).find(({ id }) => id === getValues(
+        'providerOptionId'
+    ))?.attributes.gross_price || 0
 
     return (
         <form
@@ -178,6 +160,11 @@ const BagContent = () => {
                                 </div>
                             </div>
                         ))}
+                        {errors.products?.message && (
+                            <div className="text-red-500">
+                                {errors.products?.message}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div
@@ -199,32 +186,48 @@ const BagContent = () => {
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">2. Dostawa</h1>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                        It was popularised in the 1960s with the release of
-                        Letraset sheets containing Lorem Ipsum passages, and
-                        more recently with desktop publishing software like
-                        Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                        It was popularised in the 1960s with the release of
-                        Letraset sheets containing Lorem Ipsum passages, and
-                        more recently with desktop publishing software like
-                        Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
+                    {providers.map((provider) => {
+                        return (
+                            <div
+                                key={provider.id}
+                                className="flex flex-1 flex-col gap-6"
+                            >
+                                <div className="flex-1">
+                                    {provider.attributes.name}
+                                </div>
+                                <div className="flex flex-1 flex-col gap-6">
+                                    {provider.attributes.provider_options.data.map(
+                                        (providerOption) => (
+                                            <div
+                                                key={providerOption.id}
+                                                className={`button text-start ${
+                                                    providerOption.id ===
+                                                        getValues(
+                                                            'providerOptionId'
+                                                        ) &&
+                                                    'bg-black text-white'
+                                                }`}
+                                                onClick={() =>
+                                                    setValue(
+                                                        'providerOptionId',
+                                                        providerOption.id,
+                                                        { shouldValidate: true }
+                                                    )
+                                                }
+                                            >
+                                                {providerOption.attributes.name}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            </div>
+                        )
+                    })}
+                    {errors.providerOptionId?.message && (
+                        <div className="text-red-500">
+                            {errors.providerOptionId?.message}
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">3. Płatność</h1>
@@ -278,6 +281,17 @@ const BagContent = () => {
                         <button className="button w-full">
                             Przejdź do kasy
                         </button>
+                        {!!Object.keys(errors).length && (
+                            <div className="text-red-500">
+                                {
+                                    errors[
+                                        Object.keys(
+                                            errors
+                                        )[0] as unknown as keyof typeof errors
+                                    ]?.message
+                                }
+                            </div>
+                        )}
                         <div className="flex flex-col gap-4 text-xs">
                             <div className="flex flex-row items-center gap-4 ">
                                 <input
