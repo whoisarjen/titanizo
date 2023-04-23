@@ -39,6 +39,11 @@ export const orderSchema = Zod.object({
     }), { required_error: "Nie dodałeś żadnych produktów!" }).nonempty({ message: "Nie dodałeś żadnych produktów!" }),
     providerOptionId: Zod.number({ required_error: "Wybierz opcję dostawy!" }).positive(),
     paymentId: Zod.number({ required_error: "Wybierz opcję płatności!" }).positive(),
+
+
+    // AFTER UPDATING, UPDATE /server/src/api/order/middlewares/order SCHEMAS MIGHT BE A BIG DIFFERENT BETWEEN EACH OTHER!
+
+
 })
 
 export type OrderSchema = Zod.infer<typeof orderSchema>
