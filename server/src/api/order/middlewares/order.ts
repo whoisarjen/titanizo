@@ -65,11 +65,11 @@ export default (config, { strapi }: { strapi: Strapi }) => {
             const providerOption = await providerOptionService.findOne(data.providerOptionId, params)
 
             if (products.some(product => !product)) {
-                throw "At least one product is not correct!"
+                return ctx.badRequest("At least one product is not correct!")
             }
 
             if (!providerOption) {
-                throw "Provider option is not correct!"
+                return ctx.badRequest("Provider option is not correct!")
             }
             
             const orderProducts = await Promise.all(products.map((product, index) =>
