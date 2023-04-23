@@ -6,7 +6,6 @@ import {
     useMemo,
     useEffect,
     useReducer,
-    ReducerWithoutAction,
 } from 'react'
 import { uniqBy, capitalize } from 'lodash'
 import Image from 'next/image'
