@@ -4,8 +4,10 @@ import { createContext, useState, useEffect } from 'react'
 
 const DEFAULT_VALUE = {
     bag: [] as Product[],
+    grossPriceOfBag: 0,
     addProductToBag: (product: Product) => {},
     removeProductFromBag: (product: Product) => {},
+    removeAllProductsFromBad: () => {},
 }
 
 export const BagContext = createContext(DEFAULT_VALUE)
@@ -17,6 +19,11 @@ interface BagContextProviderProps {
 function BagContextProvider({ children }: BagContextProviderProps) {
     const [bag, setBag] = useState<Product[]>([])
     const isClientSide = typeof window !== 'undefined'
+
+    const grossPriceOfBag = bag.reduce(
+        (prev, product) => prev + product.attributes.gross_price,
+        0
+    )
 
     const addProductToBag = (product: Product) => {
         setBag((state) => {
@@ -37,6 +44,13 @@ function BagContextProvider({ children }: BagContextProviderProps) {
         })
     }
 
+    const removeAllProductsFromBad = () => {
+        const newBag: Product[] = []
+
+        localStorage.setItem('bag', JSON.stringify(newBag))
+        setBag(newBag)
+    }
+
     useEffect(() => {
         if (isClientSide) {
             setBag(
@@ -48,7 +62,7 @@ function BagContextProvider({ children }: BagContextProviderProps) {
     }, [isClientSide])
 
     return (
-        <BagContext.Provider value={{ bag, addProductToBag, removeProductFromBag }}>
+        <BagContext.Provider value={{ bag, grossPriceOfBag, addProductToBag, removeProductFromBag, removeAllProductsFromBad }}>
             {children}
         </BagContext.Provider>
     )

@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "orders"
-    },
     "order_products": {
       "type": "relation",
       "relation": "oneToMany",
@@ -28,13 +22,14 @@
       "type": "enumeration",
       "enum": [
         "Zamówienie złożone",
+        "Zamówienie opłacone",
         "Zamówienie zaakceptowane",
         "Zamówienie pakowane",
         "Zamówienie wysłane",
         "Zamówienie dostarczone"
       ],
       "default": "Zamówienie złożone",
-      "required": true
+      "required": false
     },
     "provider_option": {
       "type": "relation",

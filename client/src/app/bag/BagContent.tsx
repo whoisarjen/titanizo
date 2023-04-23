@@ -1,7 +1,13 @@
 'use client'
 
 import { BagContext } from '@/containers/BagContextWrapper/BagContext'
-import { useContext, useMemo, useEffect } from 'react'
+import {
+    useContext,
+    useMemo,
+    useEffect,
+    useReducer,
+    ReducerWithoutAction,
+} from 'react'
 import { uniqBy, capitalize } from 'lodash'
 import Image from 'next/image'
 import { formatPrice, getProductHref } from '@/utils/product.utils'
@@ -9,6 +15,7 @@ import Link from 'next/link'
 import { useForm, type FieldErrors, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { orderSchema, type OrderSchema } from '@/schemas/order.schema'
+import { postData } from '@/utils/api.utils'
 
 type FieldTranslate = {
     [key in keyof OrderSchema]: string
@@ -62,13 +69,46 @@ interface BagContentProps {
     payments: Payment[]
 }
 
-const BagContent = ({ providers, payments }: BagContentProps) => {
-    const { bag, removeProductFromBag } = useContext(BagContext)
+const DEFAULT_ORDER_STATE = {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+}
 
-    const grossPrice = bag.reduce(
-        (prev, product) => prev + product.attributes.gross_price,
-        0
+type OrderState = typeof DEFAULT_ORDER_STATE
+type orderAction = 'isLoading' | 'isSuccess' | 'isError'
+
+const orderReducer = (_: OrderState, action: orderAction) => {
+    switch (action) {
+        case 'isLoading':
+            return {
+                ...DEFAULT_ORDER_STATE,
+                isLoading: true,
+            }
+        case 'isSuccess':
+            return {
+                ...DEFAULT_ORDER_STATE,
+                isSuccess: true,
+            }
+        case 'isError':
+            return {
+                ...DEFAULT_ORDER_STATE,
+                isError: true,
+            }
+    }
+}
+
+const BagContent = ({ providers, payments }: BagContentProps) => {
+    const [orderState, setOrderState] = useReducer(
+        orderReducer,
+        DEFAULT_ORDER_STATE
     )
+    const {
+        bag,
+        grossPriceOfBag,
+        removeProductFromBag,
+        removeAllProductsFromBad,
+    } = useContext(BagContext)
 
     const {
         register,
@@ -77,6 +117,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
         control,
         setValue,
         getValues,
+        reset,
     } = useForm<OrderSchema>({ resolver: zodResolver(orderSchema) })
 
     const { replace } = useFieldArray({
@@ -85,13 +126,27 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
         keyName: 'uuid',
     })
 
-    const onSubmit = (data: OrderSchema) => console.log({ data })
+    const onSubmit = async (body: OrderSchema) => {
+        setOrderState('isLoading')
+
+        await postData('/orders', body)
+            .then(() => {
+                setOrderState('isSuccess')
+                removeAllProductsFromBad()
+                reset()
+            })
+            .catch(() => {
+                setOrderState('isError')
+            })
+    }
 
     const preparedBag = useMemo(() => {
         const uniqueBag = uniqBy(bag, 'id')
         const uniqueBagWithQuanitity = uniqueBag.map(uniqueBagMapping(bag))
 
-        replace(uniqueBagWithQuanitity)
+        if (!orderState.isSuccess) {
+            replace(uniqueBagWithQuanitity)
+        }
 
         return uniqueBagWithQuanitity
     }, [bag.length])
@@ -101,9 +156,11 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
     }, [])
 
     const getInputWrapper = getInput(register, errors)
-    const delieverPrice = providers.flatMap(({ attributes }) => attributes.provider_options.data).find(({ id }) => id === getValues(
-        'providerOptionId'
-    ))?.attributes.gross_price || 0
+    const delieverPrice =
+        providers
+            .flatMap(({ attributes }) => attributes.provider_options.data)
+            .find(({ id }) => id === getValues('providerOptionId'))?.attributes
+            .gross_price || 0
 
     return (
         <form
@@ -201,7 +258,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                                         (providerOption) => (
                                             <div
                                                 key={providerOption.id}
-                                                className={`button text-start flex justify-between ${
+                                                className={`button flex justify-between text-start ${
                                                     providerOption.id ===
                                                         getValues(
                                                             'providerOptionId'
@@ -216,8 +273,19 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                                                     )
                                                 }
                                             >
-                                                <div>{providerOption.attributes.name}</div>
-                                                <div>{formatPrice(providerOption.attributes.gross_price)}</div>
+                                                <div>
+                                                    {
+                                                        providerOption
+                                                            .attributes.name
+                                                    }
+                                                </div>
+                                                <div>
+                                                    {formatPrice(
+                                                        providerOption
+                                                            .attributes
+                                                            .gross_price
+                                                    )}
+                                                </div>
                                             </div>
                                         )
                                     )}
@@ -233,22 +301,17 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                 </div>
                 <div className="flex flex-1 flex-col gap-6 pt-6">
                     <h1 className="text-xl font-bold">3. Płatność</h1>
-                    {payments.map(payment => (
+                    {payments.map((payment) => (
                         <div
                             key={payment.id}
-                            className={`button text-start flex justify-between ${
-                                payment.id ===
-                                    getValues(
-                                        'paymentId'
-                                    ) &&
+                            className={`button flex justify-between text-start ${
+                                payment.id === getValues('paymentId') &&
                                 'bg-black text-white'
                             }`}
                             onClick={() =>
-                                setValue(
-                                    'paymentId',
-                                    payment.id,
-                                    { shouldValidate: true }
-                                )
+                                setValue('paymentId', payment.id, {
+                                    shouldValidate: true,
+                                })
                             }
                         >
                             {payment.attributes.name}
@@ -268,7 +331,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                         <div className="text-xl font-bold">Do zapłaty</div>
                         <div className="flex flex-1 items-center justify-between">
                             <div>Wartość produktów</div>
-                            <div>{formatPrice(grossPrice)}</div>
+                            <div>{formatPrice(grossPriceOfBag)}</div>
                         </div>
                         <div className="flex flex-1 items-center justify-between">
                             <div>Dostawa</div>
@@ -278,10 +341,17 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                     <div className="flex flex-1 flex-col gap-4 pt-4">
                         <div className="flex flex-1 items-center justify-between">
                             <div>Do zapłaty (w tym VAT)</div>
-                            <div>{formatPrice(grossPrice + delieverPrice)}</div>
+                            <div>
+                                {formatPrice(grossPriceOfBag + delieverPrice)}
+                            </div>
                         </div>
-                        <button className="button w-full">
-                            Złóż zamówienie
+                        <button
+                            className="button w-full"
+                            disabled={orderState.isLoading}
+                        >
+                            {orderState.isLoading
+                                ? 'Składanie zamówienia...'
+                                : 'Złóż zamówienie'}
                         </button>
                         {!!Object.keys(errors).length && (
                             <div className="text-red-500">
