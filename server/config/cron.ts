@@ -233,7 +233,7 @@ export default {
       console.log("Finished synchronization with Deante", new Date().toISOString())
     },
     options: {
-      rule: "30 * * * * *",
+      rule: "* * * 5 * *",
     },
   },
 };

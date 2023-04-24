@@ -7,12 +7,14 @@ import { transformObjectToPathname } from '@/utils/product.utils'
 import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 
 type GetData = {
-    data: Category[]
+    data: MainCategory[]
     meta: Meta
 }
 
 export const Navbar = async () => {
-    const response = await getData<GetData>('/categories?populate=*')
+    const response = await getData<GetData>(
+        '/main-categories?populate[0]=categories&populate[1]=categories.subcategories'
+    )
 
     return (
         <nav>
@@ -44,32 +46,61 @@ export const Navbar = async () => {
                         />
                     </Link>
                     <div className="z-20 flex h-[60px] flex-row items-center">
-                        {response.data.map((category) => (
+                        {response.data.map((mainCategory) => (
                             <div
-                                key={category.id}
-                                className="group flex h-full items-center"
+                                key={mainCategory.id}
+                                className="group/main flex h-full items-center"
                             >
-                                <Link
-                                    className="mx-4 uppercase transition-colors hover:text-white"
-                                    href={transformObjectToPathname(category)}
-                                >
-                                    {category.attributes.name}
-                                </Link>
-                                <div className="absolute left-0 top-[60px] hidden min-h-[40vh] w-full bg-black/80 group-hover:block">
-                                    {category.attributes.subcategories.data.map(
-                                        (subcategory) => (
-                                            <Link
-                                                key={subcategory.id}
-                                                href={`${transformObjectToPathname(
-                                                    category
-                                                )}${transformObjectToPathname(
-                                                    subcategory
-                                                )}`}
-                                            >
-                                                {subcategory.attributes.name}
-                                            </Link>
-                                        )
-                                    )}
+                                <div className="mx-4 cursor-pointer uppercase transition-colors hover:text-white">
+                                    {mainCategory.attributes.name}
+                                </div>
+                                <div className="absolute left-0 top-[60px] hidden min-h-[40vh] w-full flex-row bg-black/80 group-hover/main:flex">
+                                    <div className="flex flex-1 flex-row">
+                                        <div className="flex flex-col">
+                                            {mainCategory.attributes.categories.data.map(
+                                                (category) => (
+                                                    <div key={category.id} className="group/category">
+                                                        <Link
+                                                            key={category.id}
+                                                            href={`${transformObjectToPathname(
+                                                                category
+                                                            )}`}
+                                                        >
+                                                            {
+                                                                category
+                                                                    .attributes
+                                                                    .name
+                                                            }
+                                                        </Link>
+                                                        <div className="flex flex-1 flex-col group-hover/category:flex ml-4">
+                                                            {category.attributes.subcategories.data.map(
+                                                                (
+                                                                    subcategory
+                                                                ) => (
+                                                                    <Link
+                                                                        key={
+                                                                            subcategory.id
+                                                                        }
+                                                                        href={`${transformObjectToPathname(
+                                                                            category
+                                                                        )}${transformObjectToPathname(
+                                                                            subcategory
+                                                                        )}`}
+                                                                    >
+                                                                        {
+                                                                            subcategory
+                                                                                .attributes
+                                                                                .name
+                                                                        }
+                                                                    </Link>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
