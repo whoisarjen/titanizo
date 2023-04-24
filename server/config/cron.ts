@@ -112,7 +112,7 @@ const getOrCreate = async (strapi: any, where: string, params: any) => {
 export default {
   synchronizationDeante: {
     task: async ({ strapi }) => {
-        console.log("Started synchronization with Deante")
+      console.log("Started synchronization with Deante");
       const response = await fetch(
         "https://api.deante.pl/api/products?key=deante-62e59625-50d9-470a-88e1-0d03585c7308"
       );
@@ -132,7 +132,7 @@ export default {
 
       const uniquePossibleCategories = _.uniqWith(
         allPossibleCategories,
-        _.isEqual
+        (a: any, b: any) => a.name.trim().toLowerCase() == b.name.trim().toLowerCase()
       );
 
       const mainCategories = uniquePossibleCategories.filter(
@@ -145,18 +145,25 @@ export default {
         ({ name }) => name.length - name.replaceAll("/", "").length === 2
       );
 
-      const mainCategoriesCreated: any[] = await Promise.all(
-        mainCategories.map((mainCategory) =>
-          getOrCreate(strapi, "main-category", {
-            ...mainCategory,
-            oryginalId: mainCategory.id,
-          })
-        )
+      console.log(
+        mainCategories.length,
+        categories.length,
+        subCategories.length
       );
 
+      const mainCategoriesCreated: any[] = await Promise.all(
+        mainCategories.map((mainCategory) => {
+          return getOrCreate(strapi, "main-category", {
+            ...mainCategory,
+            oryginalId: mainCategory.id,
+          });
+        })
+      );
+      console.log("mainCategoriesCreated", mainCategoriesCreated[0]);
+
       const categoriesCreated: any[] = await Promise.all(
-        categories.map((category) =>
-          getOrCreate(strapi, "category", {
+        categories.map((category) => {
+          return getOrCreate(strapi, "category", {
             ...category,
             oryginalId: category.id,
             name: category.name.substring(
@@ -165,18 +172,29 @@ export default {
             ),
             main_category: mainCategoriesCreated.find(
               (mainCategory) =>
-                mainCategory.oryginalId.toLowerCase() ===
-                category.id
-                  .substring(0, category.id.lastIndexOf("/"))
+                mainCategory.name.toLowerCase() ===
+                category.name
+                  .substring(0, category.name.lastIndexOf("/"))
                   .toLowerCase()
             ).id,
-          })
-        )
+          });
+        })
       );
+      console.log("categoriesCreated", categoriesCreated[0]);
 
       const subCategoriesCreated: any[] = await Promise.all(
         subCategories.map((subcategory) => {
-          console.log({ subcategory });
+          const category = categoriesCreated.find(
+            (category) =>
+              category.name.toLowerCase() ===
+              subcategory.name
+                .substring(
+                  subcategory.name.indexOf("/") + 1,
+                  subcategory.name.lastIndexOf("/")
+                )
+                .toLowerCase()
+          );
+
           return getOrCreate(strapi, "subcategory", {
             ...subcategory,
             oryginalId: subcategory.id,
@@ -184,21 +202,15 @@ export default {
               subcategory.name.lastIndexOf("/") + 1,
               subcategory.name.length
             ),
-            category: categoriesCreated.find(
-              (category) =>
-                category.oryginalId.toLowerCase() ===
-                subcategory.id
-                  .substring(0, subcategory.id.lastIndexOf("/"))
-                  .toLowerCase()
-            ).id,
+            category: category.id,
           });
         })
       );
+      console.log("subCategoriesCreated", subCategoriesCreated[0]);
 
       const productsToAdd = [];
       data.forEach(async (product, i) => {
         productsToAdd.push(product);
-        console.log(`${i} from ${data.length}`);
         if (productsToAdd.length === 10 || i + 1 === data.length) {
           await Promise.all(
             productsToAdd.map((product) => {
@@ -230,10 +242,13 @@ export default {
         }
       });
 
-      console.log("Finished synchronization with Deante", new Date().toISOString())
+      console.log(
+        "Finished synchronization with Deante",
+        new Date().toISOString()
+      );
     },
     options: {
-      rule: "* * * 5 * *",
+      rule: "* 5 * * * *",
     },
   },
 };
