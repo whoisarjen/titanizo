@@ -71,7 +71,7 @@ export default (config, { strapi }: { strapi: Strapi }) => {
             if (!providerOption) {
                 return ctx.badRequest("Provider option is not correct!")
             }
-            
+
             const orderProducts = await Promise.all(products.map((product, index) =>
                 orderProductsService.create({
                     data: {

@@ -78,12 +78,6 @@
       "required": true,
       "min": 0
     },
-    "manufacturer_promotion_gross_price": {
-      "type": "decimal",
-      "default": 0,
-      "min": 0,
-      "private": true
-    },
     "gross_price": {
       "type": "decimal",
       "required": true,
@@ -95,18 +89,6 @@
       "required": true,
       "default": 0,
       "min": 0
-    },
-    "manufacturer_promotion_net_price": {
-      "type": "decimal",
-      "default": 0,
-      "min": 0,
-      "private": true
-    },
-    "promotion_price": {
-      "required": false,
-      "default": 0,
-      "unique": false,
-      "type": "decimal"
     },
     "collection": {
       "type": "string"
