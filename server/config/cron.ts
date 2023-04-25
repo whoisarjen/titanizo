@@ -49,9 +49,10 @@ type ProductParams = {
   description: string;
   warranty_in_months: number;
   subcategories: number[];
+  recommendedProducts: string[];
 };
 
-const createProduct = async (strapi: any, data: ProductParams) => {
+const createOrUpdateProduct = async (strapi: any, data: ProductParams) => {
   return new Promise(async (resolve, reject) => {
     try {
       const productService: GenericService = strapi.service(
@@ -63,7 +64,22 @@ const createProduct = async (strapi: any, data: ProductParams) => {
       });
 
       if (response) {
-        const res = await productService.update(response.id, { data });
+        const recommendedProducts = await Promise.all(
+          data.recommendedProducts.map((manufacturer_id) => {
+            return strapi.db.query("api::product.product").findOne({
+              where: { manufacturer_id },
+            });
+          })
+        );
+
+        const res = await productService.update(response.id, {
+          data: {
+            ...data,
+            recommended_products: recommendedProducts
+              .filter((x) => !!x)
+              .map(({ id }) => id),
+          },
+        });
         resolve(res);
       } else {
         const res = await productService.create({ data });
@@ -132,7 +148,8 @@ export default {
 
       const uniquePossibleCategories = _.uniqWith(
         allPossibleCategories,
-        (a: any, b: any) => a.name.trim().toLowerCase() == b.name.trim().toLowerCase()
+        (a: any, b: any) =>
+          a.name.trim().toLowerCase() == b.name.trim().toLowerCase()
       );
 
       const mainCategories = uniquePossibleCategories.filter(
@@ -214,14 +231,16 @@ export default {
         if (productsToAdd.length === 10 || i + 1 === data.length) {
           await Promise.all(
             productsToAdd.map((product) => {
-              const subcategories = subCategoriesCreated.filter(({ oryginalId }) =>
-                product.categories.find(
-                  (category) =>
-                    category.id.toLowerCase() === oryginalId.toLowerCase()
+              const subcategories = subCategoriesCreated
+                .filter(({ oryginalId }) =>
+                  product.categories.find(
+                    (category) =>
+                      category.id.toLowerCase() === oryginalId.toLowerCase()
+                  )
                 )
-              ).map(({ id }) => id);
+                .map(({ id }) => id);
 
-              return createProduct(strapi, {
+              return createOrUpdateProduct(strapi, {
                 name: product.name,
                 manufacturer_id: product.id,
                 manufacturer_net_price: product.prices.netPrice,
@@ -236,6 +255,7 @@ export default {
                 description: product.description,
                 warranty_in_months: product.warranty * 12,
                 subcategories,
+                recommendedProducts: product.recommendedProducts,
               });
             })
           );
@@ -248,7 +268,7 @@ export default {
       );
     },
     options: {
-      rule: "* 5 * * * *",
+      rule: "* 42 * * * *",
     },
   },
 };
