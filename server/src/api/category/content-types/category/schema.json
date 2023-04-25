@@ -23,18 +23,6 @@
     },
     "description": {
       "type": "richtext"
-    },
-    "main_category": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::main-category.main-category",
-      "inversedBy": "categories"
-    },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "category"
     }
   }
 }

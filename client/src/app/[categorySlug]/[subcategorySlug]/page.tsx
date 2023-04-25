@@ -1,9 +1,13 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { getData } from '@/utils/api.utils'
-import { getProductHref } from '@/utils/product.utils'
 
-type GetData = {
+type GetSubcategory = {
     data: Subcategory
+    meta: Meta
+}
+
+type GetProducts = {
+    data: Product[]
     meta: Meta
 }
 
@@ -16,24 +20,34 @@ interface SubcategorySlugProps {
 export default async function subcategoriesSlug({
     params: { subcategorySlug },
 }: SubcategorySlugProps) {
-    const { data } = await getData<GetData>(
-        `/subcategories/${subcategorySlug.substring(
-            0,
-            subcategorySlug.indexOf('--')
-        )}?populate[0]=products&populate[1]=products.subcategories&populate[2]=products.subcategories.category&populate[3]=products.manufacturer`
+    const subcategoryId = subcategorySlug.substring(
+        0,
+        subcategorySlug.indexOf('--')
     )
 
-    const { name, description, products } = data.attributes
+    const [subcategory, products] = await Promise.all([
+        getData<GetSubcategory>(`/subcategories/${subcategoryId}`),
+        getData<GetProducts>(
+            '/products?',
+            {
+                "populate[0]": "manufacturer",
+                "populate[1]": "subcategories",
+                "populate[2]": "subcategories.category",
+                "filters[subcategories][id][$eq]": subcategoryId,
+                "pagination[page]": "1",
+                "pagination[pageSize]": "10",
+            },
+        ),
+    ])
 
     return (
         <div>
-            <h1 className="text-center text-4xl">{name}</h1>
-            <h2>{description}</h2>
+            <h1 className="text-center text-4xl">{subcategory.data.attributes.name}</h1>
+            <h2>{subcategory.data.attributes.description}</h2>
             {products.data.map((product) => (
                 <ProductBoxSmall
                     key={product.id}
                     product={product}
-                    href={getProductHref(product)}
                 />
             ))}
         </div>

@@ -165,6 +165,8 @@ export default {
   synchronizationDeante: {
     task: async ({ strapi }) => {
       console.log("Started synchronization with Deante");
+      const manufacturer: any = await getOrCreate(strapi, 'manufacturer', { name: "Deante" })
+
       const response = await fetch(
         "https://api.deante.pl/api/products?key=deante-62e59625-50d9-470a-88e1-0d03585c7308"
       );
@@ -188,78 +190,53 @@ export default {
           a.name.trim().toLowerCase() == b.name.trim().toLowerCase()
       );
 
-      const mainCategories = uniquePossibleCategories.filter(
+      const categories = uniquePossibleCategories.filter(
         ({ name }) => name.length - name.replaceAll("/", "").length === 0
       );
-      const categories = uniquePossibleCategories.filter(
-        ({ name }) => name.length - name.replaceAll("/", "").length === 1
-      );
-      const subCategories = uniquePossibleCategories.filter(
-        ({ name }) => name.length - name.replaceAll("/", "").length === 2
+      const subcategories = _.uniqWith(
+        uniquePossibleCategories
+          .filter(
+            ({ name }) => name.length - name.replaceAll("/", "").length > 0
+          )
+          .map((category) => ({
+            ...category,
+            oryginalName: category.name,
+            name: category.name.substring(
+              category.name.lastIndexOf("/") + 1,
+              category.name.length
+            ),
+          })),
+        (a, b) => (a.name == b.name)
       );
 
-      console.log(
-        mainCategories.length,
-        categories.length,
-        subCategories.length
-      );
+      console.log(categories.length, subcategories.length);
 
-      const mainCategoriesCreated: any[] = await Promise.all(
-        mainCategories.map((mainCategory) => {
-          return getOrCreate(strapi, "main-category", {
+      const createdCategories: any[] = await Promise.all(
+        categories.map((mainCategory) => {
+          return getOrCreate(strapi, "category", {
             ...mainCategory,
             oryginalId: mainCategory.id,
           });
         })
       );
-      console.log("mainCategoriesCreated", mainCategoriesCreated[0]);
+      console.log("categories", categories[0]);
 
-      const categoriesCreated: any[] = await Promise.all(
-        categories.map((category) => {
-          return getOrCreate(strapi, "category", {
+      const subcategoriesCreated: any[] = await Promise.all(
+        subcategories.map((category) => {
+          return getOrCreate(strapi, "subcategory", {
             ...category,
             oryginalId: category.id,
-            name: category.name.substring(
-              category.name.lastIndexOf("/") + 1,
-              category.name.length
-            ),
-            main_category: mainCategoriesCreated.find(
+            category: createdCategories.find(
               (mainCategory) =>
                 mainCategory.name.toLowerCase() ===
-                category.name
-                  .substring(0, category.name.lastIndexOf("/"))
+                category.oryginalName
+                  .substring(0, category.oryginalName.indexOf("/"))
                   .toLowerCase()
             ).id,
           });
         })
       );
-      console.log("categoriesCreated", categoriesCreated[0]);
-
-      const subCategoriesCreated: any[] = await Promise.all(
-        subCategories.map((subcategory) => {
-          const category = categoriesCreated.find(
-            (category) =>
-              category.name.toLowerCase() ===
-              subcategory.name
-                .substring(
-                  subcategory.name.indexOf("/") + 1,
-                  subcategory.name.lastIndexOf("/")
-                )
-                .toLowerCase()
-          );
-
-          return getOrCreate(strapi, "subcategory", {
-            ...subcategory,
-            oryginalId: subcategory.id,
-            name: subcategory.name.substring(
-              subcategory.name.lastIndexOf("/") + 1,
-              subcategory.name.length
-            ),
-            category: category.id,
-          });
-        })
-      );
-      console.log("subCategoriesCreated", subCategoriesCreated[0]);
+      console.log("subcategoriesCreated", subcategoriesCreated[0]);
 
       const productsToAdd = [];
       data.forEach(async (product, i) => {
@@ -267,24 +244,23 @@ export default {
         if (productsToAdd.length === 10 || i + 1 === data.length) {
           await Promise.all(
             productsToAdd.map((product) => {
-              const subcategories = subCategoriesCreated
-                .filter(({ oryginalId }) =>
+              const subcategories = subcategoriesCreated
+                .filter(({ name }) =>
                   product.categories.find(
                     (category) =>
-                      category.id.toLowerCase() === oryginalId.toLowerCase()
+                      category.name
+                        .substring(
+                          category.name.lastIndexOf("/") + 1,
+                          category.name.length
+                        )
+                        .toLowerCase() === name.toLowerCase()
                   )
                 )
                 .map(({ id }) => id);
 
-              const category = categoriesCreated.find(({ oryginalId }) =>
-                product.categories.find(
-                  (category) =>
-                    category.id.toLowerCase() === oryginalId.toLowerCase()
-                )
-              )?.id;
-
               return createOrUpdateProduct(strapi, {
                 ...product,
+                manufacturer: manufacturer.id,
                 manufacturer_id: product.id,
                 manufacturer_net_price: product.prices.netPrice,
                 manufacturer_gross_price: product.prices.grossPrice,
@@ -293,7 +269,6 @@ export default {
                 net_price: product.prices.netPrice,
                 is_designed: product.isDesigned,
                 warranty_in_months: product.warranty * 12,
-                ...(category ? { category } : {}),
                 subcategories,
                 package_height_in_mm: product.package.height.value,
                 package_depth_in_mm: product.package.depth.value,
@@ -307,7 +282,7 @@ export default {
       });
     },
     options: {
-      rule: "* 34 * * * *",
+      rule: "* 2 * * * *",
     },
   },
 };

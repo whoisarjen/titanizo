@@ -1,9 +1,13 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { getData } from '@/utils/api.utils'
-import { getProductHref } from '@/utils/product.utils'
 
 type GetCategory = {
     data: Category
+    meta: Meta
+}
+
+type GetProducts = {
+    data: Product[]
     meta: Meta
 }
 
@@ -16,37 +20,36 @@ interface CategorySlugProps {
 export default async function CategorySlug({
     params: { categorySlug },
 }: CategorySlugProps) {
-    // TODO remove after they fix sw.js on initial render
-    if (categorySlug.indexOf('--') === -1) {
-        return null
-    }
-
-    const { data } = await getData<GetCategory>(
-        `/categories/${categorySlug.substring(
-            0,
-            categorySlug.indexOf('--')
-        )}?populate[0]=subcategories&populate[1]=subcategories.products&populate[2]=subcategories.products.subcategories&populate[3]=subcategories.products.subcategories.category&populate[4]=subcategories.products.manufacturer`
+    const categoryId = categorySlug.substring(
+        0,
+        categorySlug.indexOf('--')
     )
 
-    const { name, description, subcategories } = data.attributes
+    const [category, products] = await Promise.all([
+        getData<GetCategory>(`/categories/${categoryId}`),
+        getData<GetProducts>(
+            '/products?',
+            {
+                "populate[0]": "manufacturer",
+                "populate[1]": "subcategories",
+                "populate[2]": "subcategories.category",
+                "filters[subcategories][category][id][$eq]": categoryId,
+                "pagination[page]": "1",
+                "pagination[pageSize]": "10",
+            },
+        ),
+    ])
 
     return (
         <div className="flex w-full flex-col gap-4 p-4">
-            <h1 className="text-center text-4xl">{name}</h1>
-            <h2>{description}</h2>
-            {subcategories.data.map((subcategories) => {
-                const {
-                    attributes: { products },
-                } = subcategories
-
-                return products.data.map((product) => (
-                    <ProductBoxSmall
-                        key={product.id}
-                        product={product}
-                        href={getProductHref(product)}
-                    />
-                ))
-            })}
+            <h1 className="text-center text-4xl">{category.data.attributes.name}</h1>
+            <h2>{category.data.attributes.description}</h2>
+            {products.data.map((product) => (
+                <ProductBoxSmall
+                    key={product.id}
+                    product={product}
+                />
+            ))}
         </div>
     )
 }

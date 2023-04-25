@@ -2,7 +2,7 @@ import { getData } from '@/utils/api.utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
-import { getProductHref, formatPrice } from '@/utils/product.utils'
+import { formatPrice } from '@/utils/product.utils'
 import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
 
@@ -20,16 +20,13 @@ interface ProductSlugProps {
 export default async function ProductSlug({
     params: { productSlug },
 }: ProductSlugProps) {
-    // TODO remove after they fix sw.js on initial render
-    if (productSlug.indexOf('--') === -1) {
-        return null
-    }
+    const productId = productSlug.substring(
+        0,
+        productSlug.indexOf('--')
+    )
 
     const product = await getData<GetData>(
-        `/products/${productSlug.substring(
-            0,
-            productSlug.indexOf('--')
-        )}?populate[0]=manufacturer&populate[1]=subcategories.category&populate[2]=recommended_products.subcategories.category`
+        `/products/${productId}?populate[0]=manufacturer&populate[1]=subcategories.category&populate[2]=recommended_products.subcategories.category`
     )
 
     const {
@@ -158,7 +155,6 @@ export default async function ProductSlug({
                 {recommended_products.data.map((product) => (
                     <ProductBoxSmall
                         key={product.id}
-                        href={getProductHref(product)}
                         product={product}
                     />
                 ))}

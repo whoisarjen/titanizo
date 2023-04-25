@@ -1,5 +1,5 @@
-export const getData = async <GetData>(slug: string) => {
-    let res = await fetch(`http://127.0.0.1:1337/api${slug}`, {
+export const getData = async <GetData>(slug: string, object?: Record<string, string>) => {
+    let res = await fetch(`http://127.0.0.1:1337/api${slug}${new URLSearchParams(object)}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
