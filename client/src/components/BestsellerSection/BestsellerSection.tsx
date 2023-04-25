@@ -1,6 +1,5 @@
 import { getData } from '@/utils/api.utils'
 import { ProductBoxSmall } from '../ProductBoxSmall'
-import { getProductHref } from '@/utils/product.utils'
 
 type GetData = {
     data: Product[]
@@ -19,7 +18,6 @@ export const BestsellerSection = async () => {
                     <ProductBoxSmall
                         className="min-w-[40vw] md:min-w-[30vw] lg:min-w-0"
                         key={id}
-                        href={getProductHref(product)}
                         product={product}
                     />
                 )
