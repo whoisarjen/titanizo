@@ -85,6 +85,15 @@ type Product = DefaultDataWrapper<{
     recommended_products: {
         data: Product[]
     }
+    images: {
+        src: string
+        type: string
+    }[]
+    features: {
+        name: string
+        description: string
+        image: string
+    }[]
 }>
 
 type Meta = {

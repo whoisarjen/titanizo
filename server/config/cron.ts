@@ -23,31 +23,31 @@ type Product = {
   description: string;
   package: {
     height: {
-      value: number
-    }
+      value: number;
+    };
     width: {
-      value: number
-    }
+      value: number;
+    };
     depth: {
-      value: number
-    }
+      value: number;
+    };
     weight: {
-      value: number
-    }
+      value: number;
+    };
   };
   isDesigned: boolean;
   properties: any[];
   warranty: number;
   recommendedProducts: string[];
   images: {
-    src: string
-    type: string
-  }[]
+    src: string;
+    type: string;
+  }[];
   files: {
-    src: string
-    type: string
-  }[]
-  features: any[]
+    src: string;
+    type: string;
+  }[];
+  features: any[];
 };
 
 type ProductParams = {
@@ -70,27 +70,27 @@ type ProductParams = {
   subcategories: number[];
   recommendedProducts: string[];
   images: {
-    src: string
-    type: string
-  }[]
+    src: string;
+    type: string;
+  }[];
   files: {
-    src: string
-    type: string
-  }[]
-  package_height_in_mm: number
-  package_weight_in_g: number
-  package_depth_in_mm: number
-  package_width_in_mm: number
-  features: any[]
-  properties: any[]
-  finishes: any[]
-  manufacturer_url: string
+    src: string;
+    type: string;
+  }[];
+  package_height_in_mm: number;
+  package_weight_in_g: number;
+  package_depth_in_mm: number;
+  package_width_in_mm: number;
+  features: any[];
+  properties: any[];
+  finishes: any[];
+  manufacturer_url: string;
 };
 
 const createOrUpdateProduct = async (strapi: any, params: ProductParams) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const data = _.omit(params, ['id'])
+      const data = _.omit(params, ["id"]);
       const productService: GenericService = strapi.service(
         "api::product.product"
       );
@@ -276,6 +276,13 @@ export default {
                 )
                 .map(({ id }) => id);
 
+              const category = categoriesCreated.find(({ oryginalId }) =>
+                product.categories.find(
+                  (category) =>
+                    category.id.toLowerCase() === oryginalId.toLowerCase()
+                )
+              )?.id;
+
               return createOrUpdateProduct(strapi, {
                 ...product,
                 manufacturer_id: product.id,
@@ -286,6 +293,7 @@ export default {
                 net_price: product.prices.netPrice,
                 is_designed: product.isDesigned,
                 warranty_in_months: product.warranty * 12,
+                ...(category ? { category } : {}),
                 subcategories,
                 package_height_in_mm: product.package.height.value,
                 package_depth_in_mm: product.package.depth.value,
@@ -299,7 +307,7 @@ export default {
       });
     },
     options: {
-      rule: "* 9 * * * *",
+      rule: "* 34 * * * *",
     },
   },
 };

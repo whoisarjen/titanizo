@@ -2,22 +2,19 @@ import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-
 interface GridFeaturesProps {
     features: {
-        name: string,
-        description: string,
-        image: string,
+        name: string
+        description: string
+        image: string
         cta?: {
-            title: string,
+            title: string
             href: string
         }
     }[]
 }
 
-export const GridFeatures = ({
-    features
-}: GridFeaturesProps) => {
+export const GridFeatures = ({ features }: GridFeaturesProps) => {
     return (
         <section className="w-full">
             {features
@@ -42,8 +39,7 @@ export const GridFeatures = ({
                                     <p className="mt-3 text-sm lg:text-base">
                                         {feature.description}
                                     </p>
-                                    {
-                                        feature.cta &&
+                                    {feature.cta && (
                                         <button className="button mt-5">
                                             {feature.cta.title}
                                             <FontAwesomeIcon
@@ -51,8 +47,7 @@ export const GridFeatures = ({
                                                 icon={faChevronRight}
                                             />
                                         </button>
-                                    }
-
+                                    )}
                                 </div>
                             </div>
                             <div
@@ -64,7 +59,7 @@ export const GridFeatures = ({
                                     src={feature.image}
                                     alt={feature.name}
                                     fill
-                                    className='object-cover'
+                                    className="object-cover"
                                 />
                             </div>
                         </div>

@@ -16,7 +16,7 @@ export const ProductBoxSmall = ({ href, product, className }: ProductBoxSmallPro
         >
             <div className='w-3/5 aspect-square relative'>
                 <Image
-                    src="https://media.deante.pl/w300/BATERIE/Baterie%20%C5%82azienkowe/SILIA/BQS_N20M.jpg"
+                    src={product.attributes.images[0]?.src}
                     alt={product.attributes.name}
                     fill
                     className="object-contain"
