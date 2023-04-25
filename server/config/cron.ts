@@ -20,15 +20,34 @@ type Product = {
     hasPromotion: boolean;
   };
   categories: any[];
-  images: any[];
-  files: any[];
   description: string;
-  package: object;
+  package: {
+    height: {
+      value: number
+    }
+    width: {
+      value: number
+    }
+    depth: {
+      value: number
+    }
+    weight: {
+      value: number
+    }
+  };
   isDesigned: boolean;
   properties: any[];
-  features: any[];
   warranty: number;
   recommendedProducts: string[];
+  images: {
+    src: string
+    type: string
+  }[]
+  files: {
+    src: string
+    type: string
+  }[]
+  features: any[]
 };
 
 type ProductParams = {
@@ -50,11 +69,28 @@ type ProductParams = {
   warranty_in_months: number;
   subcategories: number[];
   recommendedProducts: string[];
+  images: {
+    src: string
+    type: string
+  }[]
+  files: {
+    src: string
+    type: string
+  }[]
+  package_height_in_mm: number
+  package_weight_in_g: number
+  package_depth_in_mm: number
+  package_width_in_mm: number
+  features: any[]
+  properties: any[]
+  finishes: any[]
+  manufacturer_url: string
 };
 
-const createOrUpdateProduct = async (strapi: any, data: ProductParams) => {
+const createOrUpdateProduct = async (strapi: any, params: ProductParams) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const data = _.omit(params, ['id'])
       const productService: GenericService = strapi.service(
         "api::product.product"
       );
@@ -241,34 +277,29 @@ export default {
                 .map(({ id }) => id);
 
               return createOrUpdateProduct(strapi, {
-                name: product.name,
+                ...product,
                 manufacturer_id: product.id,
                 manufacturer_net_price: product.prices.netPrice,
                 manufacturer_gross_price: product.prices.grossPrice,
                 vat: product.prices.vat,
                 gross_price: product.prices.grossPrice,
                 net_price: product.prices.netPrice,
-                collection: product.collection,
                 is_designed: product.isDesigned,
-                ean: product.ean,
-                cn: product.cn,
-                description: product.description,
                 warranty_in_months: product.warranty * 12,
                 subcategories,
-                recommendedProducts: product.recommendedProducts,
+                package_height_in_mm: product.package.height.value,
+                package_depth_in_mm: product.package.depth.value,
+                package_width_in_mm: product.package.width.value,
+                package_weight_in_g: product.package.weight.value,
+                manufacturer_url: product.url,
               });
             })
           );
         }
       });
-
-      console.log(
-        "Finished synchronization with Deante",
-        new Date().toISOString()
-      );
     },
     options: {
-      rule: "* 42 * * * *",
+      rule: "* 9 * * * *",
     },
   },
 };
