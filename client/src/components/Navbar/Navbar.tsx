@@ -5,6 +5,7 @@ import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 import { getData } from '@/utils/api.utils'
 import { transformObjectToPathname } from '@/utils/product.utils'
 import NavbarIconBag from './NavbarIcons/NavbarIconBag'
+import { MENU } from './Navbar.constants'
 
 type GetData = {
     data: Category[]
@@ -81,6 +82,15 @@ export const Navbar = async () => {
                                     </div>
                                 </div>
                             </div>
+                        ))}
+                        {MENU.map(({ id, name, href }) => (
+                            <Link
+                                id={id}
+                                href={href}
+                                className="mx-4 cursor-pointer uppercase transition-colors hover:text-white"
+                            >
+                                {name}
+                            </Link>
                         ))}
                     </div>
                     <div className="flex flex-1 flex-row-reverse items-center">

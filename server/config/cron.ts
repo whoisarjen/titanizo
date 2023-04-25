@@ -282,7 +282,7 @@ export default {
       });
     },
     options: {
-      rule: "* 2 * * * *",
+      rule: "* 35 * * * *",
     },
   },
 };
