@@ -26,7 +26,12 @@ export default async function ProductSlug({
     )
 
     const product = await getData<GetData>(
-        `/products/${productId}?populate[0]=manufacturer&populate[1]=subcategories.category&populate[2]=recommended_products.subcategories.category`
+        `/products/${productId}?`,
+        {
+            "populate[0]": "manufacturer",
+            "populate[1]": "subcategories.category",
+            "populate[2]": "recommended_products.subcategories.category",
+        },
     )
 
     const {
