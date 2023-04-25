@@ -79,8 +79,8 @@ type Product = DefaultDataWrapper<{
     manufacturer: {
         data: Manufacturer
     }
-    subcategory: {
-        data: Subcategory
+    subcategories: {
+        data: Subcategory[]
     }
     recommended_products: {
         data: Product[]

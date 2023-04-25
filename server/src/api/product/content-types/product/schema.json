@@ -19,9 +19,9 @@
     "description": {
       "type": "richtext"
     },
-    "subcategory": {
+    "subcategories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::subcategory.subcategory",
       "inversedBy": "products"
     },

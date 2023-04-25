@@ -25,7 +25,7 @@ export default async function CategorySlug({
         `/categories/${categorySlug.substring(
             0,
             categorySlug.indexOf('--')
-        )}?populate[0]=subcategories&populate[1]=subcategories.products&populate[2]=subcategories.products.subcategory&populate[3]=subcategories.products.subcategory.category&populate[4]=subcategories.products.manufacturer`
+        )}?populate[0]=subcategories&populate[1]=subcategories.products&populate[2]=subcategories.products.subcategories&populate[3]=subcategories.products.subcategories.category&populate[4]=subcategories.products.manufacturer`
     )
 
     const { name, description, subcategories } = data.attributes
@@ -34,10 +34,10 @@ export default async function CategorySlug({
         <div className="flex w-full flex-col gap-4 p-4">
             <h1 className="text-center text-4xl">{name}</h1>
             <h2>{description}</h2>
-            {subcategories.data.map((subcategory) => {
+            {subcategories.data.map((subcategories) => {
                 const {
                     attributes: { products },
-                } = subcategory
+                } = subcategories
 
                 return products.data.map((product) => (
                     <ProductBoxSmall
