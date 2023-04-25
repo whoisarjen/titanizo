@@ -9,7 +9,7 @@ type GetData = {
 
 export const BestsellerSection = async () => {
     const { data } = await getData<GetData>(
-        `/products?populate?populate[1]=subcategory.category`
+        `/products?populate?populate[1]=subcategories.category`
     )
 
     return (

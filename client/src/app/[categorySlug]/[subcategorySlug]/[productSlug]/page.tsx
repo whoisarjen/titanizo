@@ -100,7 +100,7 @@ export default async function ProductSlug({
         `/products/${productSlug.substring(
             0,
             productSlug.indexOf('--')
-        )}?populate[0]=manufacturer&populate[1]=subcategory.category&populate[2]=recommended_products.subcategory.category`
+        )}?populate[0]=manufacturer&populate[1]=subcategories.category&populate[2]=recommended_products.subcategories.category`
     )
 
     const photos = [

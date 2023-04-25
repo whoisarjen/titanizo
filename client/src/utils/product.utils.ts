@@ -12,8 +12,8 @@ export const formatPrice = (price: number) => {
 }
 
 export const getProductHref = (product: Product): string => `
-${transformObjectToPathname(product.attributes.subcategory.data.attributes.category.data)}
-${transformObjectToPathname(product.attributes.subcategory.data)}
+${transformObjectToPathname(product.attributes.subcategories.data[0].attributes.category.data)}
+${transformObjectToPathname(product.attributes.subcategories.data[0])}
 ${transformObjectToPathname(product)}
 `
 

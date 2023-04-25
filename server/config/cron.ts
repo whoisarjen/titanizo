@@ -48,7 +48,7 @@ type ProductParams = {
   cn?: string;
   description: string;
   warranty_in_months: number;
-  subcategory?: number;
+  subcategories: number[];
 };
 
 const createProduct = async (strapi: any, data: ProductParams) => {
@@ -214,12 +214,12 @@ export default {
         if (productsToAdd.length === 10 || i + 1 === data.length) {
           await Promise.all(
             productsToAdd.map((product) => {
-              const subcategory = subCategoriesCreated.find(({ oryginalId }) =>
+              const subcategories = subCategoriesCreated.filter(({ oryginalId }) =>
                 product.categories.find(
                   (category) =>
                     category.id.toLowerCase() === oryginalId.toLowerCase()
                 )
-              )?.id;
+              ).map(({ id }) => id);
 
               return createProduct(strapi, {
                 name: product.name,
@@ -235,7 +235,7 @@ export default {
                 cn: product.cn,
                 description: product.description,
                 warranty_in_months: product.warranty * 12,
-                ...(!!subcategory ? { subcategory } : {}),
+                subcategories,
               });
             })
           );
