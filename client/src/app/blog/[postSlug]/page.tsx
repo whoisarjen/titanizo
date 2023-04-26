@@ -42,18 +42,19 @@ const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
     ])
 
     const { title, content, image } = post.data.attributes
+    const { url, height, width, caption = '' } = image.data.attributes.formats.large
 
     return (
         <div className="flex w-full flex-col">
             <div className="prose mx-auto my-4 flex max-w-3xl flex-col">
                 <Image
-                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.data.attributes.formats.large.url}`}
-                    height={image.data.attributes.formats.large.height}
-                    width={image.data.attributes.formats.large.width}
-                    alt={image.data.attributes.formats.large.caption || ''}
+                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${url}`}
+                    height={height}
+                    width={width}
+                    alt={caption}
                 />
                 <h1>{title}</h1>
-                <ReactMarkdown children={content || ''} />
+                <ReactMarkdown children={content} />
             </div>
             <div className="flex w-full items-start justify-evenly">
                 {products.data.map((product) => (
