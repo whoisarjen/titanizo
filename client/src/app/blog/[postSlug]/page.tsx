@@ -27,19 +27,19 @@ const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
         return null
     }
 
-    const post = await getData<GetPost>(`/posts/${postId}?`, {
-        populate: '*',
-    })
-
-    const products = await getData<GetProducts>('/products?', {
-        'populate[0]': 'manufacturer',
-        'populate[1]': 'subcategories',
-        'populate[2]': 'subcategories.category',
-        'filters[subcategories][id][$eq]':
-            post.data.attributes.subcategories.data[0]?.id.toString(),
-        'pagination[page]': '1',
-        'pagination[pageSize]': '6',
-    })
+    const [post, products] = await Promise.all([
+        getData<GetPost>(`/posts/${postId}?`, {
+            populate: '*',
+        }),
+        getData<GetProducts>('/products?', {
+            'populate[0]': 'manufacturer',
+            'populate[1]': 'subcategories',
+            'populate[2]': 'subcategories.category',
+            'filters[subcategories][posts][id][$eq]': postId,
+            'pagination[page]': '1',
+            'pagination[pageSize]': '6',
+        }),
+    ])
 
     const { title, content, image } = post.data.attributes
 
