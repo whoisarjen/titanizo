@@ -15,10 +15,10 @@ export default function RootLayout({
                 <BagContextWrapper>
                     {/* @ts-expect-error Async Server Component */}
                     <Navbar />
-                    <div className="container mx-auto pt-[100px]">
-                        {children}
+                    <div className="container mx-auto flex min-h-screen flex-col pt-[100px]">
+                        <div className="flex flex-col flex-1">{children}</div>
+                        <Footer />
                     </div>
-                    {/* <Footer /> */}
                 </BagContextWrapper>
             </body>
         </html>
