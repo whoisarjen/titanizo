@@ -1,13 +1,28 @@
-export const getData = async <GetData>(slug: string, object?: Record<string, string>) => {
-    let res = await fetch(`http://127.0.0.1:1337/api${slug}${new URLSearchParams(object)}`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-        },
-        next: {
-            revalidate: 0,
+import slugify from 'slugify'
+
+export const transformObjectToPathname = ({
+    id,
+    attributes,
+}: DefaultDataWrapper<{ name?: string; title?: string }>): string => {
+    return `/${id}--${slugify(attributes.name || attributes.title || '')}`
+}
+
+export const getData = async <GetData>(
+    slug: string,
+    object?: Record<string, string>
+) => {
+    let res = await fetch(
+        `http://127.0.0.1:1337/api${slug}${new URLSearchParams(object)}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+            },
+            next: {
+                revalidate: 0,
+            },
         }
-    })
+    )
 
     return res.json() as GetData
 }
@@ -18,7 +33,7 @@ export const postData = async (slug: string, data: object) => {
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
         },
         body: JSON.stringify({ data }),
     })
