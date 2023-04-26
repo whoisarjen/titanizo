@@ -1,6 +1,8 @@
+import { Breadcrumb } from '@/components/Breadcrumb/Breadcrumb'
+import { Pagination } from '@/components/Pagination'
+import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { env } from '@/env/client.mjs'
 import { getData } from '@/utils/api.utils'
-import { CategoryLayout } from '@/containers/CategoryLayout'
 
 type GetSubcategory = {
     data: Subcategory
@@ -50,10 +52,29 @@ export default async function SubcategoriesSlug({
     ])
 
     return (
-        <CategoryLayout
-            products={products}
-            category={subcategory}
-            defaultHref={defaultHref}
-        />
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6">
+            <h1 className="text-center text-4xl">
+                {subcategory.data.attributes.name}
+            </h1>
+            <h2>{subcategory.data.attributes.description}</h2>
+            <Breadcrumb defaultHref={defaultHref} />
+            <div className="flex flex-1 gap-6">
+                <div className="flex w-96">123</div>
+                <div className="flex flex-col gap-6 flex-1">
+                    <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
+                        {products.data.map((product) => (
+                            <ProductBoxSmall
+                                key={product.id}
+                                product={product}
+                            />
+                        ))}
+                    </div>
+                    <Pagination
+                        meta={products.meta}
+                        defaultHref={defaultHref}
+                    />
+                </div>
+            </div>
+        </div>
     )
 }

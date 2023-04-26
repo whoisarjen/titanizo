@@ -2,7 +2,11 @@
 const nextConfig = {
   images: {
     domains: [
-      'media.deante.pl'
+      '127.0.0.1',
+      '127.0.0.1:1337',
+      'localhost',
+      'localhost:1337',
+      'media.deante.pl',
     ]
   },
   experimental: {

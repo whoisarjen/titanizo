@@ -1,5 +1,4 @@
 import { Hero } from '@/components/Hero'
-import { BestsellerSection } from '@/components/BestsellerSection'
 import { GridFeatures } from '@/components/GridFeatures'
 
 export default function Home() {
