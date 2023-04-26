@@ -32,7 +32,6 @@ export default async function CategorySlug({
         return null
     }
 
-
     const [category, products] = await Promise.all([
         getData<GetCategory>(`/categories/${categoryId}`),
         getData<GetProducts>('/products?', {

@@ -31,8 +31,8 @@ export const CategoryLayout = ({
             <h2>{category.data.attributes.description}</h2>
             <Breadcrumb defaultHref={defaultHref} />
             <div className="flex flex-1 gap-6">
-                <div className="flex w-96 bg-red-500">123</div>
-                <div className="flex flex-col gap-6">
+                <div className="flex w-96">123</div>
+                <div className="flex flex-col gap-6 flex-1">
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
                         {products.data.map((product) => (
                             <ProductBoxSmall
