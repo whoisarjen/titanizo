@@ -3,17 +3,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface ProductBoxSmallProps {
-    product: Product,
+    product: Product
     className?: string
 }
 
-export const ProductBoxSmall = ({ product, className }: ProductBoxSmallProps) => {
+export const ProductBoxSmall = ({
+    product,
+    className,
+}: ProductBoxSmallProps) => {
     return (
         <Link
             href={getProductHref(product)}
-            className={`flex relative w-full max-w-md md:max-w-sm flex-col items-center  gap-4 p-4 shadow ${className}`}
+            className={`relative flex w-full max-w-md flex-col items-center gap-4 p-4 shadow md:max-w-sm ${className}`}
         >
-            <div className='w-3/5 aspect-square relative'>
+            <div className="relative aspect-square w-3/5">
                 <Image
                     src={product.attributes.images[0]?.src}
                     alt={product.attributes.name}
@@ -21,7 +24,7 @@ export const ProductBoxSmall = ({ product, className }: ProductBoxSmallProps) =>
                     className="object-contain"
                 />
             </div>
-            <h2 className="font-bold block">{product.attributes.name}</h2>
+            <h2 className="block font-bold">{product.attributes.name}</h2>
         </Link>
     )
 }

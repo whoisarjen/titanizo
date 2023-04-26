@@ -1,5 +1,6 @@
-import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { getData } from '@/utils/api.utils'
+import { env } from '@/env/client.mjs'
+import { CategoryLayout } from '@/containers/CategoryLayout'
 
 type GetCategory = {
     data: Category
@@ -15,41 +16,41 @@ interface CategorySlugProps {
     params: {
         categorySlug: string
     }
+    searchParams: {
+        page: string
+    }
 }
 
 export default async function CategorySlug({
     params: { categorySlug },
+    searchParams: { page = '1' },
 }: CategorySlugProps) {
-    const categoryId = categorySlug.substring(
-        0,
-        categorySlug.indexOf('--')
-    )
+    const defaultHref = `/${categorySlug}`
+    const categoryId = categorySlug.substring(0, categorySlug.indexOf('--'))
+
+    if (!categoryId) {
+        return null
+    }
+
 
     const [category, products] = await Promise.all([
         getData<GetCategory>(`/categories/${categoryId}`),
-        getData<GetProducts>(
-            '/products?',
-            {
-                "populate[0]": "manufacturer",
-                "populate[1]": "subcategories",
-                "populate[2]": "subcategories.category",
-                "filters[subcategories][category][id][$eq]": categoryId,
-                "pagination[page]": "1",
-                "pagination[pageSize]": "10",
-            },
-        ),
+        getData<GetProducts>('/products?', {
+            'populate[0]': 'manufacturer',
+            'populate[1]': 'subcategories',
+            'populate[2]': 'subcategories.category',
+            'filters[subcategories][category][id][$eq]': categoryId,
+            'pagination[page]': page,
+            'pagination[pageSize]':
+                env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
+        }),
     ])
 
     return (
-        <div className="flex w-full flex-col gap-4 p-4">
-            <h1 className="text-center text-4xl">{category.data.attributes.name}</h1>
-            <h2>{category.data.attributes.description}</h2>
-            {products.data.map((product) => (
-                <ProductBoxSmall
-                    key={product.id}
-                    product={product}
-                />
-            ))}
-        </div>
+        <CategoryLayout
+            products={products}
+            category={category}
+            defaultHref={defaultHref}
+        />
     )
 }
