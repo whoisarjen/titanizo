@@ -17,10 +17,14 @@ interface SubcategorySlugProps {
         categorySlug: string
         subcategorySlug: string
     }
+    searchParams: {
+        page: string
+    }
 }
 
 export default async function SubcategoriesSlug({
     params: { categorySlug, subcategorySlug },
+    searchParams: { page = '1' },
 }: SubcategorySlugProps) {
     const defaultHref = `/${categorySlug}/${subcategorySlug}`
     const subcategoryId = subcategorySlug.substring(
@@ -39,7 +43,7 @@ export default async function SubcategoriesSlug({
             'populate[1]': 'subcategories',
             'populate[2]': 'subcategories.category',
             'filters[subcategories][id][$eq]': subcategoryId,
-            'pagination[page]': '1',
+            'pagination[page]': page,
             'pagination[pageSize]':
                 env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
         }),
