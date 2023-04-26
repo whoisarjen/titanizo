@@ -9,6 +9,8 @@ import { env } from "process"
  */
 export const clientSchema = z.object({
     NEXT_PUBLIC_API_TOKEN: z.string(),
+    NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: z.string(),
+    NEXT_PUBLIC_BRAND: z.string(),
 });
 
 /**
@@ -19,4 +21,6 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
     NEXT_PUBLIC_API_TOKEN: env.NEXT_PUBLIC_API_TOKEN,
+    NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
+    NEXT_PUBLIC_BRAND: env.NEXT_PUBLIC_BRAND,
 };
