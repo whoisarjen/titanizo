@@ -128,6 +128,9 @@ type Post = DefaultDataWrapper<{
     image: {
         data: Image
     }
+    subcategories: {
+        data: Subcategory[]
+    }
 }>
 
 type Meta = {
