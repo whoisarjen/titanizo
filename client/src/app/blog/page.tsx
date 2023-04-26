@@ -1,6 +1,7 @@
 import { Pagination } from '@/components/Pagination'
 import { env } from '@/env/client.mjs'
 import { getData, transformObjectToPathname } from '@/utils/api.utils'
+import Image from 'next/image'
 import Link from 'next/link'
 
 type GetData = {
@@ -16,19 +17,26 @@ interface BlogProps {
 
 const Blog = async ({ searchParams: { page = '1' } }: BlogProps) => {
     const posts = await getData<GetData>('/posts?', {
-        populate: '*',
+        'populate': '*',
         'pagination[page]': page,
         'pagination[pageSize]':
             env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
     })
 
     return (
-        <div>
+        <div className="flex w-full max-w-7xl mx-auto gap-3 m-3">
             {posts.data.map((post) => (
                 <Link
                     key={post.id}
+                    className="flex flex-row items-center gap-3"
                     href={`/blog${transformObjectToPathname(post)}`}
                 >
+                <Image
+                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${post.attributes.image.data.attributes.formats.thumbnail.url}`}
+                    height={post.attributes.image.data.attributes.formats.thumbnail.height}
+                    width={post.attributes.image.data.attributes.formats.thumbnail.width}
+                    alt={post.attributes.image.data.attributes.formats.thumbnail.caption || ''}
+                />
                     {post.attributes.title}
                 </Link>
             ))}
