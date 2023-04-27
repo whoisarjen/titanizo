@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { MENU_ICONS } from './constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 import { transformObjectToPathname } from '@/utils/api.utils'
 import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 import { MENU } from './Navbar.constants'
@@ -14,7 +14,7 @@ type GetData = {
 }
 
 export const Navbar = async () => {
-    const response = await getData<GetData>(
+    const response = await getAPI<GetData>(
         '/categories?populate[0]=subcategories'
     )
 

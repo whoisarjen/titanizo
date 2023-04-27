@@ -7,7 +7,7 @@ export const transformObjectToPathname = ({
     return `/${id}--${slugify(attributes.name || attributes.title || '')}`
 }
 
-export const getData = async <GetData>(
+export const getAPI = async <GetData>(
     slug: string,
     object?: Record<string, string>
 ) => {
@@ -31,7 +31,7 @@ export const getData = async <GetData>(
     return res.json() as GetData
 }
 
-export const postData = async (slug: string, data: object) => {
+export const postAPI = async (slug: string, data: object) => {
     let res = await fetch(`http://127.0.0.1:1337/api${slug}`, {
         method: 'POST',
         mode: 'cors',

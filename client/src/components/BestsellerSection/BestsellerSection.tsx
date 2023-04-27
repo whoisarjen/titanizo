@@ -1,4 +1,4 @@
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 import { ProductBoxSmall } from '../ProductBoxSmall'
 
 type GetData = {
@@ -7,7 +7,7 @@ type GetData = {
 }
 
 export const BestsellerSection = async () => {
-    const { data } = await getData<GetData>(
+    const { data } = await getAPI<GetData>(
         `/products?populate?populate[1]=subcategories.category`
     )
 
