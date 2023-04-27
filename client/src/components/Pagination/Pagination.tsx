@@ -21,6 +21,7 @@ export const Pagination = ({
             )}
             {options.slice(0, 5).map((number) => (
                 <Link
+                    id={number.toString()}
                     href={`${defaultHref}?page=${number}`}
                     className={`${number === page && 'bg-black text-white'} p-3`}
                 >

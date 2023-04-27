@@ -309,14 +309,14 @@ export default {
       const productsToAdd = [];
       let i = 0;
 
-      for await (const product of data) {
+      for await (const source of data) {
         console.log(data.length - i);
         const images = await Promise.all(
-          product.images.map(({ src }) => fetchAndUploadSocialImage(src))
+          source.images.map(({ src }) => fetchAndUploadSocialImage(src))
         );
 
         productsToAdd.push({
-          ...product,
+          ...source,
           images: images.filter(x => !!x),
         });
 
@@ -354,7 +354,7 @@ export default {
                 package_width_in_mm: product.package.width.value,
                 package_weight_in_g: product.package.weight.value,
                 manufacturer_url: product.url,
-                source: product,
+                source,
               });
             })
           );

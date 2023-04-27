@@ -20,8 +20,14 @@ interface ProductSlugProps {
     }
 }
 
-async function getData({ params: { productSlug } }: ProductSlugProps) {
-    const productId = productSlug.substring(0, productSlug.indexOf('--'))
+const getProductId = (props: ProductSlugProps) =>
+    props.params.productSlug.substring(
+        0,
+        props.params.productSlug.indexOf('--')
+    )
+
+async function getData(props: ProductSlugProps) {
+    const productId = getProductId(props)
 
     const response = await getAPI<GetData>(`/products/${productId}?`, {
         'populate[0]': 'images',
@@ -37,15 +43,23 @@ async function getData({ params: { productSlug } }: ProductSlugProps) {
 export async function generateMetadata(
     props: ProductSlugProps
 ): Promise<Metadata> {
+    if (!getProductId(props)) {
+        return {}
+    }
+
     const product = await getData(props)
 
     return {
-        title: product.data.attributes.name + " - " + product.data.attributes.manufacturer.data.attributes.name,
+        title: `${product.data.attributes.name} - ${product.data.attributes.manufacturer.data.attributes.name}`,
         description: product.data.attributes.description,
     }
 }
 
 export default async function ProductSlug(props: ProductSlugProps) {
+    if (!getProductId(props)) {
+        return null
+    }
+
     const product = await getData(props)
 
     const {
@@ -80,8 +94,8 @@ export default async function ProductSlug(props: ProductSlugProps) {
                     <div className="bg-red hidden flex-1 grid-cols-2 gap-4 md:grid">
                         {images?.data?.slice(0, 8).map((image) => (
                             <div
-                                className="relative aspect-square"
                                 key={image.id}
+                                className="relative aspect-square"
                             >
                                 <Image
                                     src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.medium.url}`}
@@ -95,8 +109,8 @@ export default async function ProductSlug(props: ProductSlugProps) {
                     <div className="block aspect-square flex-1 md:hidden">
                         {images?.data?.slice(0, 1).map((image) => (
                             <div
-                                className="relative aspect-square"
                                 key={image.id}
+                                className="relative aspect-square"
                             >
                                 <Image
                                     src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small.url}`}

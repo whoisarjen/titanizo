@@ -25,14 +25,14 @@ interface SubcategorySlugProps {
     }
 }
 
-async function getData({
-    params: { subcategorySlug },
-    searchParams: { page = '1' },
-}: SubcategorySlugProps) {
-    const subcategoryId = subcategorySlug.substring(
+const getSubcategoryId = (props: SubcategorySlugProps) =>
+    props.params.subcategorySlug.substring(
         0,
-        subcategorySlug.indexOf('--')
+        props.params.subcategorySlug.indexOf('--')
     )
+
+async function getData(props: SubcategorySlugProps) {
+    const subcategoryId = getSubcategoryId(props)
 
     const response = await Promise.all([
         getAPI<GetSubcategory>(`/subcategories/${subcategoryId}`),
@@ -42,7 +42,7 @@ async function getData({
             'populate[2]': 'subcategories',
             'populate[3]': 'subcategories.category',
             'filters[subcategories][id][$eq]': subcategoryId,
-            'pagination[page]': page,
+            'pagination[page]': props.searchParams.page || '1',
             'pagination[pageSize]':
                 env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
         }),
@@ -54,6 +54,10 @@ async function getData({
 export async function generateMetadata(
     props: SubcategorySlugProps
 ): Promise<Metadata> {
+    if (!getSubcategoryId(props)) {
+        return {}
+    }
+
     const [subcategory] = await getData(props)
 
     return {
@@ -63,6 +67,10 @@ export async function generateMetadata(
 }
 
 export default async function SubcategoriesSlug(props: SubcategorySlugProps) {
+    if (!getSubcategoryId(props)) {
+        return null
+    }
+
     const [subcategory, products] = await getData(props)
 
     const defaultHref = `/${props.params.categorySlug}/${props.params.subcategorySlug}`
@@ -76,7 +84,7 @@ export default async function SubcategoriesSlug(props: SubcategorySlugProps) {
             <Breadcrumb defaultHref={defaultHref} />
             <div className="flex flex-1 gap-6">
                 <div className="flex w-96">123</div>
-                <div className="flex flex-col gap-6 flex-1">
+                <div className="flex flex-1 flex-col gap-6">
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
                         {products.data.map((product) => (
                             <ProductBoxSmall
