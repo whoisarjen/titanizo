@@ -1,6 +1,7 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { env } from '@/env/client.mjs'
 import { getAPI } from '@/utils/api.utils'
+import { type Metadata } from 'next'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 
@@ -20,14 +21,12 @@ interface PostSlugProps {
     }
 }
 
-const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
+async function getData({
+    params: { postSlug },
+}: PostSlugProps) {
     const postId = postSlug.substring(0, postSlug.indexOf('--'))
 
-    if (!postId) {
-        return null
-    }
-
-    const [post, products] = await Promise.all([
+    const response = await Promise.all([
         getAPI<GetPost>(`/posts/${postId}?`, {
             populate: '*',
         }),
@@ -41,6 +40,23 @@ const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
             'pagination[pageSize]': '6',
         }),
     ])
+
+    return response
+}
+
+export async function generateMetadata(
+    props: PostSlugProps
+): Promise<Metadata> {
+    const [post] = await getData(props)
+
+    return {
+        title: post.data.attributes.title,
+        description: post.data.attributes.content,
+    }
+}
+
+const PostSlug = async (props: PostSlugProps) => {
+    const [post, products] = await getData(props)
 
     const { title, content, image } = post.data.attributes
     const { url, height, width, caption = '' } = image.data.attributes.formats.large
