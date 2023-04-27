@@ -27,7 +27,8 @@ async function getData({ params: { productSlug } }: ProductSlugProps) {
         'populate[0]': 'images',
         'populate[1]': 'manufacturer',
         'populate[2]': 'subcategories.category',
-        'populate[3]': 'recommended_products.subcategories.category',
+        'populate[3]': 'recommended_products.images',
+        'populate[4]': 'recommended_products.subcategories.category',
     })
 
     return response
@@ -83,7 +84,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 key={image.id}
                             >
                                 <Image
-                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small.url}`}
+                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.medium.url}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
@@ -187,7 +188,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
             </div> */}
 
                 <div className="flex w-full items-start justify-evenly">
-                    {recommended_products.data.map((product) => (
+                    {recommended_products.data.slice(0, 5).map((product) => (
                         <ProductBoxSmall key={product.id} product={product} />
                     ))}
                 </div>
