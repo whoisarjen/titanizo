@@ -5,6 +5,7 @@ import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { formatPrice } from '@/utils/product.utils'
 import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
+import { env } from '@/env/client.mjs'
 
 type GetData = {
     data: Product
@@ -20,19 +21,14 @@ interface ProductSlugProps {
 export default async function ProductSlug({
     params: { productSlug },
 }: ProductSlugProps) {
-    const productId = productSlug.substring(
-        0,
-        productSlug.indexOf('--')
-    )
+    const productId = productSlug.substring(0, productSlug.indexOf('--'))
 
-    const product = await getData<GetData>(
-        `/products/${productId}?`,
-        {
-            "populate[0]": "manufacturer",
-            "populate[1]": "subcategories.category",
-            "populate[2]": "recommended_products.subcategories.category",
-        },
-    )
+    const product = await getData<GetData>(`/products/${productId}?`, {
+        'populate[0]': 'images',
+        'populate[1]': 'manufacturer',
+        'populate[2]': 'subcategories.category',
+        'populate[3]': 'recommended_products.subcategories.category',
+    })
 
     const {
         name,
@@ -50,33 +46,25 @@ export default async function ProductSlug({
         <div className="mt-4 flex w-full flex-col items-center">
             <div className="flex w-full flex-col justify-stretch md:flex-row">
                 <div className="bg-red hidden flex-1 grid-cols-2 gap-4 md:grid">
-                    {images.slice(0, 8).map(({ src, type }) => (
-                        <div className="relative aspect-square" key={src}>
+                    {images?.data?.slice(0, 8).map((image) => (
+                        <div className="relative aspect-square" key={image.id}>
                             <Image
-                                src={src}
+                                src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small.url}`}
                                 alt="Zdjecie produktowe"
                                 fill
-                                className={
-                                    type === 'mainPhoto'
-                                        ? 'object-contain'
-                                        : 'object-cover'
-                                }
+                                className="object-cover"
                             ></Image>
                         </div>
                     ))}
                 </div>
                 <div className="block aspect-square flex-1 md:hidden">
-                    {images.slice(0, 1).map(({ src, type }) => (
-                        <div className="relative aspect-square" key={src}>
+                    {images?.data?.slice(0, 1).map((image) => (
+                        <div className="relative aspect-square" key={image.id}>
                             <Image
-                                src={src}
+                                src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small.url}`}
                                 alt="Zdjecie produktowe"
                                 fill
-                                className={
-                                    type === 'mainPhoto'
-                                        ? 'object-contain'
-                                        : 'object-cover'
-                                }
+                                className="object-cover"
                             ></Image>
                         </div>
                     ))}
@@ -158,10 +146,7 @@ export default async function ProductSlug({
 
             <div className="flex w-full items-start justify-evenly">
                 {recommended_products.data.map((product) => (
-                    <ProductBoxSmall
-                        key={product.id}
-                        product={product}
-                    />
+                    <ProductBoxSmall key={product.id} product={product} />
                 ))}
             </div>
             <GridFeatures features={features} />

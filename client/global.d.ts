@@ -73,10 +73,9 @@ type Product = DefaultDataWrapper<{
     recommended_products: {
         data: Product[]
     }
-    images: {
-        src: string
-        type: string
-    }[]
+    images?: {
+        data?: Image[]
+    }
     features: {
         name: string
         description: string

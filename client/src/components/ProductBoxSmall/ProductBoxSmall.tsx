@@ -1,3 +1,4 @@
+import { env } from '@/env/client.mjs'
 import { getProductHref } from '@/utils/product.utils'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -18,7 +19,7 @@ export const ProductBoxSmall = ({
         >
             <div className="relative aspect-square w-3/5">
                 <Image
-                    src={product.attributes.images[0]?.src}
+                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${product.attributes.images?.data?.[0]?.attributes.formats.small.url || ''}`}
                     alt={product.attributes.name}
                     fill
                     className="object-contain"
