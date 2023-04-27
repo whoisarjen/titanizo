@@ -105,9 +105,6 @@
     "files": {
       "type": "json"
     },
-    "images": {
-      "type": "json"
-    },
     "package_height_in_mm": {
       "type": "integer",
       "required": true,
@@ -139,6 +136,15 @@
     },
     "manufacturer_url": {
       "type": "string"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
     }
   }
 }

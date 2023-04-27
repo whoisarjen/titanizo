@@ -1,6 +1,11 @@
 import { type GenericService } from "@strapi/strapi/lib/core-api/service";
 import fetch from "node-fetch";
 import _ from "lodash";
+import FormData from "form-data";
+import axios from "axios";
+
+const TOKEN =
+  "4223a4b1be0377835b23333fa365bc3ea473cd0bab274cf9bf14a9dfa03ac1173f3308a1786d0af8b04d64cef4f128478d33a7dbe43230451939cf44d27a2697ecd2728679ddb6430a5e8df95214990734fe3d313d2862a77fc5dd8482d40df982d834b138ab53973328d813263349a662a666562b10d0ddd76460936c47cf21";
 
 type Product = {
   id: string;
@@ -161,11 +166,73 @@ const getOrCreate = async (strapi: any, where: string, params: any) => {
   });
 };
 
+const ALL_IMAGES: any = {};
+
+const fetchAndUploadSocialImage = async (img: string) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+    const nameOfImg = img
+      .substring(img.lastIndexOf("/") + 1, img.length)
+      .toLowerCase();
+    if (ALL_IMAGES[nameOfImg]) {
+      console.log("FROM CACHE");
+      return resolve(ALL_IMAGES[nameOfImg]);
+    }
+
+    const response = await axios.get(img, { responseType: "arraybuffer" });
+
+    const form = new FormData();
+    form.append("files", response.data, nameOfImg);
+
+    const upload = await axios
+      .post("http://127.0.0.1:1337/api/upload", form, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+        return resolve(null) // FOR 404 ERROR
+      });
+
+    // @ts-ignore
+    ALL_IMAGES[nameOfImg] = upload.data[0].id;
+    // @ts-ignore
+    return resolve(upload.data[0]?.id);
+    } catch (err) {
+      return resolve(null) // FOR 404 ERROR
+    }
+  });
+};
+
+let isSynchronization = false
+
 export default {
-  synchronizationDeante: {
+  synchronization: {
     task: async ({ strapi }) => {
-      console.log("Started synchronization with Deante");
-      const manufacturer: any = await getOrCreate(strapi, 'manufacturer', { name: "Deante" })
+      if (isSynchronization) {
+        console.log("Synchornization already in progress!")
+        return
+      } else {
+        isSynchronization = true
+      }
+      console.log("Started synchronization with Deante!");
+      const manufacturer: any = await getOrCreate(strapi, "manufacturer", {
+        name: "Deante",
+      });
+
+      const allImages = await fetch("http://127.0.0.1:1337/api/upload/files", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+
+      const allImagesJSONed: any[] = await allImages.json();
+
+      for (const image of allImagesJSONed) {
+        ALL_IMAGES[image.name.toLowerCase()] = image.id;
+      }
 
       const response = await fetch(
         "https://api.deante.pl/api/products?key=deante-62e59625-50d9-470a-88e1-0d03585c7308"
@@ -206,7 +273,7 @@ export default {
               category.name.length
             ),
           })),
-        (a, b) => (a.name == b.name)
+        (a, b) => a.name == b.name
       );
 
       console.log(categories.length, subcategories.length);
@@ -239,11 +306,22 @@ export default {
       console.log("subcategoriesCreated", subcategoriesCreated[0]);
 
       const productsToAdd = [];
-      data.forEach(async (product, i) => {
-        productsToAdd.push(product);
-        if (productsToAdd.length === 10 || i + 1 === data.length) {
+      let i = 0;
+
+      for await (const product of data) {
+        console.log(data.length - i);
+        const images = await Promise.all(
+          product.images.map(({ src }) => fetchAndUploadSocialImage(src))
+        );
+
+        productsToAdd.push({
+          ...product,
+          images: images.filter(x => !!x),
+        });
+
+        if (productsToAdd.length === 200 || i + 1 === data.length) {
           await Promise.all(
-            productsToAdd.map((product) => {
+            productsToAdd.map(async (product) => {
               const subcategories = subcategoriesCreated
                 .filter(({ name }) =>
                   product.categories.find(
@@ -279,10 +357,12 @@ export default {
             })
           );
         }
-      });
+        i++;
+      }
+      isSynchronization = false
     },
     options: {
-      rule: "* 35 * * * *",
+      rule: "* 4 * * * *",
     },
   },
 };

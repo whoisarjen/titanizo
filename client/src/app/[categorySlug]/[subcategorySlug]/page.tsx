@@ -41,9 +41,10 @@ export default async function SubcategoriesSlug({
     const [subcategory, products] = await Promise.all([
         getData<GetSubcategory>(`/subcategories/${subcategoryId}`),
         getData<GetProducts>('/products?', {
-            'populate[0]': 'manufacturer',
-            'populate[1]': 'subcategories',
-            'populate[2]': 'subcategories.category',
+            'populate[0]': 'images',
+            'populate[1]': 'manufacturer',
+            'populate[2]': 'subcategories',
+            'populate[3]': 'subcategories.category',
             'filters[subcategories][id][$eq]': subcategoryId,
             'pagination[page]': page,
             'pagination[pageSize]':
