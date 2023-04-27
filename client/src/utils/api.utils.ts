@@ -19,7 +19,11 @@ export const getData = async <GetData>(
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
             },
             next: {
-                revalidate: 0,
+                revalidate:
+                    process.env.NODE_ENV === 'production'
+                        ? (process.env
+                              .NEXT_PUBLIC_API_REVALIDATE as unknown as number)
+                        : 0,
             },
         }
     )
