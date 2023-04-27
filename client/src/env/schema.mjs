@@ -13,6 +13,7 @@ export const clientSchema = z.object({
     NEXT_PUBLIC_BRAND: z.string(),
     NEXT_PUBLIC_SERVER_ADDRESS: z.string(),
     NEXT_PUBLIC_BRAND_LOGO_URL: z.string(),
+    NEXT_PUBLIC_API_REVALIDATE: z.number(),
 });
 
 /**
@@ -27,4 +28,5 @@ export const clientEnv = {
     NEXT_PUBLIC_BRAND: env.NEXT_PUBLIC_BRAND,
     NEXT_PUBLIC_SERVER_ADDRESS: env.NEXT_PUBLIC_SERVER_ADDRESS,
     NEXT_PUBLIC_BRAND_LOGO_URL: env.NEXT_PUBLIC_BRAND_LOGO_URL,
+    NEXT_PUBLIC_API_REVALIDATE: Number(env.NEXT_PUBLIC_API_REVALIDATE),
 };
