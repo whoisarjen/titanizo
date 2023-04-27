@@ -5,7 +5,7 @@ import FormData from "form-data";
 import axios from "axios";
 
 const TOKEN =
-  "4223a4b1be0377835b23333fa365bc3ea473cd0bab274cf9bf14a9dfa03ac1173f3308a1786d0af8b04d64cef4f128478d33a7dbe43230451939cf44d27a2697ecd2728679ddb6430a5e8df95214990734fe3d313d2862a77fc5dd8482d40df982d834b138ab53973328d813263349a662a666562b10d0ddd76460936c47cf21";
+  "e49eb4c2e2333a5e7401adfce5a11571bc100eb484c408bac43566cdb874635049971145e2e35e343e61bd43b2ddfebc812592df8eb9059929deb85522d3c5901759cf4afec41c589f19f8c642b18757fdc2a51699a3654eee720c5fc8a7d8ad481e7fa04bf2011bb5272dd4aa61337fdc605560ad30c8d45f4362f4bc03eb98";
 
 type Product = {
   id: string;
@@ -364,7 +364,7 @@ export default {
       isSynchronization = false
     },
     options: {
-      rule: "* 6 * * * *",
+      rule: "* 27 * * * *",
     },
   },
 };
