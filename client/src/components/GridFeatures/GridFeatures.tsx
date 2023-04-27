@@ -19,12 +19,12 @@ export const GridFeatures = ({ features }: GridFeaturesProps) => {
         <section className="w-full">
             {features
                 .filter((feature) => feature.description && feature.image)
-                .map((feature, id) => {
-                    const odd = id % 2
+                .map((feature, index) => {
+                    const odd = index % 2
 
                     return (
                         <div
-                            key={id}
+                            key={feature.image}
                             className="flex w-full flex-col md:flex-row"
                         >
                             <div
@@ -60,6 +60,7 @@ export const GridFeatures = ({ features }: GridFeaturesProps) => {
                                     alt={feature.name}
                                     fill
                                     className="object-cover"
+                                    loading='lazy'
                                 />
                             </div>
                         </div>
