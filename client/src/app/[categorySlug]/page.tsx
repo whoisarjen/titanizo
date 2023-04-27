@@ -24,11 +24,14 @@ interface CategorySlugProps {
     }
 }
 
-async function getData({
-    params: { categorySlug },
-    searchParams: { page = '1' },
-}: CategorySlugProps) {
-    const categoryId = categorySlug.substring(0, categorySlug.indexOf('--'))
+const getCategoryId = (props: CategorySlugProps) =>
+    props.params.categorySlug.substring(
+        0,
+        props.params.categorySlug.indexOf('--')
+    )
+
+async function getData(props: CategorySlugProps) {
+    const categoryId = getCategoryId(props)
 
     const response = await Promise.all([
         getAPI<GetCategory>(`/categories/${categoryId}`),
@@ -38,7 +41,7 @@ async function getData({
             'populate[2]': 'subcategories',
             'populate[3]': 'subcategories.category',
             'filters[subcategories][category][id][$eq]': categoryId,
-            'pagination[page]': page,
+            'pagination[page]': props.searchParams.page || '1',
             'pagination[pageSize]':
                 env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
         }),
@@ -50,6 +53,10 @@ async function getData({
 export async function generateMetadata(
     props: CategorySlugProps
 ): Promise<Metadata> {
+    if (!getCategoryId(props)) {
+        return {}
+    }
+
     const [category] = await getData(props)
 
     return {
@@ -59,6 +66,10 @@ export async function generateMetadata(
 }
 
 export default async function CategorySlug(props: CategorySlugProps) {
+    if (!getCategoryId(props)) {
+        return null
+    }
+
     const [category, products] = await getData(props)
 
     const defaultHref = `/${props.params.categorySlug}`
@@ -72,7 +83,7 @@ export default async function CategorySlug(props: CategorySlugProps) {
             <Breadcrumb defaultHref={defaultHref} />
             <div className="flex flex-1 gap-6">
                 <div className="flex w-96">123</div>
-                <div className="flex flex-col gap-6 flex-1">
+                <div className="flex flex-1 flex-col gap-6">
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
                         {products.data.map((product) => (
                             <ProductBoxSmall
