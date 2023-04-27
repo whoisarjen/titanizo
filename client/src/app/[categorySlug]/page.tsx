@@ -62,6 +62,9 @@ export async function generateMetadata(
     return {
         title: category.data.attributes.name,
         description: category.data.attributes.description,
+        robots: 'index, follow',
+        viewport: 'width=device-width, initial-scale=1',
+        colorScheme: 'light',
     }
 }
 

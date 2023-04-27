@@ -6,8 +6,8 @@ import { formatPrice } from '@/utils/product.utils'
 import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
 import { env } from '@/env/client.mjs'
-import { type Metadata } from 'next'
 import { Product as ProductDTS, WithContext } from 'schema-dts'
+import { type Metadata } from 'next'
 
 type GetData = {
     data: Product
@@ -52,6 +52,9 @@ export async function generateMetadata(
     return {
         title: `${product.data.attributes.name} - ${product.data.attributes.manufacturer.data.attributes.name}`,
         description: product.data.attributes.description,
+        robots: 'index, follow',
+        viewport: 'width=device-width, initial-scale=1',
+        colorScheme: 'light',
     }
 }
 

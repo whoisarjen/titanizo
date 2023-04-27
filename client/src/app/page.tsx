@@ -1,5 +1,17 @@
 import { Hero } from '@/components/Hero'
 import { GridFeatures } from '@/components/GridFeatures'
+import { type Metadata } from 'next'
+import { env } from '@/env/client.mjs'
+
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: env.NEXT_PUBLIC_BRAND,
+        description: env.NEXT_PUBLIC_BRAND,
+        robots: 'index, follow',
+        viewport: 'width=device-width, initial-scale=1',
+        colorScheme: 'light',
+    }
+}
 
 export default function Home() {
 
