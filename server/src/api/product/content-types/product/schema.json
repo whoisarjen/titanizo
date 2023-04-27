@@ -145,6 +145,9 @@
         "images",
         "videos"
       ]
+    },
+    "source": {
+      "type": "json"
     }
   }
 }

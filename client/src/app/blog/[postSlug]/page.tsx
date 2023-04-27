@@ -32,9 +32,10 @@ const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
             populate: '*',
         }),
         getData<GetProducts>('/products?', {
-            'populate[0]': 'manufacturer',
-            'populate[1]': 'subcategories',
-            'populate[2]': 'subcategories.category',
+            'populate[0]': 'images',
+            'populate[1]': 'manufacturer',
+            'populate[2]': 'subcategories',
+            'populate[3]': 'subcategories.category',
             'filters[subcategories][posts][id][$eq]': postId,
             'pagination[page]': '1',
             'pagination[pageSize]': '6',

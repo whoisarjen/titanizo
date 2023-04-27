@@ -90,6 +90,7 @@ type ProductParams = {
   properties: any[];
   finishes: any[];
   manufacturer_url: string;
+  source: any
 };
 
 const createOrUpdateProduct = async (strapi: any, params: ProductParams) => {
@@ -353,6 +354,7 @@ export default {
                 package_width_in_mm: product.package.width.value,
                 package_weight_in_g: product.package.weight.value,
                 manufacturer_url: product.url,
+                source: product,
               });
             })
           );
@@ -362,7 +364,7 @@ export default {
       isSynchronization = false
     },
     options: {
-      rule: "* 4 * * * *",
+      rule: "* 6 * * * *",
     },
   },
 };

@@ -23,6 +23,7 @@ export const ProductBoxSmall = ({
                     alt={product.attributes.name}
                     fill
                     className="object-contain"
+                    loading='lazy'
                 />
             </div>
             <h2 className="block font-bold">{product.attributes.name}</h2>
