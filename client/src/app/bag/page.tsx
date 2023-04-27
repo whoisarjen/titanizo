@@ -1,5 +1,5 @@
 import BagContent from './BagContent'
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 
 type GetDataProviders = {
     data: Provider[]
@@ -13,10 +13,10 @@ type GetDataPayments = {
 
 const Bag = async () => {
     const [providers, payments] = await Promise.all([
-        getData<GetDataProviders>(
+        getAPI<GetDataProviders>(
             `/providers?populate[0]=provider_options`
         ),
-        getData<GetDataPayments>(
+        getAPI<GetDataPayments>(
             `/payments`
         ),
     ])

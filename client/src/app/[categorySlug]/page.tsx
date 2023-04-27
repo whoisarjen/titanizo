@@ -1,8 +1,9 @@
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 import { env } from '@/env/client.mjs'
 import { Breadcrumb } from '@/components/Breadcrumb/Breadcrumb'
 import { Pagination } from '@/components/Pagination'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
+import { type Metadata } from 'next'
 
 type GetCategory = {
     data: Category
@@ -23,20 +24,15 @@ interface CategorySlugProps {
     }
 }
 
-export default async function CategorySlug({
+async function getData({
     params: { categorySlug },
     searchParams: { page = '1' },
 }: CategorySlugProps) {
-    const defaultHref = `/${categorySlug}`
     const categoryId = categorySlug.substring(0, categorySlug.indexOf('--'))
 
-    if (!categoryId) {
-        return null
-    }
-
-    const [category, products] = await Promise.all([
-        getData<GetCategory>(`/categories/${categoryId}`),
-        getData<GetProducts>('/products?', {
+    const response = await Promise.all([
+        getAPI<GetCategory>(`/categories/${categoryId}`),
+        getAPI<GetProducts>('/products?', {
             'populate[0]': 'images',
             'populate[1]': 'manufacturer',
             'populate[2]': 'subcategories',
@@ -47,6 +43,25 @@ export default async function CategorySlug({
                 env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
         }),
     ])
+
+    return response
+}
+
+export async function generateMetadata(
+    props: CategorySlugProps
+): Promise<Metadata> {
+    const [category] = await getData(props)
+
+    return {
+        title: category.data.attributes.name,
+        description: category.data.attributes.description,
+    }
+}
+
+export default async function CategorySlug(props: CategorySlugProps) {
+    const [category, products] = await getData(props)
+
+    const defaultHref = `/${props.params.categorySlug}`
 
     return (
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6">

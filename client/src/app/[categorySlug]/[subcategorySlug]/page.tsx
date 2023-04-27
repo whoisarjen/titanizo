@@ -2,7 +2,8 @@ import { Breadcrumb } from '@/components/Breadcrumb/Breadcrumb'
 import { Pagination } from '@/components/Pagination'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { env } from '@/env/client.mjs'
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
+import { type Metadata } from 'next'
 
 type GetSubcategory = {
     data: Subcategory
@@ -24,23 +25,18 @@ interface SubcategorySlugProps {
     }
 }
 
-export default async function SubcategoriesSlug({
-    params: { categorySlug, subcategorySlug },
+async function getData({
+    params: { subcategorySlug },
     searchParams: { page = '1' },
 }: SubcategorySlugProps) {
-    const defaultHref = `/${categorySlug}/${subcategorySlug}`
     const subcategoryId = subcategorySlug.substring(
         0,
         subcategorySlug.indexOf('--')
     )
 
-    if (!subcategoryId) {
-        return null
-    }
-
-    const [subcategory, products] = await Promise.all([
-        getData<GetSubcategory>(`/subcategories/${subcategoryId}`),
-        getData<GetProducts>('/products?', {
+    const response = await Promise.all([
+        getAPI<GetSubcategory>(`/subcategories/${subcategoryId}`),
+        getAPI<GetProducts>('/products?', {
             'populate[0]': 'images',
             'populate[1]': 'manufacturer',
             'populate[2]': 'subcategories',
@@ -51,6 +47,25 @@ export default async function SubcategoriesSlug({
                 env.NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE,
         }),
     ])
+
+    return response
+}
+
+export async function generateMetadata(
+    props: SubcategorySlugProps
+): Promise<Metadata> {
+    const [subcategory] = await getData(props)
+
+    return {
+        title: subcategory.data.attributes.name,
+        description: subcategory.data.attributes.description,
+    }
+}
+
+export default async function SubcategoriesSlug(props: SubcategorySlugProps) {
+    const [subcategory, products] = await getData(props)
+
+    const defaultHref = `/${props.params.categorySlug}/${props.params.subcategorySlug}`
 
     return (
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6">

@@ -1,4 +1,4 @@
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
@@ -6,7 +6,7 @@ import { formatPrice } from '@/utils/product.utils'
 import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
 import { env } from '@/env/client.mjs'
-import type { Metadata } from 'next'
+import { type Metadata } from 'next'
 import { Product as ProductDTS, WithContext } from 'schema-dts'
 
 type GetData = {
@@ -20,32 +20,32 @@ interface ProductSlugProps {
     }
 }
 
-async function getProduct({ params: { productSlug } }: ProductSlugProps) {
+async function getData({ params: { productSlug } }: ProductSlugProps) {
     const productId = productSlug.substring(0, productSlug.indexOf('--'))
 
-    const product = await getData<GetData>(`/products/${productId}?`, {
+    const response = await getAPI<GetData>(`/products/${productId}?`, {
         'populate[0]': 'images',
         'populate[1]': 'manufacturer',
         'populate[2]': 'subcategories.category',
         'populate[3]': 'recommended_products.subcategories.category',
     })
 
-    return product
+    return response
 }
 
 export async function generateMetadata(
     props: ProductSlugProps
 ): Promise<Metadata> {
-    const product = await getProduct(props)
+    const product = await getData(props)
 
     return {
-        title: product.data.attributes.name,
+        title: product.data.attributes.name + " - " + product.data.attributes.manufacturer.data.attributes.name,
         description: product.data.attributes.description,
     }
 }
 
 export default async function ProductSlug(props: ProductSlugProps) {
-    const product = await getProduct(props)
+    const product = await getData(props)
 
     const {
         name,

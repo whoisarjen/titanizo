@@ -1,6 +1,6 @@
 import { Pagination } from '@/components/Pagination'
 import { env } from '@/env/client.mjs'
-import { getData, transformObjectToPathname } from '@/utils/api.utils'
+import { getAPI, transformObjectToPathname } from '@/utils/api.utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,7 +16,7 @@ interface BlogProps {
 }
 
 const Blog = async ({ searchParams: { page = '1' } }: BlogProps) => {
-    const posts = await getData<GetData>('/posts?', {
+    const posts = await getAPI<GetData>('/posts?', {
         'populate': '*',
         'pagination[page]': page,
         'pagination[pageSize]':

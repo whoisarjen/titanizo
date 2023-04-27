@@ -14,7 +14,7 @@ import Link from 'next/link'
 import { useForm, type FieldErrors, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { orderSchema, type OrderSchema } from '@/schemas/order.schema'
-import { postData } from '@/utils/api.utils'
+import { postAPI } from '@/utils/api.utils'
 
 type FieldTranslate = {
     [key in keyof OrderSchema]: string
@@ -128,7 +128,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
     const onSubmit = async (body: OrderSchema) => {
         setOrderState('isLoading')
 
-        await postData('/orders', body)
+        await postAPI('/orders', body)
             .then(() => {
                 setOrderState('isSuccess')
                 removeAllProductsFromBad()

@@ -1,6 +1,6 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { env } from '@/env/client.mjs'
-import { getData } from '@/utils/api.utils'
+import { getAPI } from '@/utils/api.utils'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 
@@ -28,10 +28,10 @@ const PostSlug = async ({ params: { postSlug } }: PostSlugProps) => {
     }
 
     const [post, products] = await Promise.all([
-        getData<GetPost>(`/posts/${postId}?`, {
+        getAPI<GetPost>(`/posts/${postId}?`, {
             populate: '*',
         }),
-        getData<GetProducts>('/products?', {
+        getAPI<GetProducts>('/products?', {
             'populate[0]': 'images',
             'populate[1]': 'manufacturer',
             'populate[2]': 'subcategories',
