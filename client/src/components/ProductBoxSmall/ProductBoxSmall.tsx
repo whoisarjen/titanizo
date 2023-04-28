@@ -19,7 +19,7 @@ export const ProductBoxSmall = ({
         >
             <div className="relative aspect-square w-3/5">
                 <Image
-                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${product.attributes.images?.data?.[0]?.attributes.formats.small.url || ''}`}
+                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${product.attributes.images?.data?.[0]?.attributes.formats.small?.url || ''}`}
                     alt={product.attributes.name}
                     fill
                     className="object-contain"
