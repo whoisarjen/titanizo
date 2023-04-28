@@ -83,7 +83,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
         '@type': 'Product',
         name,
         description,
-        image: images?.data?.[0]?.attributes?.url,
+        image: images?.data?.[0]?.attributes?.url || '',
     }
 
     return (
@@ -101,7 +101,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.medium?.url}`}
+                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.medium?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
@@ -116,7 +116,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small?.url}`}
+                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
