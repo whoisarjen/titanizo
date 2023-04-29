@@ -7,6 +7,7 @@ import { transformObjectToPathname } from '@/utils/api.utils'
 import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 import { MENU } from './Navbar.constants'
 import { env } from '@/env/client.mjs'
+import { NavbarProfileButton } from './NavbarProfileButton/NavbarProfileButton'
 
 type GetData = {
     data: Category[]
@@ -93,6 +94,7 @@ export const Navbar = async () => {
                                 {name}
                             </Link>
                         ))}
+                        <NavbarProfileButton />
                     </div>
                     <div className="flex flex-1 flex-row-reverse items-center">
                         <NavbarIconBag />

@@ -1,4 +1,5 @@
 'use client'
+
 import BagContextProvider from './BagContext'
 
 const BagContextWrapper = ({ children }: { children: React.ReactNode }) => {
