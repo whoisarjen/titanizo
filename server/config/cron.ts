@@ -364,7 +364,7 @@ export default {
       isSynchronization = false
     },
     options: {
-      rule: "* 20 * * * *",
+      rule: "* 5 * * * *",
     },
   },
 };
