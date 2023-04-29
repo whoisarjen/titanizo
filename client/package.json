@@ -18,9 +18,9 @@
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
     "eslint": "8.39.0",
-    "eslint-config-next": "13.3.1",
+    "eslint-config-next": "13.3.2",
     "lodash": "4.17.21",
-    "next": "13.3.1",
+    "next": "13.3.2",
     "next-auth": "4.22.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
@@ -36,8 +36,8 @@
   "devDependencies": {
     "@tailwindcss/typography": "0.5.9",
     "@types/lodash": "4.14.194",
-    "@types/node": "18.16.1",
+    "@types/node": "18.16.3",
     "prettier": "2.8.8",
-    "prettier-plugin-tailwindcss": "0.2.7"
+    "prettier-plugin-tailwindcss": "0.2.8"
   }
 }
