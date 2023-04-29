@@ -7,6 +7,10 @@ export default ({ env }) => ({
     enabled: true,
     tasks: cronTasks,
   },
+  cors: {
+    enabled: true,
+    origin: ['*']
+  },
   app: {
     keys: env.array('APP_KEYS'),
   },
