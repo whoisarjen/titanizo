@@ -19,6 +19,19 @@ export const Navbar = async () => {
         '/categories?populate[0]=subcategories'
     )
 
+    const data = response.data.map((response) => ({
+        ...response,
+        attributes: {
+            ...response.attributes,
+            subcategories: {
+                ...response.attributes.subcategories,
+                data: response.attributes.subcategories.data.sort((a, b) =>
+                    a.attributes.name.localeCompare(b.attributes.name)
+                ),
+            },
+        },
+    }))
+
     return (
         <nav>
             <div className="container fixed left-1/2 top-0 z-10 flex w-full translate-x-[-50%] flex-col text-white">
@@ -49,7 +62,7 @@ export const Navbar = async () => {
                         />
                     </Link>
                     <div className="z-20 flex h-[60px] flex-row items-center">
-                        {response.data.map((category) => (
+                        {data.map((category) => (
                             <div
                                 key={category.id}
                                 className="group/main flex h-full items-center"
@@ -61,7 +74,7 @@ export const Navbar = async () => {
                                     {category.attributes.name}
                                 </Link>
                                 <div className="absolute left-0 top-[60px] hidden min-h-[40vh] w-full flex-row bg-black/80 group-hover/main:flex">
-                                    <div className="flex flex-1 flex-col">
+                                    <div className="grid flex-1 grid-cols-5 p-6">
                                         {category.attributes.subcategories.data.map(
                                             (subcategory) => (
                                                 <div key={subcategory.id}>
