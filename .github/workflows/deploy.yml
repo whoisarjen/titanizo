@@ -15,6 +15,7 @@ jobs:
           username: arjen
           server: 194.59.158.13
           port: 22
+          passphrase: ${{ secrets.FTP_PASSWORD }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           remote_path: '/home/arjen/titanizo'
           args: '-o ConnectTimeout=5'
