@@ -4,6 +4,9 @@ import '@/styles/globals.css'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import BagContextWrapper from '@/containers/BagContextWrapper/BagContextWrapper'
 import SessionProviderWrapper from '@/containers/SessionProviderWrapper/SessionProviderWrapper'
+import Script from 'next/script'
+
+const GOOGLE_ANALYTICS_ID = 'G-STKR3Y1LRG'
 
 export default function RootLayout({
     children,
@@ -13,6 +16,22 @@ export default function RootLayout({
     return (
         <html lang="pl">
             <body>
+                {process.env.NEXT_PUBLIC_NODE_ENV === 'production' &&
+                    <>
+                        <Script
+                            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+                            strategy="afterInteractive"
+                        />
+                        <Script id="google-analytics" strategy="afterInteractive">
+                            {`
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){window.dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', ${GOOGLE_ANALYTICS_ID});
+                        `}
+                        </Script>
+                    </>
+                }
                 <BagContextWrapper>
                     <SessionProviderWrapper>
                         {/* @ts-expect-error Async Server Component */}
