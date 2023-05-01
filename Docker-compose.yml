@@ -35,7 +35,8 @@ services:
             - strapiDB
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.app`)"
+            - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
+            # - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)" TODO K
             - "traefik.http.routers.strapi.entrypoints=websecure"
             - "traefik.http.routers.strapi.tls.certresolver=myresolver"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
