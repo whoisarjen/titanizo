@@ -6,7 +6,7 @@ import BagContextWrapper from '@/containers/BagContextWrapper/BagContextWrapper'
 import SessionProviderWrapper from '@/containers/SessionProviderWrapper/SessionProviderWrapper'
 import Script from 'next/script'
 
-const GOOGLE_ANALYTICS_ID = 'G-STKR3Y1LRG'
+const GOOGLE_ANALYTICS_ID = 'G-EGW3MQH0HP'
 
 export default function RootLayout({
     children,
