@@ -12,7 +12,7 @@ jobs:
       - name: SFTP Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.1
         with:
-          username: ${{ secrets.USERNAME }}
+          username: arjen
           server: 194.59.158.13
           port: 22
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
