@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account }) => {
             if (account) {
                 const response = await fetch(
-                    `http://0.0.0.0:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
+                    `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
