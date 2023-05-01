@@ -52,6 +52,36 @@ services:
             - "5432"
         networks:
             - strapi
+        labels:
+            - "traefik.enable=true"
+            - "traefik.tcp.routers.postgres.entrypoints=postgres"
+            - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+            - "traefik.tcp.routers.postgres.tls=false"
+            - "traefik.tcp.services.postgres.loadBalancer.server.port=5432"
+            - "traefik.tcp.routers.postgres.service=postgres"
+
+    nextjs:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        container_name: nextjs
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - "3000:3000"
+        expose:
+            - "3000"
+        depends_on:
+            - postgres
+            - redis
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nextjs.rule=Host(`juicify.app`)"
+            - "traefik.http.routers.nextjs.entrypoints=websecure"
+            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+            - "traefik.tcp.routers.postgres.entrypoints=postgres"
+        command: npm run start
 
 volumes:
     strapi-data:
