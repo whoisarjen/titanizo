@@ -90,7 +90,7 @@ type ProductParams = {
   properties: any[];
   finishes: any[];
   manufacturer_url: string;
-  source: any
+  source: any;
 };
 
 const createOrUpdateProduct = async (strapi: any, params: ProductParams) => {
@@ -172,51 +172,100 @@ const ALL_IMAGES: any = {};
 const fetchAndUploadSocialImage = async (img: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-    const nameOfImg = img
-      .substring(img.lastIndexOf("/") + 1, img.length)
-      .toLowerCase();
-    if (ALL_IMAGES[nameOfImg]) {
-      console.log("FROM CACHE");
-      return resolve(ALL_IMAGES[nameOfImg]);
-    }
+      const nameOfImg = img
+        .substring(img.lastIndexOf("/") + 1, img.length)
+        .toLowerCase();
+      if (ALL_IMAGES[nameOfImg]) {
+        console.log("FROM CACHE");
+        return resolve(ALL_IMAGES[nameOfImg]);
+      }
 
-    const response = await axios.get(img, { responseType: "arraybuffer" });
+      const response = await axios.get(img, { responseType: "arraybuffer" });
 
-    const form = new FormData();
-    form.append("files", response.data, nameOfImg);
+      const form = new FormData();
+      form.append("files", response.data, nameOfImg);
 
-    const upload = await axios
-      .post("http://127.0.0.1:1337/api/upload", form, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      })
-      .catch((error) => {
-        console.log(error.response.data.error);
-        return resolve(null) // FOR 404 ERROR
-      });
+      const upload = await axios
+        .post("http://127.0.0.1:1337/api/upload", form, {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+          return resolve(null); // FOR 404 ERROR
+        });
 
-    // @ts-ignore
-    ALL_IMAGES[nameOfImg] = upload.data[0].id;
-    // @ts-ignore
-    return resolve(upload.data[0]?.id);
+      // @ts-ignore
+      ALL_IMAGES[nameOfImg] = upload.data[0].id;
+      // @ts-ignore
+      return resolve(upload.data[0]?.id);
     } catch (err) {
-      return resolve(null) // FOR 404 ERROR
+      return resolve(null); // FOR 404 ERROR
     }
   });
 };
 
-let isSynchronization = false
-
 export default {
-  synchronization: {
+  synchronizationDeanteAmount: {
     task: async ({ strapi }) => {
-      if (isSynchronization) {
-        console.log("Synchornization already in progress!")
-        return
-      } else {
-        isSynchronization = true
+      console.log("Started amount synchronization with Deante!");
+      const productService: GenericService = strapi.service(
+        "api::product.product"
+      );
+
+      const existingProducts = await strapi.db
+        .query("api::product.product")
+        .findMany({
+          where: {
+            id: {
+              $gt: 0,
+            },
+          },
+        });
+
+      const stocks = await fetch(
+        "https://api.deante.pl/api/stocks?key=deante-62e59625-50d9-470a-88e1-0d03585c7308"
+      );
+      const stocksData: any[] = await stocks.json();
+
+      console.log("stocksData", stocksData?.length);
+      console.log("existingProducts", existingProducts?.length);
+      if (stocksData?.length && existingProducts?.length) {
+        let index = 0;
+        let toSend = [];
+        for await (const stock of stocksData) {
+          index++;
+          toSend.push({
+            ...stock,
+            id: existingProducts.find(
+              ({ manufacturer_id, ean }) =>
+                manufacturer_id === stock.id && ean === stock.ean
+            )?.id,
+          });
+          console.log(stocksData.length - index);
+          if (toSend.length === 100 || index === stocksData.length) {
+            await Promise.all(
+              toSend
+                .filter(({ id }) => !!id)
+                .map(({ id, stock }) => {
+                  return productService.update(id, {
+                    data: { quantity: stock },
+                  });
+                })
+            );
+            toSend = [];
+          }
+        }
       }
+      console.log("Finished amount synchronization with Deante!");
+    },
+    options: {
+      rule: "0 0 */2 * * *",
+    },
+  },
+  synchronizationDeante: {
+    task: async ({ strapi }) => {
       console.log("Started synchronization with Deante!");
       const manufacturer: any = await getOrCreate(strapi, "manufacturer", {
         name: "Deante",
@@ -317,7 +366,7 @@ export default {
 
         productsToAdd.push({
           ...source,
-          images: images.filter(x => !!x),
+          images: images.filter((x) => !!x),
         });
 
         if (productsToAdd.length === 200 || i + 1 === data.length) {
@@ -361,10 +410,10 @@ export default {
         }
         i++;
       }
-      isSynchronization = false
+      console.log("Finished synchronization with Deante!");
     },
     options: {
-      rule: "* 5 * * * *",
+      rule: "0 0 4 * * *",
     },
   },
 };

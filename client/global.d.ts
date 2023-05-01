@@ -81,6 +81,7 @@ type Product = DefaultDataWrapper<{
         description: string
         image: string
     }[]
+    quantity?: number
 }>
 
 type ImageFormatsThumbnailOrMediumOrSmallOrLarge = {

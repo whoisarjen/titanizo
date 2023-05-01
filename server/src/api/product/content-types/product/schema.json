@@ -148,6 +148,12 @@
     },
     "source": {
       "type": "json"
+    },
+    "quantity": {
+      "type": "integer",
+      "required": false,
+      "default": 0,
+      "min": 0
     }
   }
 }

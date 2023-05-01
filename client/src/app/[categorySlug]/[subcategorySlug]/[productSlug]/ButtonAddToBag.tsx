@@ -11,14 +11,18 @@ interface ButtonAddToBagProps {
 
 const ButtonAddToBag = ({ product }: ButtonAddToBagProps) => {
     const { addProductToBag } = useContext(BagContext)
+    const isDisabled = !product.attributes.quantity
 
     return (
         <button
             className="button"
+            disabled={isDisabled}
             onClick={() => addProductToBag(product)}
         >
-            Dodaj do koszyka
-            <FontAwesomeIcon icon={faBagShopping} className="ml-2" />
+            {isDisabled ? 'Produkt wyprzedany' : 'Dodaj do koszyka'}
+            {!isDisabled && (
+                <FontAwesomeIcon icon={faBagShopping} className="ml-2" />
+            )}
         </button>
     )
 }
