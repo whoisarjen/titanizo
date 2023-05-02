@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     ],
-    database: process.env.NEXT_PUBLIC_DATABASE_URL,
+    // database: process.env.NEXT_PUBLIC_DATABASE_URL, TODO K
     callbacks: {
         // @ts-ignore
         session: async (session: any, user: any) => {
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account }) => {
             if (account) {
                 const response = await fetch(
-                    `http://strapi:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',

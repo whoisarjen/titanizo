@@ -180,7 +180,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                                 className="flex flex-1 justify-center gap-3 p-3"
                             >
                                 <Image
-                                    src={`http://strapi:1337${product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}`}
+                                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}`}
                                     alt="Hero placeholder"
                                     className="object-cover"
                                     width={96}

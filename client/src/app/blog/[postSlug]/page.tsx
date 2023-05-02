@@ -65,7 +65,7 @@ const PostSlug = async (props: PostSlugProps) => {
         <div className="flex w-full flex-col">
             <div className="prose mx-auto my-4 flex max-w-3xl flex-col">
                 <Image
-                    src={`http://strapi:1337${url}`}
+                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${url}`}
                     height={height}
                     width={width}
                     alt={caption}
