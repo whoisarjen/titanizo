@@ -413,7 +413,7 @@ export default {
       console.log("Finished synchronization with Deante!");
     },
     options: {
-      rule: "0 37 * * * *",
+      rule: "0 55 * * * *",
     },
   },
 };

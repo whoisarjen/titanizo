@@ -14,6 +14,7 @@ RUN npm run build
 FROM node:16-alpine
 # Installing libvips-dev for sharp Compatibility
 RUN apk add vips-dev
+RUN apk add --no-cache curl
 RUN rm -rf /var/cache/apk/*
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
