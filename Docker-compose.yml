@@ -81,17 +81,6 @@ services:
         depends_on:
             strapi:
                 condition: service_healthy
-        environment:
-            NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
-            NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
-            NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: ${NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE}
-            NEXT_PUBLIC_BRAND: ${NEXT_PUBLIC_BRAND}
-            NEXT_PUBLIC_BRAND_LOGO_URL: ${NEXT_PUBLIC_BRAND_LOGO_URL}
-            NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-            NEXTAUTH_URL: ${NEXTAUTH_URL}
-            NEXT_PUBLIC_DATABASE_URL: ${NEXT_PUBLIC_DATABASE_URL}
-            NEXT_PUBLIC_GOOGLE_CLIENT: ${NEXT_PUBLIC_GOOGLE_CLIENT}
-            NEXT_PUBLIC_GOOGLE_SECRET: ${NEXT_PUBLIC_GOOGLE_SECRET}
         volumes:
             - ./client/.:/usr/src/app
         ports:
