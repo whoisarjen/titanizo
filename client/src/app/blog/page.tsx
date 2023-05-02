@@ -32,7 +32,7 @@ const Blog = async ({ searchParams: { page = '1' } }: BlogProps) => {
                     href={`/blog${transformObjectToPathname(post)}`}
                 >
                 <Image
-                    src={`http://titanizo.pl:1337${post.attributes.image.data.attributes.formats.thumbnail.url}`}
+                    src={`http://strapi:1337${post.attributes.image.data.attributes.formats.thumbnail.url}`}
                     height={post.attributes.image.data.attributes.formats.thumbnail.height}
                     width={post.attributes.image.data.attributes.formats.thumbnail.width}
                     alt={post.attributes.image.data.attributes.formats.thumbnail.caption || ''}

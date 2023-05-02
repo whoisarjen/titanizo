@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account }) => {
             if (account) {
                 const response = await fetch(
-                    `http://titanizo.pl:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
+                    `http://strapi:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',

@@ -100,7 +100,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`http://titanizo.pl:1337${image.attributes.formats.medium?.url || ''}`}
+                                    src={`http://strapi:1337${image.attributes.formats.medium?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
@@ -115,7 +115,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`http://titanizo.pl:1337${image.attributes.formats.small?.url || ''}`}
+                                    src={`http://strapi:1337${image.attributes.formats.small?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
