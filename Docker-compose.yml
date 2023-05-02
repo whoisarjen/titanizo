@@ -35,10 +35,10 @@ services:
             - strapiDB
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
+            - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
             - "traefik.http.routers.strapi.entrypoints=websecure"
             - "traefik.http.routers.strapi.tls.certresolver=myresolver"
-            - "traefik.http.services.strapi.loadbalancer.server.port=1337"
+            - "traefik.http.services.strapi.loadbalancer.server.port=80"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
 
     strapiDB:
