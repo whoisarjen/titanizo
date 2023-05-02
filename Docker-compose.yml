@@ -39,7 +39,7 @@ services:
             - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
             - "traefik.http.routers.strapi.entrypoints=websecure"
             - "traefik.http.routers.strapi.tls.certresolver=myresolver"
-            - "traefik.http.services.strapi.loadbalancer.server.port=80"
+            - "traefik.http.services.strapi.loadbalancer.server.port=1337"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
 
     strapiDB:
