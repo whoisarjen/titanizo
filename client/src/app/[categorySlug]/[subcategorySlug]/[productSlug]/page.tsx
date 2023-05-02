@@ -1,5 +1,4 @@
 import { getAPI } from '@/utils/api.utils'
-import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { formatPrice } from '@/utils/product.utils'
@@ -7,6 +6,7 @@ import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
 import { Product as ProductDTS, WithContext } from 'schema-dts'
 import { type Metadata } from 'next'
+import { WrappedImage } from '@/components/WrappedImage'
 
 type GetData = {
     data: Product
@@ -99,12 +99,12 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 key={image.id}
                                 className="relative aspect-square"
                             >
-                                <Image
-                                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${image.attributes.formats.medium?.url || ''}`}
+                                <WrappedImage
+                                    src={image.attributes.formats.medium?.url || ''}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
-                                ></Image>
+                                />
                             </div>
                         ))}
                     </div>
@@ -114,12 +114,12 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 key={image.id}
                                 className="relative aspect-square"
                             >
-                                <Image
-                                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${image.attributes.formats.small?.url || ''}`}
+                                <WrappedImage
+                                    src={image.attributes.formats.small?.url || ''}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
-                                ></Image>
+                                />
                             </div>
                         ))}
                     </div>
@@ -168,7 +168,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                     </div>
                 </div>
                 {/* <div className="flex w-full max-w-7xl flex-col place-content-evenly gap-6 md:flex-row">
-                <Image
+                <WrappedImage
                     src="/lazienkaPlaceholder.jpg"
                     alt={name}
                     width={800}

@@ -1,8 +1,7 @@
 import { ProductBoxSmall } from '@/components/ProductBoxSmall'
-import { env } from '@/env/client.mjs'
+import { WrappedImage } from '@/components/WrappedImage'
 import { getAPI } from '@/utils/api.utils'
 import { type Metadata } from 'next'
-import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 
 type GetPost = {
@@ -64,8 +63,8 @@ const PostSlug = async (props: PostSlugProps) => {
     return (
         <div className="flex w-full flex-col">
             <div className="prose mx-auto my-4 flex max-w-3xl flex-col">
-                <Image
-                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${url}`}
+                <WrappedImage
+                    src={url}
                     height={height}
                     width={width}
                     alt={caption}
