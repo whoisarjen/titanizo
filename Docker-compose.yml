@@ -35,18 +35,12 @@ services:
             - strapiDB
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
-            - "traefik.http.routers.strapi.entrypoints=http,https"
+            - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
             - "traefik.http.routers.strapi.tls=true"
             - "traefik.http.services.strapi.loadbalancer.server.port=1337"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
-
-            # - "traefik.enable=true"
-            # - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
-            # - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)" TODO K
-            # - "traefik.http.routers.strapi.entrypoints=websecure"
-            # - "traefik.http.routers.strapi.tls.certresolver=myresolver"
-            # - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
+            - "traefik.http.routers.strapi.entrypoints=websecure"
+            - "traefik.http.routers.strapi.tls.certresolver=myresolver"
 
     strapiDB:
         container_name: strapiDB
@@ -80,13 +74,18 @@ services:
     #     restart: unless-stopped
     #     container_name: nextjs
     #     env_file: .env
+    #     healthcheck:
+    #         test: ["CMD", "curl", "--fail", "http://strapi:1337/health"]
+    #         interval: 30s
+    #         timeout: 10s
+    #         retries: 3
     #     environment:
     #         NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
     #         NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
     #         NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: ${NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE}
     #         NEXT_PUBLIC_BRAND: ${NEXT_PUBLIC_BRAND}
     #         NEXT_PUBLIC_BRAND_LOGO_URL: ${NEXT_PUBLIC_BRAND_LOGO_URL}
-    #         NEXT_PUBLIC_SERVER_ADDRESS: http://localhost:1337
+    #         NEXT_PUBLIC_SERVER_ADDRESS: http://strapi:1337
     #         NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
     #         NEXTAUTH_URL: ${NEXTAUTH_URL}
     #         NEXT_PUBLIC_DATABASE_URL: ${NEXT_PUBLIC_DATABASE_URL}
@@ -99,14 +98,17 @@ services:
     #     expose:
     #         - "3000"
     #     depends_on:
-    #         - strapi
+    #         strapi:
+    #             condition: service_healthy
     #     labels:
     #         - "traefik.enable=true"
     #         - "traefik.http.routers.nextjs.rule=Host(`titanizo.pl`)"
     #         - "traefik.http.routers.nextjs.entrypoints=websecure"
     #         - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
-    #         - "traefik.tcp.routers.strapi.entrypoints=strapi" ??
+    #         - "traefik.tcp.routers.strapi.entrypoints=strapi"
     #         - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
+    #     networks:
+    #         - strapi
 
 volumes:
     strapi-data:
