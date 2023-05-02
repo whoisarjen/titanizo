@@ -26,7 +26,7 @@ services:
             - ./server/.env:/opt/app/.env
             - ./server/public/uploads:/opt/app/public/uploads
         ports:
-            - "1337:1337"
+            - "80:1337"
         expose:
             - "1337"
         networks:
