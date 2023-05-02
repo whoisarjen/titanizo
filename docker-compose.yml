@@ -17,13 +17,6 @@ services:
             - "5432"
         networks:
             - strapi
-        labels:
-            - "traefik.enable=true"
-            - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
-            - "traefik.tcp.routers.strapiDB.rule=HostSNI(`*`)"
-            - "traefik.tcp.routers.strapiDB.tls=false"
-            - "traefik.tcp.services.strapiDB.loadBalancer.server.port=5432"
-            - "traefik.tcp.routers.strapiDB.service=postgres"
 
     strapi:
         container_name: strapi
@@ -58,18 +51,6 @@ services:
             - strapi
         depends_on:
             - strapiDB
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.titanizo.entrypoints=websecure"
-            - "traefik.http.routers.titanizo.tls=true"
-            - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
-            - "traefik.http.services.strapi.loadbalancer.server.port=1337"
-            # - "traefik.enable=true"
-            # - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
-            # - "traefik.http.routers.strapi.entrypoints=websecure"
-            # - "traefik.http.routers.strapi.tls.certresolver=myresolver"
-            # - "traefik.http.services.strapi.loadbalancer.server.port=1337"
-            # - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost:1337/_health"]
             interval: 30s
