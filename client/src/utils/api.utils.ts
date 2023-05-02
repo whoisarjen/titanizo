@@ -28,7 +28,7 @@ export const getAPI = async <GetData>(
         }
     )
 
-    return res.json() as GetData
+    return await res.json() as GetData
 }
 
 export const postAPI = async (slug: string, data: object) => {
@@ -42,5 +42,5 @@ export const postAPI = async (slug: string, data: object) => {
         body: JSON.stringify({ data }),
     })
 
-    return res
+    return res // This might not work and required await res.json()
 }
