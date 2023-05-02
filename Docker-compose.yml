@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 services:
     strapi:
         container_name: strapi
@@ -39,7 +39,7 @@ services:
             - "traefik.http.routers.strapi.tls=true"
             - "traefik.http.services.strapi.loadbalancer.server.port=1337"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
-            - "traefik.http.routers.strapi.entrypoints=websecure"
+            - "traefik.http.routers.strapi.entrypoints=web,websecure"
             - "traefik.http.routers.strapi.tls.certresolver=myresolver"
 
     strapiDB:
@@ -117,6 +117,5 @@ networks:
     strapi:
         name: Strapi
         driver: bridge
-    default:
-        external:
-            name: traefik-net
+    traefik-net:
+        external: true  # define an external network
