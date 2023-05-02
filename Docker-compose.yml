@@ -72,10 +72,7 @@ services:
             dockerfile: Dockerfile
         container_name: nextjs
         env_file: .env
-        restart:
-            on-failure:
-                max-retries: 5
-                delay: 10s
+        restart: on-failure:5, unless-stopped
         environment:
             NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
             NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
