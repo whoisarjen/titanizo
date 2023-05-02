@@ -65,13 +65,13 @@ const PostSlug = async (props: PostSlugProps) => {
         <div className="flex w-full flex-col">
             <div className="prose mx-auto my-4 flex max-w-3xl flex-col">
                 <Image
-                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${url}`}
+                    src={`http://titanizo.pl:1337${url}`}
                     height={height}
                     width={width}
                     alt={caption}
                 />
                 <h1>{title}</h1>
-                <ReactMarkdown children={content} />
+                <ReactMarkdown>{content}</ReactMarkdown>
             </div>
             <div className="flex w-full items-start justify-evenly">
                 {products.data.map((product) => (

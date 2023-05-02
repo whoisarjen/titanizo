@@ -5,7 +5,6 @@ import { ProductBoxSmall } from '@/components/ProductBoxSmall'
 import { formatPrice } from '@/utils/product.utils'
 import { GridFeatures } from '@/components/GridFeatures'
 import ButtonAddToBag from './ButtonAddToBag'
-import { env } from '@/env/client.mjs'
 import { Product as ProductDTS, WithContext } from 'schema-dts'
 import { type Metadata } from 'next'
 
@@ -101,7 +100,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.medium?.url || ''}`}
+                                    src={`http://titanizo.pl:1337${image.attributes.formats.medium?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
@@ -116,7 +115,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                 className="relative aspect-square"
                             >
                                 <Image
-                                    src={`${env.NEXT_PUBLIC_SERVER_ADDRESS}${image.attributes.formats.small?.url || ''}`}
+                                    src={`http://titanizo.pl:1337${image.attributes.formats.small?.url || ''}`}
                                     alt="Zdjecie produktowe"
                                     fill
                                     className="object-cover"
@@ -161,9 +160,7 @@ export default async function ProductSlug(props: ProductSlugProps) {
                                     )}
                                 </div>
                                 <div className="prose mt-4">
-                                    <ReactMarkdown
-                                        children={description || ''}
-                                    />
+                                    <ReactMarkdown>{description || ''}</ReactMarkdown>
                                 </div>
                                 <ButtonAddToBag product={product.data} />
                             </div>

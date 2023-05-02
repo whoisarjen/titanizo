@@ -7,6 +7,8 @@ const nextConfig = {
       'localhost',
       'localhost:1337',
       'media.deante.pl',
+      'titanizo.pl',
+      'titanizo.pl:1337',
     ]
   },
   experimental: {
