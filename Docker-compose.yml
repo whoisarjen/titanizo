@@ -41,7 +41,7 @@ services:
             - "traefik.http.services.strapi.loadbalancer.server.port=1337"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:1337/_health"]
+            test: ["CMD", "curl", "-f", "http://localhost:1337/api/products"]
             interval: 30s
             timeout: 10s
             retries: 5
