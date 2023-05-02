@@ -84,9 +84,9 @@ services:
         volumes:
             - ./client/.:/usr/src/app
         ports:
-            - "3001:3001"
+            - "3333:3333"
         expose:
-            - "3001"
+            - "3333"
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.titanizo.rule=Host(`titanizo.pl`)"
