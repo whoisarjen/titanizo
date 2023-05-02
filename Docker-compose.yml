@@ -25,8 +25,6 @@ services:
             - ./server/yarn.lock:/opt/yarn.lock
             - ./server/.env:/opt/app/.env
             - ./server/public/uploads:/opt/app/public/uploads
-        ports:
-            - "80:1337"
         expose:
             - "1337"
         networks:
@@ -37,9 +35,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
             - "traefik.http.routers.strapi.tls=true"
-            - "traefik.http.services.strapi.loadbalancer.server.port=1337"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
-            - "traefik.http.routers.strapi.entrypoints=web,websecure"
+            - "traefik.http.routers.strapi.entrypoints=websecure"
             - "traefik.http.routers.strapi.tls.certresolver=myresolver"
 
     strapiDB:
