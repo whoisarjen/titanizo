@@ -49,8 +49,16 @@ services:
             - "1337"
         networks:
             - strapi
+            - traefik-net
         depends_on:
             - strapiDB
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
+            - "traefik.http.routers.strapi.entrypoints=websecure"
+            - "traefik.http.routers.strapi.tls=true"
+            - "traefik.http.routers.strapi.tls.certresolver=myresolver"
+            - "traefik.http.services.strapi.loadbalancer.server.port=1337"
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost:1337/_health"]
             interval: 30s
@@ -81,6 +89,7 @@ services:
             - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
         networks:
             - strapi
+            - traefik-net
 
 volumes:
     strapi-data:
