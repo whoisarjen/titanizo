@@ -70,9 +70,12 @@ services:
         build:
             context: ./client/.
             dockerfile: Dockerfile
-        restart: unless-stopped
         container_name: nextjs
         env_file: .env
+        restart:
+            on-failure:
+                max-retries: 5
+                delay: 10s
         environment:
             NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
             NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
