@@ -11,8 +11,8 @@ services:
             POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
             POSTGRES_DB: ${DATABASE_NAME}
         volumes:
-            - strapi-data:/var/lib/postgresql/data/ #using a volume
-            - ./server/data:/var/lib/postgresql/data/ # if you want to use a bind folder
+            - strapi-data:/var/lib/postgresql/data/
+            - ./server/data:/var/lib/postgresql/data/
         expose:
             - "5432"
         networks:
@@ -71,11 +71,11 @@ services:
             timeout: 10s
             retries: 5
 
-    nextjs:
+    titanizo:
         build:
             context: ./client/.
             dockerfile: Dockerfile
-        container_name: nextjs
+        container_name: titanizo
         env_file: .env
         restart: unless-stopped
         depends_on:
@@ -100,9 +100,9 @@ services:
             - "3000"
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.nextjs.rule=Host(`titanizo.pl`)"
-            - "traefik.http.routers.nextjs.entrypoints=websecure"
-            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+            - "traefik.http.routers.titanizo.rule=Host(`titanizo.pl`)"
+            - "traefik.http.routers.titanizo.entrypoints=websecure"
+            - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
             - "traefik.tcp.routers.strapi.entrypoints=strapi"
             - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
         networks:
@@ -116,4 +116,4 @@ networks:
         name: Strapi
         driver: bridge
     traefik-net:
-        external: true  # define an external network
+        external: true
