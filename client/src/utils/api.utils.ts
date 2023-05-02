@@ -12,23 +12,22 @@ export const getAPI = async <GetData>(
     object?: Record<string, string>
 ) => {
     let res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api${slug}${new URLSearchParams(object)}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api${slug}${new URLSearchParams(
+            object
+        )}`,
         {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
             },
             next: {
-                revalidate:
-                    process.env.NODE_ENV === 'production'
-                        ? (process.env
-                              .NEXT_PUBLIC_API_REVALIDATE as unknown as number)
-                        : 0,
+                revalidate: process.env
+                    .NEXT_PUBLIC_API_REVALIDATE as unknown as number,
             },
         }
     )
 
-    return await res.json() as GetData
+    return (await res.json()) as GetData
 }
 
 export const postAPI = async (slug: string, data: object) => {
