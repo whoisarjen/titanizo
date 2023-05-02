@@ -1,7 +1,6 @@
-import { env } from '@/env/client.mjs'
 import { getProductHref } from '@/utils/product.utils'
-import Image from 'next/image'
 import Link from 'next/link'
+import { WrappedImage } from '../WrappedImage'
 
 interface ProductBoxSmallProps {
     product: Product
@@ -18,8 +17,8 @@ export const ProductBoxSmall = ({
             className={`relative flex w-full max-w-md flex-col items-center gap-4 p-4 shadow md:max-w-sm ${className}`}
         >
             <div className="relative aspect-square w-3/5">
-                <Image
-                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.attributes.images?.data?.[0]?.attributes.formats.small?.url || ''}`}
+                <WrappedImage
+                    src={product.attributes.images?.data?.[0]?.attributes.formats.small?.url || ''}
                     alt={product.attributes.name}
                     fill
                     className="object-contain"

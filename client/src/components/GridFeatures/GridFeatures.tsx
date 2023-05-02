@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { WrappedImage } from '../WrappedImage'
 
 interface GridFeaturesProps {
     features: {
@@ -55,7 +55,7 @@ export const GridFeatures = ({ features }: GridFeaturesProps) => {
                                     odd ? 'md:order-1' : 'md:order-2'
                                 }`}
                             >
-                                <Image
+                                <WrappedImage
                                     src={feature.image}
                                     alt={feature.name}
                                     fill

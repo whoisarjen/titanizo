@@ -1,7 +1,7 @@
 import { Pagination } from '@/components/Pagination'
+import { WrappedImage } from '@/components/WrappedImage'
 import { env } from '@/env/client.mjs'
 import { getAPI, transformObjectToPathname } from '@/utils/api.utils'
-import Image from 'next/image'
 import Link from 'next/link'
 
 type GetData = {
@@ -31,8 +31,8 @@ const Blog = async ({ searchParams: { page = '1' } }: BlogProps) => {
                     className="flex flex-row items-center gap-3"
                     href={`/blog${transformObjectToPathname(post)}`}
                 >
-                <Image
-                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${post.attributes.image.data.attributes.formats.thumbnail.url}`}
+                <WrappedImage
+                    src={post.attributes.image.data.attributes.formats.thumbnail.url}
                     height={post.attributes.image.data.attributes.formats.thumbnail.height}
                     width={post.attributes.image.data.attributes.formats.thumbnail.width}
                     alt={post.attributes.image.data.attributes.formats.thumbnail.caption || ''}

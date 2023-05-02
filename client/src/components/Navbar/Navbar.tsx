@@ -8,7 +8,7 @@ import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 import { MENU } from './Navbar.constants'
 import { env } from '@/env/client.mjs'
 // import { NavbarProfileButton } from './NavbarProfileButton/NavbarProfileButton'
-import Image from 'next/image'
+import { WrappedImage } from '../WrappedImage'
 
 type GetData = {
     data: Category[]
@@ -55,7 +55,7 @@ export const Navbar = async () => {
                 </div>
                 <div className="relative flex min-h-[60px] w-full items-center bg-black/50  px-6 backdrop-blur">
                     <Link href="/">
-                        <Image
+                        <WrappedImage
                             src={env.NEXT_PUBLIC_BRAND_LOGO_URL}
                             alt="Logo Deante"
                             width={120}

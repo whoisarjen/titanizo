@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import Image from 'next/image'
+import { WrappedImage } from '../WrappedImage'
 
 export const Hero = () => {
     return (
         <section className="relative h-[75vh] mt-[-60px]">
-            <Image
+            <WrappedImage
                 src="https://media.deante.pl/org/ARANZE/RGB_SOMNIA_BOX_hiacynt_abelia_temisto_mokko.jpg"
                 alt="Hero placeholder"
                 fill

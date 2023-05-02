@@ -8,13 +8,13 @@ import {
     useReducer,
 } from 'react'
 import { uniqBy, capitalize } from 'lodash'
-import Image from 'next/image'
 import { formatPrice, getProductHref } from '@/utils/product.utils'
 import Link from 'next/link'
 import { useForm, type FieldErrors, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { orderSchema, type OrderSchema } from '@/schemas/order.schema'
 import { postAPI } from '@/utils/api.utils'
+import { WrappedImage } from '@/components/WrappedImage'
 
 type FieldTranslate = {
     [key in keyof OrderSchema]: string
@@ -179,8 +179,8 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                                 key={product.id}
                                 className="flex flex-1 justify-center gap-3 p-3"
                             >
-                                <Image
-                                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}`}
+                                <WrappedImage
+                                    src={product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}
                                     alt="Hero placeholder"
                                     className="object-cover"
                                     width={96}

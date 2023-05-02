@@ -91,9 +91,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.titanizo.rule=Host(`titanizo.pl`)"
             - "traefik.http.routers.titanizo.entrypoints=websecure"
-            - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
-            - "traefik.tcp.routers.strapi.entrypoints=strapi"
-            - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
+            - "traefik.http.middlewares.titanizo-stripprefix.stripprefix.prefixes=/titanizo"
+            - "traefik.http.routers.titanizo.middlewares=titanizo-stripprefix"
         networks:
             - strapi
 
@@ -101,8 +100,9 @@ volumes:
     strapi-data:
 
 networks:
+    default:
+        external:
+            name: traefik-net
     strapi:
         name: Strapi
         driver: bridge
-    traefik-net:
-        external: true
