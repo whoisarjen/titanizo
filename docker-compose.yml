@@ -60,11 +60,16 @@ services:
             - strapiDB
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
-            - "traefik.http.routers.strapi.entrypoints=websecure"
-            - "traefik.http.routers.strapi.tls.certresolver=myresolver"
+            - "traefik.http.routers.titanizo.entrypoints=websecure"
+            - "traefik.http.routers.titanizo.tls=true"
+            - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
             - "traefik.http.services.strapi.loadbalancer.server.port=1337"
-            - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
+            # - "traefik.enable=true"
+            # - "traefik.http.routers.strapi.rule=Host(`titanizo.pl`)"
+            # - "traefik.http.routers.strapi.entrypoints=websecure"
+            # - "traefik.http.routers.strapi.tls.certresolver=myresolver"
+            # - "traefik.http.services.strapi.loadbalancer.server.port=1337"
+            # - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost:1337/_health"]
             interval: 30s
@@ -91,8 +96,8 @@ services:
             - "traefik.enable=true"
             - "traefik.http.routers.titanizo.rule=Host(`titanizo.pl`)"
             - "traefik.http.routers.titanizo.entrypoints=websecure"
-            - "traefik.http.middlewares.titanizo-stripprefix.stripprefix.prefixes=/titanizo"
-            - "traefik.http.routers.titanizo.middlewares=titanizo-stripprefix"
+            - "traefik.http.routers.titanizo.tls=true"
+            - "traefik.http.routers.titanizo.tls.certresolver=myresolver"
         networks:
             - strapi
 
