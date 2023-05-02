@@ -8,6 +8,7 @@ import NavbarIconBag from './NavbarIcons/NavbarIconBag'
 import { MENU } from './Navbar.constants'
 import { env } from '@/env/client.mjs'
 import { NavbarProfileButton } from './NavbarProfileButton/NavbarProfileButton'
+import Image from 'next/image'
 
 type GetData = {
     data: Category[]
@@ -54,7 +55,7 @@ export const Navbar = async () => {
                 </div>
                 <div className="relative flex min-h-[60px] w-full items-center bg-black/50  px-6 backdrop-blur">
                     <Link href="/">
-                        <img
+                        <Image
                             src={env.NEXT_PUBLIC_BRAND_LOGO_URL}
                             alt="Logo Deante"
                             width={120}
@@ -100,7 +101,7 @@ export const Navbar = async () => {
                         ))}
                         {MENU.map(({ id, name, href }) => (
                             <Link
-                                id={id}
+                                key={id}
                                 href={href}
                                 className="mx-4 cursor-pointer uppercase transition-colors hover:text-white"
                             >

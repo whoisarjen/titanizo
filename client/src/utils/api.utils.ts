@@ -12,7 +12,7 @@ export const getAPI = async <GetData>(
     object?: Record<string, string>
 ) => {
     let res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/api${slug}${new URLSearchParams(object)}`,
+        `http://titanizo.pl:1337/api${slug}${new URLSearchParams(object)}`,
         {
             method: 'GET',
             headers: {
@@ -32,7 +32,7 @@ export const getAPI = async <GetData>(
 }
 
 export const postAPI = async (slug: string, data: object) => {
-    let res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/api${slug}`, {
+    let res = await fetch(`http://titanizo.pl:1337/api${slug}`, {
         method: 'POST',
         mode: 'cors',
         headers: {

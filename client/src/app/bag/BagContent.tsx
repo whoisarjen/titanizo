@@ -44,6 +44,7 @@ const FIELD_TRANSLATE = {
 
 const getInput =
     (register: any, errors: FieldErrors<OrderSchema>) =>
+    // eslint-disable-next-line react/display-name
     (field: keyof OrderSchema, options: object = {}) =>
         (
             <>
@@ -148,11 +149,12 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
         }
 
         return uniqueBagWithQuanitity
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bag.length])
 
     useEffect(() => {
         setValue('country', 'Polska')
-    }, [])
+    }, [setValue])
 
     const getInputWrapper = getInput(register, errors)
     const delieverPrice =
@@ -178,7 +180,7 @@ const BagContent = ({ providers, payments }: BagContentProps) => {
                                 className="flex flex-1 justify-center gap-3 p-3"
                             >
                                 <Image
-                                    src={`${process.env.NEXT_PUBLIC_SERVER_ADDRESS}${product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}`}
+                                    src={`http://titanizo.pl:1337${product.attributes.images?.data?.[0]?.attributes.formats.thumbnail.url}`}
                                     alt="Hero placeholder"
                                     className="object-cover"
                                     width={96}

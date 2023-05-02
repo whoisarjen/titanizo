@@ -66,48 +66,42 @@ services:
             - "traefik.tcp.services.strapiDB.loadBalancer.server.port=5432"
             - "traefik.tcp.routers.strapiDB.service=postgres"
 
-    # nextjs:
-    #     build:
-    #         context: ./client/.
-    #         dockerfile: Dockerfile
-    #     restart: unless-stopped
-    #     container_name: nextjs
-    #     env_file: .env
-    #     healthcheck:
-    #         test: ["CMD", "curl", "--fail", "http://strapi:1337/health"]
-    #         interval: 30s
-    #         timeout: 10s
-    #         retries: 3
-    #     environment:
-    #         NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
-    #         NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
-    #         NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: ${NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE}
-    #         NEXT_PUBLIC_BRAND: ${NEXT_PUBLIC_BRAND}
-    #         NEXT_PUBLIC_BRAND_LOGO_URL: ${NEXT_PUBLIC_BRAND_LOGO_URL}
-    #         NEXT_PUBLIC_SERVER_ADDRESS: http://strapi:1337
-    #         NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-    #         NEXTAUTH_URL: ${NEXTAUTH_URL}
-    #         NEXT_PUBLIC_DATABASE_URL: ${NEXT_PUBLIC_DATABASE_URL}
-    #         NEXT_PUBLIC_GOOGLE_CLIENT: ${NEXT_PUBLIC_GOOGLE_CLIENT}
-    #         NEXT_PUBLIC_GOOGLE_SECRET: ${NEXT_PUBLIC_GOOGLE_SECRET}
-    #     volumes:
-    #         - ./client/.:/usr/src/app
-    #     ports:
-    #         - "3000:3000"
-    #     expose:
-    #         - "3000"
-    #     depends_on:
-    #         strapi:
-    #             condition: service_healthy
-    #     labels:
-    #         - "traefik.enable=true"
-    #         - "traefik.http.routers.nextjs.rule=Host(`titanizo.pl`)"
-    #         - "traefik.http.routers.nextjs.entrypoints=websecure"
-    #         - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
-    #         - "traefik.tcp.routers.strapi.entrypoints=strapi"
-    #         - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
-    #     networks:
-    #         - strapi
+    nextjs:
+        build:
+            context: ./client/.
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        container_name: nextjs
+        env_file: .env
+        environment:
+            NEXT_PUBLIC_API_TOKEN: ${NEXT_PUBLIC_API_TOKEN}
+            NEXT_PUBLIC_API_REVALIDATE: ${NEXT_PUBLIC_API_REVALIDATE}
+            NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE: ${NEXT_PUBLIC_DEFAULT_NUMBER_OF_PRODUCTS_PER_PAGE}
+            NEXT_PUBLIC_BRAND: ${NEXT_PUBLIC_BRAND}
+            NEXT_PUBLIC_BRAND_LOGO_URL: ${NEXT_PUBLIC_BRAND_LOGO_URL}
+            NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+            NEXTAUTH_URL: ${NEXTAUTH_URL}
+            NEXT_PUBLIC_DATABASE_URL: ${NEXT_PUBLIC_DATABASE_URL}
+            NEXT_PUBLIC_GOOGLE_CLIENT: ${NEXT_PUBLIC_GOOGLE_CLIENT}
+            NEXT_PUBLIC_GOOGLE_SECRET: ${NEXT_PUBLIC_GOOGLE_SECRET}
+        volumes:
+            - ./client/.:/usr/src/app
+        ports:
+            - "3000:3000"
+        expose:
+            - "3000"
+        depends_on:
+            - strapi
+            - strapiDB
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nextjs.rule=Host(`titanizo.pl`)"
+            - "traefik.http.routers.nextjs.entrypoints=websecure"
+            - "traefik.http.routers.nextjs.tls.certresolver=myresolver"
+            - "traefik.tcp.routers.strapi.entrypoints=strapi"
+            - "traefik.tcp.routers.strapiDB.entrypoints=postgres"
+        networks:
+            - strapi
 
 volumes:
     strapi-data:

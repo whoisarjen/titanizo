@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, account }) => {
             if (account) {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_SERVER_ADDRESS}/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
+                    `http://titanizo.pl:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
