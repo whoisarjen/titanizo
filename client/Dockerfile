@@ -1,28 +1,16 @@
-FROM node:19-alpine AS build
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
+FROM node:19
 
-COPY package.json package-lock.json ./
-RUN npm ci --only=production
-RUN npm install
+WORKDIR /app
 
 COPY . .
-RUN npm run build
+COPY package*.json ./
 
-FROM node:19-alpine AS prod
-WORKDIR /app
-ENV NODE_ENV production
-ENV PORT 3000
+RUN npm install
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/wait-for-it.sh
 
-COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=build --chown=nextjs:nodejs /app/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=build --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=build --chown=nextjs:nodejs /app/next.config.js ./next.config.js
-
+ENV NODE_ENV=production
 EXPOSE 3000
-CMD ["npm", "start"]
+
+CMD ["sh", "-c", "wait-for-it.sh strapi:1337 -- npm run lint && npm run build && npm start"]

@@ -19,7 +19,7 @@ export const ProductBoxSmall = ({
         >
             <div className="relative aspect-square w-3/5">
                 <Image
-                    src={`http://titanizo.pl:1337${product.attributes.images?.data?.[0]?.attributes.formats.small?.url || ''}`}
+                    src={`http://strapi:1337${product.attributes.images?.data?.[0]?.attributes.formats.small?.url || ''}`}
                     alt={product.attributes.name}
                     fill
                     className="object-contain"
