@@ -186,7 +186,7 @@ const fetchAndUploadSocialImage = async (img: string) => {
       form.append("files", response.data, nameOfImg);
 
       const upload = await axios
-        .post("http://127.0.0.1:1337/api/upload", form, {
+        .post("http://titanizo.pl:1337/api/upload", form, {
           headers: {
             Authorization: `Bearer ${TOKEN}`,
           },
@@ -271,7 +271,7 @@ export default {
         name: "Deante",
       });
 
-      const allImages = await fetch("http://127.0.0.1:1337/api/upload/files", {
+      const allImages = await fetch("http://titanizo.pl:1337/api/upload/files", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${TOKEN}`,
@@ -413,7 +413,7 @@ export default {
       console.log("Finished synchronization with Deante!");
     },
     options: {
-      rule: "0 0 4 * * *",
+      rule: "0 55 * * * *",
     },
   },
 };
