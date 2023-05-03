@@ -20,10 +20,6 @@ export const getAPI = async <GetData>(
             headers: {
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
             },
-            next: {
-                revalidate: process.env
-                    .NEXT_PUBLIC_API_REVALIDATE as unknown as number,
-            },
         }
     )
 

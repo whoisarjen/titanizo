@@ -15,6 +15,8 @@ const inter = Inter({
 
 const GOOGLE_ANALYTICS_ID = 'G-EGW3MQH0HP'
 
+export const revalidate = Number(process.env.NEXT_PUBLIC_API_CACHE_TIME)
+
 export default function RootLayout({
     children,
 }: {
