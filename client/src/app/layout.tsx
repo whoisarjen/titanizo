@@ -25,7 +25,7 @@ export default function RootLayout({
     return (
         <html lang="pl" className={inter.className}>
             <body>
-                {process.env.NEXT_PUBLIC_NODE_ENV === 'production' && (
+                {process.env.NODE_ENV === 'production' && (
                     <>
                         <Script
                             src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
