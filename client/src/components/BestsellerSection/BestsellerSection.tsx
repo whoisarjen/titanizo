@@ -16,7 +16,6 @@ export const BestsellerSection = async () => {
             {[...data, ...data, ...data].map((product, id) => {
                 return (
                     <ProductBoxSmall
-                        className="min-w-[40vw] md:min-w-[30vw] lg:min-w-0"
                         key={id}
                         product={product}
                     />
