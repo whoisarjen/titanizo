@@ -4,9 +4,13 @@ export const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pl', { style: 'currency', currency: 'PLN' }).format(price)
 }
 
-export const getProductHref = (product: Product): string => `
-${transformObjectToPathname(product.attributes.subcategories.data[0].attributes.category.data)}
-${transformObjectToPathname(product.attributes.subcategories.data[0])}
-${transformObjectToPathname(product)}
-`
+export const getProductHref = (product: Product): string => {
+    const url = `
+        ${transformObjectToPathname(product.attributes.subcategories.data[0].attributes.category.data)}
+        ${transformObjectToPathname(product.attributes.subcategories.data[0])}
+        ${transformObjectToPathname(product)}
+    `
+
+    return url.replace(/\s/g, '')
+}
 

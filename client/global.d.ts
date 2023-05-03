@@ -1,6 +1,8 @@
 type DefaultDataWrapper<Attributes> = {
     id: number
-    attributes: Attributes
+    attributes: Attributes & {
+        updatedAt: string
+    }
 }
 
 type ProviderOption = DefaultDataWrapper<{
