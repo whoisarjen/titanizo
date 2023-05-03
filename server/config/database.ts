@@ -24,7 +24,7 @@ export default ({ env }) => {
           ),
         },
       },
-      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 25) },
+      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 30) },
     },
     mysql2: {
       connection: {
@@ -45,7 +45,7 @@ export default ({ env }) => {
           ),
         },
       },
-      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 25) },
+      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 30) },
     },
     postgres: {
       connection: {
@@ -68,7 +68,7 @@ export default ({ env }) => {
         },
         schema: env('DATABASE_SCHEMA', 'public'),
       },
-      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 25) },
+      pool: { min: env.int('DATABASE_POOL_MIN', 2), max: env.int('DATABASE_POOL_MAX', 30) },
     },
     sqlite: {
       connection: {
@@ -87,7 +87,7 @@ export default ({ env }) => {
     connection: {
       client,
       ...connections[client],
-      acquireConnectionTimeout: env.int('DATABASE_CONNECTION_TIMEOUT', 60000),
+      acquireConnectionTimeout: env.int('DATABASE_CONNECTION_TIMEOUT', 1000000),
     },
   };
 };
