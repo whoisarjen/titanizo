@@ -13,7 +13,7 @@ const inter = Inter({
     display: 'swap',
 })
 
-const GOOGLE_ANALYTICS_ID = 'G-EGW3MQH0HP'
+const GOOGLE_ANALYTICS_ID = 'G-STKR3Y1LRG'
 
 export const revalidate = Number(process.env.NEXT_PUBLIC_API_CACHE_TIME)
 
