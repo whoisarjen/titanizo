@@ -78,29 +78,24 @@ export default async function CategorySlug(props: CategorySlugProps) {
     const defaultHref = `/${props.params.categorySlug}`
 
     return (
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-6">
+        <div className="mx-auto flex w-full container flex-col gap-6 p-6">
             <h1 className="text-center text-4xl">
                 {category.data.attributes.name}
             </h1>
             <h2>{category.data.attributes.description}</h2>
             <Breadcrumb defaultHref={defaultHref} />
-            <div className="flex flex-1 gap-6">
-                <div className="flex w-96">123</div>
-                <div className="flex flex-1 flex-col gap-6">
-                    <div className="grid grid-cols-2 gap-6 md:grid-cols-3">
-                        {products.data.map((product) => (
-                            <ProductBoxSmall
-                                key={product.id}
-                                product={product}
-                            />
-                        ))}
-                    </div>
-                    <Pagination
-                        meta={products.meta}
-                        defaultHref={defaultHref}
+            <div className="grid grid-cols-2 lg:grid-cols-4 place-items-stretch gap-6 gap-y-8 xl:grid-cols-6">
+                {products.data.map((product) => (
+                    <ProductBoxSmall
+                        key={product.id}
+                        product={product}
                     />
-                </div>
+                ))}
             </div>
+            <Pagination
+                meta={products.meta}
+                defaultHref={defaultHref}
+            />
         </div>
     )
 }
