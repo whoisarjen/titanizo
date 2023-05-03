@@ -261,7 +261,7 @@ export default {
       console.log("Finished amount synchronization with Deante!");
     },
     options: {
-      rule: "0 0 */2 * * *",
+      rule: "0 45 */1 * * *",
     },
   },
   synchronizationDeante: {
@@ -413,7 +413,7 @@ export default {
       console.log("Finished synchronization with Deante!");
     },
     options: {
-      rule: "0 0 4 * * *",
+      rule: "0 5 */1 * * *",
     },
   },
 };
