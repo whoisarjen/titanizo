@@ -192,7 +192,7 @@ const fetchAndUploadSocialImage = async (img: string) => {
           },
         })
         .catch((error) => {
-          console.log(error.response.data.error);
+          console.log({ error });
           return resolve(null); // FOR 404 ERROR
         });
 
@@ -201,6 +201,7 @@ const fetchAndUploadSocialImage = async (img: string) => {
       // @ts-ignore
       return resolve(upload.data[0]?.id);
     } catch (err) {
+      console.log({ err })
       return resolve(null); // FOR 404 ERROR
     }
   });
