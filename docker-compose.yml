@@ -52,6 +52,8 @@ services:
             - "1337"
         depends_on:
             - postgres
+        external_links:
+            - postgres
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
