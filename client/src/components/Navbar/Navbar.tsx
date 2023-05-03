@@ -70,7 +70,7 @@ export const Navbar = async () => {
                             >
                                 <Link
                                     href={transformObjectToPathname(category)}
-                                    className="mx-4 cursor-pointer uppercase transition-colors hover:text-white"
+                                    className="mx-4 cursor-pointer uppercase transition-colors hover:text-white h-[60px] leading-[60px] z-50"
                                 >
                                     {category.attributes.name}
                                 </Link>
@@ -103,7 +103,7 @@ export const Navbar = async () => {
                             <Link
                                 key={id}
                                 href={href}
-                                className="mx-4 cursor-pointer uppercase transition-colors hover:text-white"
+                                className="mx-4 cursor-pointer uppercase transition-colors hover:text-white h-[60px] leading-[60px] z-50"
                             >
                                 {name}
                             </Link>
