@@ -51,7 +51,7 @@ services:
         expose:
             - "1337"
         depends_on:
-            - strapiDB
+            - postgres
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.strapi.rule=Host(`strapi.titanizo.pl`)"
