@@ -167,7 +167,7 @@ const getOrCreate = async (strapi: any, where: string, params: any) => {
   });
 };
 
-const ALL_IMAGES: any = {};
+let ALL_IMAGES: any = {};
 
 const fetchAndUploadSocialImage = async (img: string) => {
   return new Promise(async (resolve, reject) => {
@@ -268,6 +268,7 @@ export default {
   synchronizationDeante: {
     task: async ({ strapi }) => {
       console.log("Started synchronization with Deante!");
+      ALL_IMAGES = {}
       const manufacturer: any = await getOrCreate(strapi, "manufacturer", {
         name: "Deante",
       });
