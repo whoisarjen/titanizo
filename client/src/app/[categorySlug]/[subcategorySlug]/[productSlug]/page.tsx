@@ -8,6 +8,8 @@ import { Product as ProductDTS, WithContext } from 'schema-dts'
 import { type Metadata } from 'next'
 import { WrappedImage } from '@/components/WrappedImage'
 
+export const revalidate = Number(process.env.NEXT_PUBLIC_API_PRODUCT_PAGE_CACHE_TIME)
+
 type GetData = {
     data: Product
     meta: Meta
