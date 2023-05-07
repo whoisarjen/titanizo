@@ -54,14 +54,6 @@ export const Navbar = async () => {
                     <small className="text-white/80">9:00 - 19:00</small>
                 </div>
                 <div className="relative flex min-h-[60px] w-full items-center bg-black/50  px-6 backdrop-blur">
-                    <Link href="/">
-                        <WrappedImage
-                            src={env.NEXT_PUBLIC_BRAND_LOGO_URL}
-                            alt="Logo Deante"
-                            width={120}
-                            height={30}
-                        />
-                    </Link>
                     <div className="z-20 flex h-[60px] flex-row items-center">
                         {data.map((category) => (
                             <div
