@@ -1,39 +1,60 @@
 <template>
-    <section class="container mx-auto mb-16">
+    <section class="container mx-auto mb-16" v-if="posts?.data.length === 3">
         <h2 class="heading">Blog</h2>
         <div class="flex flex-col md:flex-row">
-            <div class="flex flex-col md:grid md:grid-cols-2 md:w-3/5">
-                <nuxt-img src="https://media.deante.pl/decor/ARANZE/RGB_ZRM_T113__BDH_072M__ZRM_010H__ZRM_060R__ZZMK011O.jpg" class="aspect-square"/>
+            <NuxtLink class="flex flex-col md:grid md:grid-cols-2 md:w-3/5"  :to="`/blog/${posts.data[0].id}--${slugify(posts.data[0].attributes.title as string, { lower: true })}`">
+                <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[0].attributes.image.data.attributes.formats.medium.url}`" class="aspect-square object-cover"/>
                 <div class="flex flex-col p-5">
-                    <div class="flex justify-around items-center">
-                        <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">Poradnik zakupowy</span>
+                    <div class="flex justify-between items-center">
+                        <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[0].attributes.subcategories.data[0].attributes.name }}</span>
                         <small class="text-neutral-500 text-xs">6 maj 2023</small>
                     </div>
-                    <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-2">Zlewozmywaki - jak wybrać najlepszy produkt do swojego domu</h5>
-                    <p class="text-sm leading-relaxed mt-5">Zlewozmywaki są jednym z najważniejszych elementów w każdej kuchni. To one pozwalają na mycie naczyń, warzyw i owoców oraz przygotowywanie posiłków. Dlatego wybór odpowiedniego zlewozmywaka jest niezwykle istotny. W tym artykule przedstawimy najważniejsze kwestie, na które należy zwrócić uwagę, aby wybrać najlepszy zlewozmywak dla swojego domu.</p>
-                    <NuxtLink class="uppercase text-teal-600 text-sm font-bold mt-5">Czytaj <font-awesome-icon size="lg" class="ml-2" icon="fa-light fa-arrow-right" /></NuxtLink>
+                    <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-2">{{ posts.data[0].attributes.title }}</h5>
+                    <p class="text-sm leading-relaxed mt-5 line-clamp-6">{{ posts?.data[0].attributes.content }}</p>
+
+                    <span class="uppercase text-teal-600 text-sm font-bold mt-5">Czytaj <font-awesome-icon size="lg" class="ml-2" icon="fa-light fa-arrow-right" /></span>
                 </div>
-            </div>
+            </NuxtLink>
             <div class="md:w-2/5 flex flex-col gap-8">
-                <div class="flex">
-                    <nuxt-img src="https://media.deante.pl/decor/ARANZE/RGB_ZRM_T113__BDH_072M__ZRM_010H__ZRM_060R__ZZMK011O.jpg" class="aspect-square w-1/3"/>
+                <NuxtLink class="flex" :to="`/blog/${posts.data[1].id}--${slugify(posts.data[1].attributes.title as string, { lower: true })}`">
+                    <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[1].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover"/>
                     <div class="flex flex-col p-3">
                         <div>
-                            <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">Poradnik zakupowy</span>
+                            <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[1].attributes.subcategories.data[0].attributes.name }}</span>
                         </div>
-                        <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-3">Zlewozmywaki - jak wybrać najlepszy produkt do swojego domu</h5>
+                        <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-3">{{  posts.data[1].attributes.title }}</h5>
                     </div>
-                </div>
-                <div class="flex">
-                    <nuxt-img src="https://media.deante.pl/decor/ARANZE/RGB_ZRM_T113__BDH_072M__ZRM_010H__ZRM_060R__ZZMK011O.jpg" class="aspect-square w-1/3"/>
+                </NuxtLink>
+                <NuxtLink class="flex" :to="`/blog/${posts.data[2].id}--${slugify(posts.data[2].attributes.title as string, { lower: true })}`">
+                    <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[2].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover"/>
                     <div class="flex flex-col p-3">
                         <div>
-                            <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">Poradnik zakupowy</span>
+                            <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[2].attributes.subcategories.data[0].attributes.name }}</span>
                         </div>
-                        <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-3">Zlewozmywaki - jak wybrać najlepszy produkt do swojego domu</h5>
+                        <h5 class="mt-5 text-2xl font-medium uppercase tracking-tighter line-clamp-3">{{  posts.data[2].attributes.title }}</h5>
                     </div>
-                </div>
+                </NuxtLink>
             </div>
         </div>
     </section>
 </template>
+
+<script setup lang="ts">
+import slugify from 'slugify';
+
+const config = useRuntimeConfig();
+
+type GetData = {
+    data: Post[]
+    meta: Meta
+}
+
+const { data: posts } = await useGetApi<GetData>('/posts', {
+        'populate': '*',
+        'pagination[page]': '1',
+        'pagination[pageSize]': '3',
+        'sort[0]': 'id:desc'
+
+})
+
+</script>

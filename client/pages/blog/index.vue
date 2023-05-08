@@ -1,0 +1,3 @@
+<template>
+    Listing newsów
+</template>
