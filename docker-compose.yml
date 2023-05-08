@@ -71,7 +71,7 @@ services:
             strapi:
                 condition: service_healthy
         volumes:
-            - ./client/.:/usr/src/app
+            - ./client/.:/app
         ports:
             - "3333:3333"
         expose:
