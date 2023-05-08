@@ -4,8 +4,12 @@
   </NuxtLayout>
 </template>
 
-<script>
+<script setup lang="ts">
   useHead({
-    titleTemplate: (title) => title ? `${title} - Titanizo Polska` : `Titanizo Polska`,
+    titleTemplate: (title) => title ? `${title} - Titanizo.pl - Dom i Ogród` : `Sklep internetowy Titanizo.pl - Dom i ogród`,
+    bodyAttrs: {
+      class: 'bg-neutral-50'
+    }
   })
+
 </script>
