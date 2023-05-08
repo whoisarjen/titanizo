@@ -1,7 +1,5 @@
 <template>
-    <section class="w-full md:w-[70vw] mx-auto h-[600px] bg-slate-600 flex justify-center items-center text-3xl text-white">
-        Bannerki
-    </section>
+    <SliderHomePage />
     <SalesSelectedForYou />
     <SalesPopularCategories />
 

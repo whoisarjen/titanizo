@@ -13,7 +13,9 @@
         </section>
         <nav class="w-full min-h-36 bg-white shadow-md">
             <section class="container mx-auto py-5 flex flex-row w-full justify-between">
-                <nuxt-img src="/assets/brand/default.svg" alt="Logo Titanizo - Dom i ogród" class="h-10 md:mr-10"/>
+                <nuxt-link to="/" class="md:mr-10">
+                    <nuxt-img src="/assets/brand/default.svg" alt="Logo Titanizo - Dom i ogród" class="h-10 "/>
+                </nuxt-link>
                 <label for="search" class="relative w-full hidden md:block">
                     <font-awesome-icon icon="fa-light fa-magnifying-glass" class="absolute top-1/2 -translate-y-1/2 left-4" />
                     <input id="search" type="text" placeholder="Szukaj w Titanizo..." class="w-full bg-neutral-100 rounded-full px-10 py-3 placeholder:text-neutral-900 tracking-tight">
