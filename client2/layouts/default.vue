@@ -1,6 +1,5 @@
 <template>
-    Layout
-    <div>
-        <slot />
-    </div>
+    <Navbar/>
+    <slot />
+    <Footer />
 </template>
