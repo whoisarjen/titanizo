@@ -1,32 +1,22 @@
-FROM node:19 as builder
-
-WORKDIR /app
-
-COPY . .
-
-RUN npm install \
-  --prefer-offline \
-  --frozen-lockfile \
-  --non-interactive \
-  --production=false
-
-RUN npm run build
-
-RUN rm -rf node_modules && \
-  NODE_ENV=production npm install \
-  --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=true
-
+# Use an official Node.js runtime as a parent image
 FROM node:19
 
+# Set the working directory to /app
 WORKDIR /app
 
-COPY --from=builder /app  .
+# Copy package.json and package-lock.json to /app
+COPY package*.json ./
+COPY .npmrc ./.npmrc
 
-ENV HOST 0.0.0.0
-ENV NUXT_PORT 3333
-EXPOSE 3333
+RUN npm cache clean --force
+# Install NPM dependencies
+RUN npm install
 
-CMD [ "npm", "start" ]
+# Copy the rest of the application code to /app
+COPY . .
+
+# Build the Nuxt.js application
+RUN npm run build
+
+# Start the application on port 3333
+CMD ["npm", "run", "start", "--", "-p", "3333"]
