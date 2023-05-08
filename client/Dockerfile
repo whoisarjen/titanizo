@@ -18,5 +18,7 @@ COPY . .
 # Build the Nuxt.js application
 RUN npm run build
 
+COPY .output ./app/.output
+
 # Start the application on port 3333
-CMD ["npm", "run", "start", "--", "-p", "3333"]
+CMD ["npm", "run", "start"]
