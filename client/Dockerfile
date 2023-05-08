@@ -1,17 +1,31 @@
-FROM node:19
+FROM node:19 as builder
 
 WORKDIR /app
 
 COPY . .
-COPY package*.json ./
-COPY next.config.js ./next.config.js
 
-RUN npm install
+RUN npm install \
+  --prefer-offline \
+  --frozen-lockfile \
+  --non-interactive \
+  --production=false
 
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/wait-for-it.sh
+RUN npm build
 
-ENV NODE_ENV=production
+RUN rm -rf node_modules && \
+  NODE_ENV=production npm install \
+  --prefer-offline \
+  --pure-lockfile \
+  --non-interactive \
+  --production=true
+
+FROM node:19
+
+WORKDIR /app
+
+COPY --from=builder /app  .
+
+ENV HOST 0.0.0.0
 EXPOSE 3333
 
-CMD ["sh", "-c", "wait-for-it.sh strapi:1337 -- npm run lint && npm run build && npm start"]
+CMD [ "npm", "start" ]
