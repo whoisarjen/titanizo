@@ -1,17 +1,22 @@
+# Use an official Node.js runtime as a parent image
 FROM node:19
 
+# Set the working directory to /app
 WORKDIR /app
 
-COPY . .
+# Copy package.json and package-lock.json to /app
 COPY package*.json ./
-COPY next.config.js ./next.config.js
+COPY .npmrc ./.npmrc
 
+RUN npm cache clean --force
+# Install NPM dependencies
 RUN npm install
 
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/wait-for-it.sh
+# Copy the rest of the application code to /app
+COPY . .
 
-ENV NODE_ENV=production
-EXPOSE 3333
+# Build the Nuxt.js application
+RUN npm run build
 
-CMD ["sh", "-c", "wait-for-it.sh strapi:1337 -- npm run lint && npm run build && npm start"]
+# Start the application on port 3333
+CMD ["npm", "run", "start", "--", "-p", "3333"]
