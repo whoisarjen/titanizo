@@ -29,6 +29,7 @@
     "@fortawesome/pro-light-svg-icons": "^6.4.0",
     "@fortawesome/pro-thin-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@nuxtjs/google-fonts": "^3.0.0",
     "markdown-it": "^13.0.1",
     "slugify": "^1.6.6"
   }

@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-
   content: [
     "./components/**/*.{js,vue,ts}",
     "./layouts/**/*.vue",
@@ -10,6 +9,13 @@ module.exports = {
     "./app.vue",
   ],
   theme: {
+    fontFamily: {
+      sans: ["Inter"],
+      serif: ["Inter"],
+      mono: ["Inter"],
+      display: ["Inter"],
+      body: ["Inter"],
+    },
     extend: {},
     container:{
       screens: {
