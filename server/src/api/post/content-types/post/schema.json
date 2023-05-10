@@ -28,12 +28,6 @@
       ],
       "type": "media",
       "multiple": false
-    },
-    "subcategories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::subcategory.subcategory",
-      "inversedBy": "posts"
     }
   }
 }
