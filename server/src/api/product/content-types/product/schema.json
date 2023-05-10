@@ -19,12 +19,6 @@
     "description": {
       "type": "richtext"
     },
-    "subcategories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::subcategory.subcategory",
-      "inversedBy": "products"
-    },
     "manufacturer": {
       "type": "relation",
       "relation": "manyToOne",
@@ -154,6 +148,12 @@
       "required": false,
       "default": 0,
       "min": 0
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "products"
     }
   }
 }
