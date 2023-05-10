@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 const { gridSize } = withDefaults(defineProps<{
-    gridSize: number
+    gridSize?: number
 }>(), {
     gridSize: 4
 })
