@@ -15,8 +15,8 @@
                     <span class="text-sm tracking-tight underline font-bold">Czytaj więcej</span>
                 </div>
             </section>
-            <ProductRelated :product="product?.data" :grid-size="3"/>
-            <SalesSelectedForYou :grid-size="3"/>
+            <ProductRelated :product="product?.data" :grid-size="4"/>
+            <SalesSelectedForYou :grid-size="4"/>
         </section>
         <aside class="min-h-full w-1/4 hidden lg:block" >
             <ProductStickyAside :product="product?.data" :show-details="y > 0"/>

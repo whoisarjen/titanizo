@@ -10,9 +10,9 @@
 
 <script setup lang="ts">
 const { gridSize } = withDefaults(defineProps<{
-    gridSize?: number
+    gridSize?: number,
 }>(), {
-    gridSize: 4
+    gridSize: 5
 })
 
 type GetProduct = {

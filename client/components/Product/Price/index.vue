@@ -1,9 +1,9 @@
 <template>
     <div class="flex items-end">
         <div class=" tracking-tighter flex items-center leading-none" :class="{ 'text-rose-700': !!formatedPromoPrice }">
-            <span class="text-3xl font-bold">{{ (formatedPromoPrice || formatedPrice).slice(0, -3) }}</span>
+            <span class="text-3xl font-bold">{{ formatedFinalPrice.slice(0, -3) }}</span>
             <div class="flex flex-col  text-xs leading-tight ml-1 font-medium">
-                <span>{{ (formatedPromoPrice || formatedPrice).slice(-2) }}</span>
+                <span>{{ formatedFinalPrice.slice(-2) }}</span>
                 <span>zł</span>
             </div>
         </div>
@@ -31,4 +31,5 @@ const { price, promoPrice } = defineProps({
 
 const formatedPrice = price.toFixed(2)
 const formatedPromoPrice = promoPrice?.toFixed(2)
+const formatedFinalPrice = formatedPromoPrice || formatedPrice
 </script>
