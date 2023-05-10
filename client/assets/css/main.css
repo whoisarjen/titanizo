@@ -5,6 +5,6 @@
 
 @layer components {
     .heading {
-        @apply text-5xl uppercase tracking-tighter font-medium py-4 mb-10;
+        @apply text-5xl uppercase tracking-tighter font-semibold py-4 mb-10;
     }
 }
