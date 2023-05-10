@@ -17,21 +17,23 @@
                 Najniższa cena, która obowiązywała w okresie 30 dni przed wprowadzeniem obniżki
             </div>
         </div>
-        <div class="px-5 my-6 h-[2px] bg-slate-200"></div>
+        <div class="px-5 my-6 h-[2px] bg-slate-200" />
         <div class="flex text-sm mt-4 leading-relaxed" v-if="typeof product.attributes.quantity === 'number'">
-            <div class="w-1/4 mr-1 mt-2 text-center"><font-awesome-icon size="2x" class="mr-2" icon="fa-light fa-truck-fast"  /></div>
+            <div class="w-1/4 mr-1 mt-2 text-center"><font-awesome-icon size="2x" class="mr-2" icon="fa-light fa-truck-fast" /></div>
             <div class="w-3/4 flex flex-col">
                 <strong class="font-semibold">Dostępność produktu</strong>
                 <strong class="text-green-500 font-normal" v-if="product.attributes.quantity > 10">Dostępny ({{ product.attributes.quantity }} szt.)</strong>
-                <strong class="text-orange-500 font-normal" v-else-if="product.attributes.quantity > 0">Ostatnie sztuki</strong>
+                <strong class="text-orange-500 font-normal" v-else-if="product.attributes.quantity > 0">Ostatnie sztuki ({{ product.attributes.quantity }} szt.)</strong>
                 <strong class="text-red-500 font-normal" v-else>Produkt niedostępny</strong>
-
             </div>
         </div>
-        <div class="block py-3 uppercase text-white bg-sky-600 mt-10 mb-4 text-sm rounded-full text-center font-semibold  cursor-pointer hover:bg-sky-800 transition-colors">
+        <button v-if="product.attributes.quantity" class="button">
             Dodaj do koszyka
             <font-awesome-icon size="xl" class="ml-2" icon="fa-light fa-bag-shopping" />
-        </div>
+        </button>
+        <button v-else disabled class="button">
+            Produkt niedostępny
+        </button>
     </section>
 </template>
 
