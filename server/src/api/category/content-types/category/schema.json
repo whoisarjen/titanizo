@@ -35,6 +35,12 @@
       "relation": "manyToMany",
       "target": "api::product.product",
       "inversedBy": "categories"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "mappedBy": "categories"
     }
   }
 }
