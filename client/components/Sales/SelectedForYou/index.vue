@@ -26,9 +26,10 @@ const { data: products } = await useGetApi<GetProduct>(`/products`, {
     'populate[2]': 'subcategories.category',
     'populate[3]': 'recommended_products.images',
     'populate[4]': 'recommended_products.subcategories.category',
+    'sort': 'gross_price:desc',
+    'filters[quantity][$not]': '0',
     'pagination[page]': '1',
     'pagination[pageSize]': `${gridSize}`,
-    'sort': 'gross_price:desc'
 })
 
 
