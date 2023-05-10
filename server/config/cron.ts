@@ -291,72 +291,6 @@ export default {
       );
       const data: Product[] = await response.json();
 
-      const allPossibleCategories = data.flatMap(({ categories }) =>
-        categories.flatMap((category) => {
-          const { name } = category;
-          return name.split("/").map((word) => {
-            return {
-              ...category,
-              name: name.substring(0, name.lastIndexOf(word) + word.length),
-            };
-          });
-        })
-      );
-
-      const uniquePossibleCategories = _.uniqWith(
-        allPossibleCategories,
-        (a: any, b: any) =>
-          a.name.trim().toLowerCase() == b.name.trim().toLowerCase()
-      );
-
-      const categories = uniquePossibleCategories.filter(
-        ({ name }) => name.length - name.replaceAll("/", "").length === 0
-      );
-      const subcategories = _.uniqWith(
-        uniquePossibleCategories
-          .filter(
-            ({ name }) => name.length - name.replaceAll("/", "").length > 0
-          )
-          .map((category) => ({
-            ...category,
-            oryginalName: category.name,
-            name: category.name.substring(
-              category.name.lastIndexOf("/") + 1,
-              category.name.length
-            ),
-          })),
-        (a, b) => a.name == b.name
-      );
-
-      console.log(categories.length, subcategories.length);
-
-      const createdCategories: any[] = await Promise.all(
-        categories.map((mainCategory) => {
-          return getOrCreate(strapi, "category", {
-            ...mainCategory,
-            oryginalId: mainCategory.id,
-          });
-        })
-      );
-      console.log("categories", categories[0]);
-
-      const subcategoriesCreated: any[] = await Promise.all(
-        subcategories.map((category) => {
-          return getOrCreate(strapi, "subcategory", {
-            ...category,
-            oryginalId: category.id,
-            category: createdCategories.find(
-              (mainCategory) =>
-                mainCategory.name.toLowerCase() ===
-                category.oryginalName
-                  .substring(0, category.oryginalName.indexOf("/"))
-                  .toLowerCase()
-            ).id,
-          });
-        })
-      );
-      console.log("subcategoriesCreated", subcategoriesCreated[0]);
-
       const productsToAdd = [];
       let i = 0;
 
@@ -374,19 +308,7 @@ export default {
         if (productsToAdd.length === 200 || i + 1 === data.length) {
           await Promise.all(
             productsToAdd.map(async (product) => {
-              const subcategories = subcategoriesCreated
-                .filter(({ name }) =>
-                  product.categories.find(
-                    (category) =>
-                      category.name
-                        .substring(
-                          category.name.lastIndexOf("/") + 1,
-                          category.name.length
-                        )
-                        .toLowerCase() === name.toLowerCase()
-                  )
-                )
-                .map(({ id }) => id);
+              // const categories = product.categories.map()
 
               return createOrUpdateProduct(strapi, {
                 ...product,
@@ -399,7 +321,7 @@ export default {
                 net_price: product.prices.netPrice,
                 is_designed: product.isDesigned,
                 warranty_in_months: product.warranty * 12,
-                subcategories,
+                // categories,
                 package_height_in_mm: product.package.height.value,
                 package_depth_in_mm: product.package.depth.value,
                 package_width_in_mm: product.package.width.value,
