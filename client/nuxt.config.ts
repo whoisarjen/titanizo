@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     ],
     modules: [
         '@nuxt/image-edge',
+        '@vueuse/nuxt',
         ['@nuxtjs/google-fonts', {
             families: {
                 'Inter': true,
