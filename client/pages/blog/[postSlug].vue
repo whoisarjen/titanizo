@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-const params = useRoute().params;
+const { params } = useRoute();
 const postSlug = params.postSlug as string;
 const postId = postSlug.substring(0, postSlug.indexOf('--'))
 if(!postId) throw createError({ statusCode: 404, message: 'Nieprawidłowy URL postu!' })
