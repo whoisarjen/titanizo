@@ -15,10 +15,10 @@
                     <span class="text-sm tracking-tight underline font-bold">Czytaj więcej</span>
                 </div>
             </section>
+            <ProductRelated :product="product?.data" :grid-size="3"/>
             <SalesSelectedForYou :grid-size="3"/>
         </section>
         <aside class="min-h-full w-1/4 hidden lg:block" >
-
             <ProductStickyAside :product="product?.data" :show-details="y > 0"/>
         </aside>
     </article>
@@ -29,7 +29,7 @@
 const { params } = useRoute();
 const productSlug = params.productSlug as string;
 const productId = productSlug.substring(0, productSlug.indexOf('--'))
-console.log(productId)
+
 if(!productId) throw createError({ statusCode: 404, message: 'Nieprawidłowy URL produktu!' })
 
 type GetProduct = {
@@ -42,7 +42,8 @@ const { data: product } = await useGetApi<GetProduct>(`/products/${productId}`, 
     'populate[1]': 'manufacturer',
     'populate[2]': 'subcategories.category',
     'populate[3]': 'recommended_products.images',
-    'populate[4]': 'recommended_products.subcategories.category',
+    'populate[4]': 'recommended_products.manufacturer',
+    'populate[5]': 'recommended_products.subcategories.category',
 })
 
 if(!product.value) throw createError({ statusCode: 404 })
