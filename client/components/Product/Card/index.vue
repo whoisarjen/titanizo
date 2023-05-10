@@ -6,10 +6,13 @@
             <h6 class="tracking-tight line-clamp-2 flex-grow mb-2">{{ product.attributes.name }}</h6>
             <ProductPrice :price="product.attributes.gross_price"/>
             <!-- <span class="text-xs tracking-tight mt-2 leading-snug block">Najniższa cena z ostatnich 30 dni przed wprowadzeniem obniżki: <b>{{ }} zł</b></span> -->
-            <div class="invisible group-hover:visible block py-4 uppercase text-white bg-sky-600 mt-4 rounded-full text-center font-medium cursor-pointer hover:bg-sky-800 transition-colors">
-                Do koszyka
+            <button v-if="product.attributes.quantity" class="button invisible group-hover:visible">
+                Dodaj do koszyka
                 <font-awesome-icon size="xl" class="ml-2" icon="fa-light fa-bag-shopping" />
-            </div>
+            </button>
+            <button v-else disabled class="button invisible group-hover:visible">
+                Produkt niedostępny
+            </button>
         </NuxtLink>
     </article>
 </template>
