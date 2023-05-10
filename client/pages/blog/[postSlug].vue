@@ -6,6 +6,8 @@
             <div v-html="$mdRenderer.render(post.data.attributes.content)" />
         </div>
     </article>
+    <SalesSelectedForYou />
+    <SalesLastWatched />
 </template>
 
 <script setup lang="ts">
