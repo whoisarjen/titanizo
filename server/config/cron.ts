@@ -480,7 +480,7 @@ export default {
           await Promise.all(
             productsToAdd.map(async (product) => {
               const uniqueCategories = new Set();
-              product.categories.forEach((categoryId: string) => {
+              product.categories.forEach(({ id: categoryId }) => {
                 const id = CATEGORY_MAP[categoryId];
                 id ? uniqueCategories.add(id) : console.error(`Unknown category: ${categoryId}`)
               })
@@ -512,7 +512,7 @@ export default {
       console.log("Finished synchronization with Deante!");
     },
     options: {
-      rule: "0 48 19 * * *",
+      rule: "0 10 22 * * *",
     },
   },
 };
