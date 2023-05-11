@@ -30,7 +30,7 @@
       </section>
 
       <section class="container mx-auto flex flex-row w-full gap-6 text-sm">
-        <nuxt-link v-for="category in categories" :key="category.id" :to="`/blog/${category.id}--${slugify(category.attributes.name, { lower: true })}`" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
+        <nuxt-link v-for="category in categories" :key="category.id" :to="`/kategoria/${category.id}--${slugify(category.attributes.name, { lower: true })}`" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
           {{ category.attributes.name }}
           <font-awesome-icon icon="fa-light fa-chevron-down" />
         </nuxt-link>
