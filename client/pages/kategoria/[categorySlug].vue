@@ -39,6 +39,8 @@ const [categoryResponse, productsResponse] = await Promise.all([
         'populate[3]': 'recommended_products.images',
         'populate[4]': 'recommended_products.manufacturer',
         'filters[categories][id]': categoryId,
+        'pagination[page]': '1',
+        'pagination[pageSize]': '18',
     }),
 ])
 
