@@ -54,7 +54,7 @@ type Product = DefaultDataWrapper<{
     manufacturer: {
         data: Manufacturer
     }
-    categories: {
+    categories?: {
         data: Category[]
     }
     recommended_products: {
@@ -115,7 +115,7 @@ type Post = DefaultDataWrapper<{
     image: {
         data: Image
     }
-    categories: {
+    categories?: {
         data: Category[]
     }
 }>

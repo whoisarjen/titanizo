@@ -1,18 +1,20 @@
 <template>
-    <section class="container mx-auto mb-16">
-        <h2 class="heading text-center">Ostatnio przeglądane</h2>
-        <div class="grid mt-4 gap-20 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
-            <ProductCard v-for="product in products?.data" :key="product.id" :product="product" />
-        </div>
-    </section>
+  <section class="container mx-auto mb-16">
+    <h2 class="heading text-center">
+      Ostatnio przeglądane
+    </h2>
+    <div class="grid mt-4 gap-20 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
+      <ProductCard v-for="product in products?.data" :key="product.id" :product="product" />
+    </div>
+  </section>
 </template>
 
-
 <script setup lang="ts">
-const { gridSize } = withDefaults(defineProps<{
+
+const props = withDefaults(defineProps<{
     gridSize?: number,
 }>(), {
-    gridSize: 5
+    gridSize: 5,
 })
 
 type GetProduct = {
@@ -20,7 +22,7 @@ type GetProduct = {
     meta: Meta
 }
 
-const { data: products } = await useGetApi<GetProduct>(`/products`, {
+const { data: products, } = await useGetApi<GetProduct>('/products', {
     'populate[0]': 'images',
     'populate[1]': 'manufacturer',
     'populate[2]': 'subcategories.category',
@@ -28,9 +30,8 @@ const { data: products } = await useGetApi<GetProduct>(`/products`, {
     'populate[4]': 'recommended_products.subcategories.category',
     'pagination[page]': '1',
     'filters[quantity][$not]': '0',
-    'pagination[pageSize]': `${gridSize}`,
-    'sort': 'name:desc'
+    'pagination[pageSize]': `${props.gridSize}`,
+    sort: 'name:desc',
 })
-
 
 </script>
