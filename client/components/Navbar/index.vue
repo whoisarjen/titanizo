@@ -5,7 +5,9 @@
         <span class="tracking-tighter w-full sm:w-auto"><font-awesome-icon size="lg" class="mr-2" icon="fa-light fa-truck-fast" />Darmowa dostawa od 499 ZŁ dla zalogowanych</span>
         <div class="flex-grow-1 hidden sm:block" />
         <aside class="gap-6 hidden sm:flex">
-          <div>Blog</div>
+          <nuxt-link to="/blog">
+            Blog
+          </nuxt-link>
           <div>Inspiracje</div>
           <div>Kontakt</div>
         </aside>
@@ -28,10 +30,10 @@
       </section>
 
       <section class="container mx-auto flex flex-row w-full gap-6 text-sm">
-        <div class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
-          Wszystkie kategorie
+        <nuxt-link v-for="category in categories" :key="category.id" :to="`/blog/${category.id}--${slugify(category.attributes.name, { lower: true })}`" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
+          {{ category.attributes.name }}
           <font-awesome-icon icon="fa-light fa-chevron-down" />
-        </div>
+        </nuxt-link>
         <div class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
           Promocje
         </div>
@@ -47,3 +49,21 @@
     </nav>
   </nav>
 </template>
+
+<script setup lang="ts">
+import slugify from 'slugify'
+
+type GetCategories = {
+    data: Category[]
+    meta: Meta
+}
+
+const response = await useGetApi<GetCategories>('/categories', {
+    'filters[parent][id][$null]': 'true',
+    'populate[0]': 'categories',
+    'populate[1]': 'categories.categories',
+})
+
+const categories = response.data.value?.data
+
+</script>

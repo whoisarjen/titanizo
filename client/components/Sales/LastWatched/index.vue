@@ -17,12 +17,12 @@ const props = withDefaults(defineProps<{
     gridSize: 5,
 })
 
-type GetProduct = {
+type GetProducts = {
     data: Product[]
     meta: Meta
 }
 
-const { data: products, } = await useGetApi<GetProduct>('/products', {
+const { data: products, } = await useGetApi<GetProducts>('/products', {
     'populate[0]': 'images',
     'populate[1]': 'manufacturer',
     'populate[2]': 'subcategories.category',

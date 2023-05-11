@@ -59,9 +59,9 @@
           <div class="text-sm py-2 md:py-1">
             Inspiracje
           </div>
-          <div class="text-sm py-2 md:py-1">
+          <nuxt-link to="/blog" class="text-sm py-2 md:py-1">
             Blog
-          </div>
+          </nuxt-link>
           <div class="text-sm py-2 md:py-1">
             Nowości
           </div>
