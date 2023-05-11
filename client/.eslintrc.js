@@ -12,5 +12,7 @@ module.exports = {
             exports: 'never',
             functions: 'never',
         },],
+        'vue/no-multiple-template-root': 'off',
+        'vue/multi-word-component-names': 'off',
     },
 }
