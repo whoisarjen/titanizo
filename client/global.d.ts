@@ -27,25 +27,10 @@ type Payment = DefaultDataWrapper<{
     name: string
 }>
 
-type Subcategory = DefaultDataWrapper<{
-    name: string
-    description?: string
-    category: {
-        data: Category
-    }
-    products: {
-        data: Product[]
-    }
-}>
-
 type Category = DefaultDataWrapper<{
     name: string
     description?: string
-    subcategories: {
-        data: (Omit<Subcategory, 'attributes'> & {
-            attributes: Omit<Subcategory['attributes'], 'category'>
-        })[]
-    }
+    parent?: Category
 }>
 
 type Manufacturer = DefaultDataWrapper<{
@@ -69,8 +54,8 @@ type Product = DefaultDataWrapper<{
     manufacturer: {
         data: Manufacturer
     }
-    subcategories: {
-        data: Subcategory[]
+    categories?: {
+        data: Category[]
     }
     recommended_products: {
         data: Product[]
@@ -130,8 +115,8 @@ type Post = DefaultDataWrapper<{
     image: {
         data: Image
     }
-    subcategories: {
-        data: Subcategory[]
+    categories?: {
+        data: Category[]
     }
 }>
 
