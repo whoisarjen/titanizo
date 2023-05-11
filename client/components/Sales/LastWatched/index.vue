@@ -1,6 +1,6 @@
 <template>
   <section class="container mx-auto mb-16">
-    <h2 class="heading text-center">
+    <h2 class="heading">
       Ostatnio przeglądane
     </h2>
     <div class="grid mt-4 gap-20 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
