@@ -1,6 +1,6 @@
 <template>
   <section v-if="posts?.data.length" class="container mx-auto mb-16">
-    <h2 class="heading text-center">
+    <h2 class="heading">
       Powiązane posty
     </h2>
     <div class="grid mt-4 gap-20 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
     gridSize?: number,
     product: Product,
 }>(), {
-    gridSize: 5,
+    gridSize: 4,
 })
 
 type GetPosts = {
