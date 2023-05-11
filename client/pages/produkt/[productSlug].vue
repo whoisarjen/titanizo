@@ -26,12 +26,12 @@
         </section>
         <ProductRelatedProducts :product="product?.data" :grid-size="4" />
         <SalesSelectedForYou :grid-size="4" />
+        <ProductRelatedPosts v-if="product" :product="product.data" />
       </section>
       <aside class="min-h-full w-1/4 hidden lg:block">
         <ProductStickyAside :product="product?.data" :show-details="y > 0" />
       </aside>
     </article>
-    <ProductRelatedPosts v-if="product" :product="product.data" />
     <SalesLastWatched />
   </div>
 </template>
