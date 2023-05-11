@@ -31,6 +31,7 @@ type Category = DefaultDataWrapper<{
     name: string
     description?: string
     parent?: Category
+    categories?: Category[]
 }>
 
 type Manufacturer = DefaultDataWrapper<{
