@@ -1,5 +1,5 @@
 <template>
-  <section class="container mx-auto mb-16">
+  <section class="container mx-auto mb-4">
     <h2 class="heading">
       Popularne kategorie
     </h2>

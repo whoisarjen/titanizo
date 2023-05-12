@@ -1,5 +1,5 @@
 <template>
-  <section v-if="posts?.data.length === 3" class="container mx-auto mb-16">
+  <section v-if="posts?.data.length === 3" class="container mx-auto mb-4">
     <h2 class="heading">
       Blog
     </h2>
