@@ -8,6 +8,6 @@
         @apply text-5xl uppercase tracking-tighter font-semibold py-4 mb-10;
     }
     .button {
-        @apply block py-3 uppercase text-white bg-sky-600 mt-10 mb-4 text-sm rounded-full text-center font-semibold w-full cursor-pointer enabled:hover:bg-sky-800 transition-colors disabled:opacity-25
+        @apply block py-3 uppercase text-white bg-sky-600 mt-10 mb-4 text-xs rounded-full text-center font-medium w-full cursor-pointer enabled:hover:bg-sky-800 transition-colors disabled:opacity-25
     }
 }
