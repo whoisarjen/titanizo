@@ -1,9 +1,9 @@
 <template>
-  <section v-if="posts?.data.length" class="container mx-auto mb-16">
+  <section v-if="posts?.data.length" class="container mx-auto mb-4">
     <h2 class="heading">
       Powiązane posty
     </h2>
-    <div class="grid mt-4 gap-20 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
+    <div class="grid mt-4 gap-4 overflow-auto max-w-screen" :class="`grid-cols-${gridSize}`">
       <div v-for="post in posts?.data" :key="post.id">
         {{ post.attributes.title }}
       </div>
