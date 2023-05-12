@@ -4,11 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faHeart,
   faChevronDown,
+  faChevronRight,
   faUser,
   faBagShopping,
   faMagnifyingGlass,
+  faArrowUpRightFromSquare,
   faTruckFast,
-  faArrowRight
+  faArrowRight,
+  faFaucet,
 } from '@fortawesome/pro-light-svg-icons'
 import { faMedal, faBoxTaped } from '@fortawesome/pro-thin-svg-icons'
 import { faFire } from '@fortawesome/pro-duotone-svg-icons'
@@ -21,9 +24,12 @@ library.add(
   faMagnifyingGlass,
   faFire,
   faChevronDown,
+  faChevronRight,
+  faArrowUpRightFromSquare,
   faMedal,
   faBoxTaped,
-  faArrowRight
+  faArrowRight,
+  faFaucet,
 )
 
 config.autoAddCss = false
