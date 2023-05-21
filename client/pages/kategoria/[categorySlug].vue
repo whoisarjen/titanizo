@@ -24,7 +24,7 @@ type GetProducts = {
     meta: Meta
 }
 
-const [categoryResponse, productsResponse] = await Promise.all([
+const [categoryResponse, productsResponse,] = await Promise.all([
     useGetApi<GetCategory>(`/categories/${categoryId}`, {
         'populate[0]': 'images',
         'populate[1]': 'manufacturer',
