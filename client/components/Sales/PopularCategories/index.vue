@@ -4,7 +4,7 @@
       Popularne kategorie
     </h2>
     <div class="grid grid-cols-5 mt-4 gap-10 max-w-screen overflow-auto">
-      <nuxt-link v-for="category in categories?.data" :key="category.id" class="group cursor-pointer" to="/#">
+      <nuxt-link v-for="category in categories?.data" :key="category.id" class="group cursor-pointer" :to="`/kategoria/${category.id}--${slugify(category.attributes.name, { lower: true })}`">
         <div class="h-[300px]  relative overflow-hidden">
           <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${category.attributes.image?.data?.attributes.formats.small.url}`" class="object-cover w-full h-full group-hover:scale-125 transition-transform duration-700" />
         </div>
@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import slugify from 'slugify'
+
 type GetPosts = {
     data: Category[]
     meta: Meta
