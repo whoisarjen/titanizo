@@ -35,7 +35,7 @@ type Category = DefaultDataWrapper<{
         data: Category[]
     }
     image?: {
-        data: Image
+        data: Image | null
     }
     isPopular: boolean
 }>
