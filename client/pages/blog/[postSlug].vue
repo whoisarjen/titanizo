@@ -23,6 +23,7 @@ type GetPost = {
     data: Post
     meta: Meta
 }
+
 const { data: post, error, } = await useGetApi<GetPost>(`/posts/${postId}`, {
     populate: '*',
 })

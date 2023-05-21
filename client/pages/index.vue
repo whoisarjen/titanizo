@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div className="flex flex-col gap-8">
     <SliderHomePage />
     <SalesSelectedForYou />
     <SalesPopularCategories />
