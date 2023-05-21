@@ -5,7 +5,7 @@
         <section class="border flex p-2 bg-white">
           <div class="basis-2/5 aspect-square">
             <div v-if="product.data.attributes.images?.data?.length" class="aspect-square w-4/5 mx-auto">
-              <nuxt-img :src="`https://strapi.titanizo.pl${ product.data.attributes.images?.data[0].attributes.formats.thumbnail.url}`" class="w-full h-full object-contain" />
+              <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${ product.data.attributes.images?.data[0].attributes.formats.thumbnail.url}`" class="w-full h-full object-contain" />
             </div>
           </div>
           <div class="basis-3/5 pt-10">

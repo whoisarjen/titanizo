@@ -5,7 +5,7 @@
     </h2>
     <div class="flex flex-col md:flex-row">
       <NuxtLink class="flex flex-col md:grid md:grid-cols-2 md:w-3/5" :to="`/blog/${posts.data[0].id}--${slugify(posts.data[0].attributes.title as string, { lower: true })}`">
-        <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[0].attributes.image.data.attributes.formats.medium.url}`" class="aspect-square object-cover" />
+        <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${posts.data[0].attributes.image.data.attributes.formats.medium.url}`" class="aspect-square object-cover" />
         <div class="flex flex-col p-5">
           <div class="flex justify-between items-center">
             <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[0].attributes.categories?.data[0].attributes.name }}</span>
@@ -23,7 +23,7 @@
       </NuxtLink>
       <div class="md:w-2/5 flex flex-col gap-8">
         <NuxtLink class="flex" :to="`/blog/${posts.data[1].id}--${slugify(posts.data[1].attributes.title as string, { lower: true })}`">
-          <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[1].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover" />
+          <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${posts.data[1].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover" />
           <div class="flex flex-col p-3">
             <div>
               <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[1].attributes.categories?.data[0].attributes.name }}</span>
@@ -34,7 +34,7 @@
           </div>
         </NuxtLink>
         <NuxtLink class="flex" :to="`/blog/${posts.data[2].id}--${slugify(posts.data[2].attributes.title as string, { lower: true })}`">
-          <nuxt-img :src="`https://strapi.titanizo.pl${posts.data[2].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover" />
+          <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${posts.data[2].attributes.image.data.attributes.formats.small.url}`" class="aspect-square w-1/3 object-cover" />
           <div class="flex flex-col p-3">
             <div>
               <span class="px-5 py-1 rounded-full bg-teal-600 text-white font-medium text-xs uppercase tracking-tight">{{ posts.data[2].attributes.categories?.data[0].attributes.name }}</span>

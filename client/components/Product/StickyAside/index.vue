@@ -3,7 +3,7 @@
     <Transition name="slide-fade">
       <article v-if="props.product.attributes.images?.data?.length && showDetails" class="text-center">
         <div class="w-1/2 mx-auto aspect-square">
-          <nuxt-img :src="`https://strapi.titanizo.pl${ props.product.attributes.images?.data[0].attributes.formats.thumbnail.url}`" class="w-full h-full object-contain" />
+          <nuxt-img loading="lazy" :src="`https://strapi.titanizo.pl${ props.product.attributes.images?.data[0].attributes.formats.thumbnail.url}`" class="w-full h-full object-contain" />
         </div>
         <span class="text-lg font-semibold tracking-tight w-2/3">{{ props.product.attributes.name }}</span>
       </article>
