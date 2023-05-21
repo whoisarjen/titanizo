@@ -41,6 +41,20 @@
       "relation": "manyToMany",
       "target": "api::post.post",
       "mappedBy": "categories"
+    },
+    "image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "isPopular": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

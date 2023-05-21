@@ -34,6 +34,10 @@ type Category = DefaultDataWrapper<{
     categories?: {
         data: Category[]
     }
+    image?: {
+        data: Image
+    }
+    isPopular: boolean
 }>
 
 type Manufacturer = DefaultDataWrapper<{
