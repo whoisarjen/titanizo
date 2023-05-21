@@ -15,5 +15,6 @@ module.exports = {
         'vue/no-multiple-template-root': 'off',
         'vue/multi-word-component-names': 'off',
         'vue/no-setup-props-destructure': 'off',
+        'vue/require-default-prop': 'off',
     },
 }

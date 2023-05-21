@@ -11,7 +11,7 @@ import {
   faArrowUpRightFromSquare,
   faTruckFast,
   faArrowRight,
-  faFaucet,
+  faFaucet
 } from '@fortawesome/pro-light-svg-icons'
 import { faMedal, faBoxTaped } from '@fortawesome/pro-thin-svg-icons'
 import { faFire } from '@fortawesome/pro-duotone-svg-icons'
@@ -29,7 +29,7 @@ library.add(
   faMedal,
   faBoxTaped,
   faArrowRight,
-  faFaucet,
+  faFaucet
 )
 
 config.autoAddCss = false
