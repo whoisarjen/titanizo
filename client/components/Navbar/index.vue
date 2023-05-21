@@ -61,7 +61,14 @@
       <nav v-if="mainCategory" class="bg-white fixed container mx-auto left-1/2 -translate-x-1/2 rounded-b" @mouseleave="mainCategory = null">
         <div v-if="mainCategory.attributes.categories?.data" class="flex">
           <aside class="bg-neutral-100 rounded-bl w-1/5 py-4">
-            <nuxt-link v-for="subcategory in mainCategory.attributes.categories.data" :key="subcategory.id" class="p-3 hover:text-rose-700 transition-colors text-sm flex justify-between items-center gap-10 tracking-tight cursor-pointer" :class="{'bg-white text-rose-600': subCategory === subcategory}" @mouseover="subcategory.attributes.categories?.data.length ? subCategory = subcategory : false">
+            <nuxt-link
+              v-for="subcategory in mainCategory.attributes.categories.data"
+              :key="subcategory.id"
+              class="p-3 hover:text-rose-700 transition-colors text-sm flex justify-between items-center gap-10 tracking-tight cursor-pointer"
+              :class="{'bg-white text-rose-600': subCategory === subcategory}"
+              :to="`/kategoria/${subcategory.id}--${slugify(subcategory.attributes.name, { lower: true })}`"
+              @mouseover="subcategory.attributes.categories?.data.length ? subCategory = subcategory : false"
+            >
               <span>{{ subcategory.attributes.name }}</span>
               <font-awesome-icon :icon="`fa-light ${subcategory.attributes.categories?.data.length ? 'fa-chevron-right' : 'fa-arrow-up-right-from-square'}`" size="sm" />
             </nuxt-link>
@@ -70,7 +77,7 @@
             <nav>
               <ul>
                 <li v-for="lowCategory in subCategory?.attributes.categories.data" :key="lowCategory.id" class="py-1 text-sm tracking-tight hover:text-rose-600 cursor-pointer">
-                  <nuxt-link>
+                  <nuxt-link :to="`/kategoria/${lowCategory.id}--${slugify(lowCategory.attributes.name, { lower: true })}`">
                     {{ lowCategory.attributes.name }}
                   </nuxt-link>
                 </li>
