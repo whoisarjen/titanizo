@@ -28,7 +28,7 @@
   <section class="border-t bg-neutral-900 text-white">
     <div class="container mx-auto grid md:grid-cols-4 md:py-10 py-4  tracking-tight">
       <div>
-        <nuxt-img src="/assets/brand/white.svg" alt="Logo Titanizo - Dom i ogród" class="w-1/2" />
+        <nuxt-img loading="lazy" src="/assets/brand/white.svg" alt="Logo Titanizo - Dom i ogród" class="w-1/2" />
       </div>
       <div class="my-4 md:my-0">
         <span class="text-xs uppercase font-medium tracking-tighter">O Titanizo</span>
