@@ -1,7 +1,7 @@
 <template>
   <article v-if="props.product">
     <NuxtLink class="group flex flex-col h-full" :to="`/produkt/${props.product.id}--${slugify(props.product.attributes.name, { lower: true })}`">
-      <nuxt-img v-if="props.product.attributes.images?.data?.length" :src="`https://strapi.titanizo.pl${props.product.attributes.images?.data[0].attributes.formats.small.url}`" class="w-4/5 aspect-square object-contain mx-auto mix-blend-darken py-8" />
+      <nuxt-img v-if="props.product.attributes.images?.data?.length" loading="lazy" :src="`https://strapi.titanizo.pl${props.product.attributes.images?.data[0].attributes.formats.small.url}`" class="w-4/5 aspect-square object-contain mx-auto mix-blend-darken py-8" />
       <h5 class="text-xl uppercase tracking-tighter font-medium line-clamp-1 mb-1 group-hover:underline break-all">
         {{ props.product.attributes.manufacturer.data.attributes.name }} {{ props.product.attributes.collection }} {{ props.product.attributes.name }}
       </h5>
