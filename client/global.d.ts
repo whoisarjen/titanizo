@@ -30,7 +30,9 @@ type Payment = DefaultDataWrapper<{
 type Category = DefaultDataWrapper<{
     name: string
     description?: string
-    parent?: Category
+    parent?: {
+        data: Category | null
+    }
     categories?: {
         data: Category[]
     }
