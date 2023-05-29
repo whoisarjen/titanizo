@@ -58,11 +58,10 @@ type GetData = {
 }
 
 const { data: posts, } = await useGetApi<GetData>('/posts', {
-        populate: '*',
-        'pagination[page]': '1',
-        'pagination[pageSize]': '3',
-        'sort[0]': 'id:desc',
-
+  populate: '*',
+  'pagination[page]': '1',
+  'pagination[pageSize]': '3',
+  'sort[0]': 'id:desc',
 })
 
 </script>
