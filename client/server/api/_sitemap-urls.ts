@@ -57,7 +57,7 @@ export default cachedEventHandler(async () => {
     }
     const { data: responsePosts, } = await makeAPICall<GetPosts>('/posts', {
         populate: '*',
-        'pagination[page]': '3',
+        'pagination[page]': '1',
         'pagination[pageSize]': '1000',
     })
     const posts = responsePosts.map(post => ({
@@ -71,5 +71,5 @@ export default cachedEventHandler(async () => {
     ]
     }, {
     name: 'sitemap-dynamic-urls',
-    // maxAge: 60 * 60 * 24,
+    maxAge: 60 * 60 * 24,
 })
