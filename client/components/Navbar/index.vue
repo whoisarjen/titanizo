@@ -8,8 +8,12 @@
           <nuxt-link to="/blog">
             Blog
           </nuxt-link>
-          <div>Inspiracje</div>
-          <div>Kontakt</div>
+          <nuxt-link to="/inspiracje">
+            Inspiracje
+          </nuxt-link>
+          <nuxt-link to="/kontakt">
+            Kontakt
+          </nuxt-link>
         </aside>
       </div>
     </section>
@@ -23,9 +27,13 @@
           <input id="search" type="text" placeholder="Szukaj w Titanizo..." class="w-full bg-neutral-100 rounded-full px-10 py-3 placeholder:text-neutral-900 tracking-tight">
         </label>
         <div class="md:ml-16 flex items-center">
-          <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-user" />
-          <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-heart" />
-          <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-bag-shopping" />
+          <!-- <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-user" /> -->
+          <nuxt-link to="/polubione">
+            <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-heart" />
+          </nuxt-link>
+          <nuxt-link to="/koszyk">
+            <font-awesome-icon size="xl" class="ml-5" icon="fa-light fa-bag-shopping" />
+          </nuxt-link>
         </div>
       </section>
 
@@ -43,17 +51,17 @@
             <font-awesome-icon icon="fa-light fa-chevron-down" />
           </nuxt-link>
         </template>
-        <div class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
+        <nuxt-link to="/promocje" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
           Promocje
-        </div>
+        </nuxt-link>
         <div class="flex-1" />
-        <div class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
+        <nuxt-link to="/najnowsze" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
           Nowości
-        </div>
-        <div class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
+        </nuxt-link>
+        <nuxt-link to="/najpopularniejsze" class="pt-4 pb-3 cursor-pointer transition-colors uppercase font-medium border-b-[3px] border-transparent hover:border-rose-700 hover:text-rose-700">
           <font-awesome-icon icon="fa-duotone fa-fire" size="lg" class="text-rose-700" />
           Bestsellery
-        </div>
+        </nuxt-link>
       </section>
     </nav>
 

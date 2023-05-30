@@ -49,29 +49,29 @@
       </div>
       <div class="my-4 md:my-0">
         <span class="text-xs uppercase font-medium tracking-tighter">Oferta i aktualności</span>
-        <nav>
+        <nav class="flex flex-col">
           <div class="text-sm py-2 md:py-1">
             Najlepsze kategorie
           </div>
-          <div class="text-sm py-2 md:py-1">
+          <nuxt-link to="/najpopularniejsze" class="text-sm py-2 md:py-1">
             Najlepsze produkty
-          </div>
-          <div class="text-sm py-2 md:py-1">
+          </nuxt-link>
+          <nuxt-link to="/inspiracje" class="text-sm py-2 md:py-1">
             Inspiracje
-          </div>
+          </nuxt-link>
           <nuxt-link to="/blog" class="text-sm py-2 md:py-1">
             Blog
           </nuxt-link>
-          <div class="text-sm py-2 md:py-1">
+          <nuxt-link to="/najnowsze" class="text-sm py-2 md:py-1">
             Nowości
-          </div>
-          <div class="text-sm py-2 md:py-1">
+          </nuxt-link>
+          <nuxt-link to="/promocje" class="text-sm py-2 md:py-1">
             Promocje
-          </div>
+          </nuxt-link>
         </nav>
       </div>
       <div class="my-4 md:my-0">
-        <span class="text-xs uppercase font-medium tracking-tighter">Kontakt</span>
+        <nuxt-link to="/kontakt" class="text-xs uppercase font-medium tracking-tighter">Kontakt</nuxt-link>
         <nav>
           <div class="text-sm py-2 md:py-1">
             FAQ
