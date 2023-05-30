@@ -13,6 +13,19 @@ const makeAPICall = async <Response>(slug: string, query?: Record<string, string
 export default cachedEventHandler(async () => {
     const config = useRuntimeConfig()
 
+    type GetCategories = {
+        data: Category[]
+        meta: Meta
+    }
+    const { data: responseCategories, } = await makeAPICall<GetCategories>('/categories', {
+        'pagination[page]': '1',
+        'pagination[pageSize]': '1000',
+    })
+    const categories = responseCategories.map(category => ({
+        loc: `${config.public.siteUrl}/kategoria/${category.id}--${slugify(category.attributes.name, { lower: true, })}`,
+        lastmod: category.attributes.updatedAt,
+    }))
+
     type GetProducts = {
         data: Product[]
         meta: Meta
@@ -66,6 +79,7 @@ export default cachedEventHandler(async () => {
     }))
 
     return [
+        ...categories,
         ...products,
         ...posts,
     ]
