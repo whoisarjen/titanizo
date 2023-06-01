@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import slugify from 'slugify'
 
-const { params, } = useRoute()
+const { params, query, } = useRoute()
 const categorySlug = params.categorySlug as string
 const categoryId = categorySlug.substring(0, categorySlug.indexOf('--'))
 
@@ -59,7 +59,7 @@ const [categoryResponse, productsResponse,] = await Promise.all([
         'populate[3]': 'recommended_products.images',
         'populate[4]': 'recommended_products.manufacturer',
         'filters[categories][id]': categoryId,
-        'pagination[page]': '1',
+        'pagination[page]': query.page as string || '1',
         'pagination[pageSize]': '18',
     }),
 ])
