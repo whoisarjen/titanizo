@@ -3,7 +3,7 @@
     <div class="max-w-2xl mx-auto px-4">
       <!-- Article Header -->
       <header class="mb-6">
-        <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
           <time :datetime="post.publishedAt">
             {{ formatDate(post.publishedAt) }}
           </time>
@@ -11,18 +11,18 @@
           <span>{{ post.readingTime }} min czytania</span>
         </div>
 
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
           {{ post.title }}
         </h1>
 
-        <p class="text-gray-600">
+        <p class="text-gray-600 dark:text-gray-400">
           {{ post.description }}
         </p>
       </header>
 
       <!-- Featured Image -->
       <figure class="mb-6 -mx-4 sm:mx-0">
-        <div class="aspect-[16/9] overflow-hidden sm:rounded-lg bg-gray-100">
+        <div class="aspect-[16/9] overflow-hidden sm:rounded-lg bg-gray-100 dark:bg-gray-800">
           <NuxtImg
             :src="post.image"
             :alt="post.imageAlt"
@@ -39,15 +39,15 @@
       </figure>
 
       <!-- Article Content with Prose -->
-      <div class="prose prose-gray max-w-none" v-html="post.content" />
+      <div class="prose prose-gray dark:prose-invert max-w-none" v-html="post.content" />
 
       <!-- Tags -->
-      <footer class="mt-8 pt-6 border-t border-gray-100">
+      <footer class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
         <div class="flex flex-wrap gap-2">
           <span
             v-for="tag in post.tags"
             :key="tag"
-            class="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+            class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm rounded-full"
           >
             {{ tag }}
           </span>
@@ -57,16 +57,16 @@
       <!-- Related Posts -->
       <section
         v-if="relatedPosts.length > 0"
-        class="mt-8 pt-8 border-t border-gray-100"
+        class="mt-8 pt-8 border-t border-gray-100 dark:border-gray-800"
         aria-labelledby="related-heading"
       >
         <h2
           id="related-heading"
-          class="text-lg font-semibold text-gray-900 mb-4"
+          class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
         >
           Powiazane artykuly
         </h2>
-        <div class="divide-y divide-gray-100">
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
           <div v-for="relatedPost in relatedPosts" :key="relatedPost.slug" class="py-4 first:pt-0">
             <BlogCard :post="relatedPost" />
           </div>
@@ -78,15 +78,15 @@
   <!-- 404 -->
   <div v-else class="py-16 text-center">
     <div class="max-w-2xl mx-auto px-4">
-      <h1 class="text-xl font-semibold text-gray-900 mb-2">
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
         Artykul nie znaleziony
       </h1>
-      <p class="text-gray-600 mb-6">
+      <p class="text-gray-600 dark:text-gray-400 mb-6">
         Artykul, ktorego szukasz, nie istnieje.
       </p>
       <NuxtLink
         to="/"
-        class="text-sm font-medium text-gray-900 hover:text-gray-600 underline underline-offset-4"
+        class="text-sm font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 underline underline-offset-4"
       >
         Wróc do strony glownej
       </NuxtLink>

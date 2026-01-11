@@ -5,13 +5,13 @@
       <div class="max-w-2xl mx-auto px-4">
         <h1 id="articles-heading" class="sr-only">Artykuly</h1>
 
-        <div class="divide-y divide-gray-100">
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
           <div v-for="post in posts" :key="post.slug" class="py-6 first:pt-0">
             <BlogCard :post="post" />
           </div>
         </div>
 
-        <div v-if="posts.length === 0" class="text-center py-12 text-gray-500">
+        <div v-if="posts.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
           Brak artykulow do wyswietlenia.
         </div>
       </div>

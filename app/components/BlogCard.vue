@@ -4,7 +4,7 @@
       <div class="flex items-start gap-4">
         <!-- Image -->
         <figure class="w-20 sm:w-24 flex-shrink-0">
-          <div class="aspect-square overflow-hidden rounded-lg bg-gray-100">
+          <div class="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
             <NuxtImg
               :src="post.image"
               :alt="post.imageAlt"
@@ -21,15 +21,15 @@
 
         <!-- Content -->
         <div class="flex-1 min-w-0">
-          <h2 class="text-base font-semibold text-gray-900 group-hover:text-gray-600 transition-colors mb-1 line-clamp-2">
+          <h2 class="text-base font-semibold text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors mb-1 line-clamp-2">
             {{ post.title }}
           </h2>
 
-          <p class="text-sm text-gray-600 line-clamp-2 mb-2">
+          <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
             {{ post.description }}
           </p>
 
-          <div class="text-xs text-gray-500">
+          <div class="text-xs text-gray-500 dark:text-gray-500">
             <time :datetime="post.publishedAt">
               {{ formatDate(post.publishedAt) }}
             </time>
