@@ -63,7 +63,6 @@ export default defineNuxtConfig({
   // Route rules for caching
   routeRules: {
     '/': { prerender: true },
-    '/blog': { prerender: true },
     '/blog/**': { prerender: true },
   },
 
