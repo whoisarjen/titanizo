@@ -1,5 +1,5 @@
 export const useTheme = () => {
-  const colorMode = useState<'light' | 'dark'>('color-mode', () => 'light')
+  const colorMode = useState<'light' | 'dark'>('color-mode', () => 'dark')
 
   const toggleTheme = () => {
     colorMode.value = colorMode.value === 'light' ? 'dark' : 'light'
@@ -22,9 +22,8 @@ export const useTheme = () => {
       const saved = localStorage.getItem('theme') as 'light' | 'dark' | null
       if (saved) {
         colorMode.value = saved
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        colorMode.value = 'dark'
       }
+      // Default is already 'dark', so only need to update if saved was 'light'
       updateTheme()
     }
   }

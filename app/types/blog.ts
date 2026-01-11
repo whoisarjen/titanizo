@@ -1,20 +1,21 @@
-export interface BlogPost {
+export interface Category {
+  id: string
+  name: string
   slug: string
-  title: string
-  description: string
-  content: string
-  image: string
-  imageAlt: string
-  author: string
-  authorAvatar: string
-  publishedAt: string
-  updatedAt: string
-  readingTime: number
-  tags: string[]
+  parentId: string | null
 }
 
-export interface Author {
-  name: string
-  avatar: string
-  bio: string
+export interface Article {
+  id: string
+  keyword: string
+  slug: string
+  title: string | null
+  description: string | null
+  categoryId: string
+  category?: Category
+  isPublished: boolean
+  publishedAt: string | null
+  createdAt: string
+  updatedAt: string
+  path?: string
 }

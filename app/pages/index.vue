@@ -1,27 +1,28 @@
 <template>
-  <div>
-    <!-- Articles List -->
-    <section class="py-8" aria-labelledby="articles-heading">
-      <div class="max-w-2xl mx-auto px-4">
-        <h1 id="articles-heading" class="sr-only">Artykuly</h1>
+  <div class="p-6 lg:p-8">
+    <!-- Recent Articles List -->
+    <section aria-labelledby="articles-heading">
+      <h1 id="articles-heading" class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+        Najnowsze artykuly
+      </h1>
 
-        <div class="divide-y divide-gray-100 dark:divide-gray-800">
-          <div v-for="post in posts" :key="post.slug" class="py-6 first:pt-0">
-            <BlogCard :post="post" />
-          </div>
+      <div class="divide-y divide-gray-100 dark:divide-gray-800">
+        <div v-for="article in articles || []" :key="article.slug" class="py-5 first:pt-0">
+          <BlogCard :article="article" />
         </div>
+      </div>
 
-        <div v-if="posts.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
-          Brak artykulow do wyswietlenia.
-        </div>
+      <div v-if="!articles || articles.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
+        Brak artykulow do wyswietlenia.
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-const { getAllPosts } = useBlogPosts()
-const posts = getAllPosts()
+import type { Article } from '~/types/blog'
+
+const { data: articles } = await useFetch<Article[]>('/api/articles')
 
 // SEO Meta
 useSeoMeta({

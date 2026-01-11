@@ -1,6 +1,6 @@
 <template>
   <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800">
-    <nav class="max-w-2xl mx-auto px-4 py-4" aria-label="Nawigacja glowna">
+    <nav class="max-w-6xl mx-auto px-4 lg:px-8 py-4" aria-label="Nawigacja glowna">
       <div class="flex items-center justify-between">
         <NuxtLink
           to="/"
