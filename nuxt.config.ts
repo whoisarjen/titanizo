@@ -60,12 +60,6 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
   },
 
-  // Route rules for caching
-  routeRules: {
-    '/': { prerender: true },
-    '/blog/**': { prerender: true },
-  },
-
   // Experimental features for performance
   experimental: {
     payloadExtraction: true,
