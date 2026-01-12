@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 
   // Sitemap configuration
   site: {
-    url: 'https://titanizo.vercel.app',
+    url: 'https://titanizo.whoisarjen.com',
   },
 
   // Image optimization
