@@ -25,6 +25,10 @@ export default defineEventHandler(async (event) => {
     where: {
       slug: lastSlug,
       isPublished: true,
+      publishedAt: {
+        not: null,
+        lte: new Date(),
+      },
     },
     include: { category: true },
   })
@@ -70,6 +74,10 @@ export default defineEventHandler(async (event) => {
       where: {
         categoryId: category.id,
         isPublished: true,
+        publishedAt: {
+          not: null,
+          lte: new Date(),
+        },
       },
       orderBy: { publishedAt: 'desc' },
     })

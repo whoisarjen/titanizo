@@ -8,8 +8,15 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const article = await prisma.article.findUnique({
-    where: { slug, isPublished: true },
+  const article = await prisma.article.findFirst({
+    where: {
+      slug,
+      isPublished: true,
+      publishedAt: {
+        not: null,
+        lte: new Date(),
+      },
+    },
     include: {
       category: true,
     },

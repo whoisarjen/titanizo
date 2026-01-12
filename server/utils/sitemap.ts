@@ -43,7 +43,13 @@ export async function getArticleSitemapEntries() {
   const categoryPaths = await getAllCategoryPaths()
 
   const articles = await prisma.article.findMany({
-    where: { isPublished: true },
+    where: {
+      isPublished: true,
+      publishedAt: {
+        not: null,
+        lte: new Date(),
+      },
+    },
     select: {
       slug: true,
       categoryId: true,

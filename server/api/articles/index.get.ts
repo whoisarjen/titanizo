@@ -2,6 +2,10 @@ export default defineEventHandler(async () => {
   const articles = await prisma.article.findMany({
     where: {
       isPublished: true,
+      publishedAt: {
+        not: null,
+        lte: new Date(),
+      },
     },
     include: {
       category: true,
