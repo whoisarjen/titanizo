@@ -48,6 +48,7 @@ export default defineEventHandler(async (event) => {
           slug: article.slug,
           title: article.title,
           description: article.description,
+          content: article.content,
           categoryId: article.categoryId,
           category: article.category,
           isPublished: article.isPublished,

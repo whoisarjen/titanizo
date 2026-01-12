@@ -11,6 +11,7 @@ export interface Article {
   slug: string
   title: string | null
   description: string | null
+  content: string | null
   categoryId: string
   category?: Category
   isPublished: boolean

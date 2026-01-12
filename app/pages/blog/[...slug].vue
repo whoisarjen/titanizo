@@ -45,10 +45,15 @@
       </p>
     </header>
 
-    <!-- Article Content placeholder -->
-    <div class="prose prose-gray dark:prose-invert max-w-none">
+    <!-- Article Content -->
+    <div
+      v-if="resolved.data.content"
+      class="prose prose-gray dark:prose-invert max-w-none"
+      v-html="renderedContent"
+    />
+    <div v-else class="prose prose-gray dark:prose-invert max-w-none">
       <p class="text-gray-500 dark:text-gray-400 italic">
-        Tresc artykulu...
+        Brak tresci artykulu.
       </p>
     </div>
   </article>
@@ -158,6 +163,8 @@
 </template>
 
 <script setup lang="ts">
+import { marked } from 'marked'
+
 interface Breadcrumb {
   name: string
   slug: string
@@ -170,6 +177,7 @@ interface ArticleData {
   slug: string
   title: string | null
   description: string | null
+  content: string | null
   categoryId: string
   category: { id: string; name: string; slug: string } | null
   isPublished: boolean
@@ -220,6 +228,14 @@ if (error.value || !resolved.value) {
     statusMessage: 'Strona nie znaleziona',
   })
 }
+
+// Render markdown content
+const renderedContent = computed(() => {
+  if (resolved.value?.type === 'article' && resolved.value.data.content) {
+    return marked(resolved.value.data.content)
+  }
+  return ''
+})
 
 const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString('pl-PL', {
