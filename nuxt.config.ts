@@ -35,7 +35,7 @@ export default defineNuxtConfig({
 
   // Sitemap configuration
   site: {
-    url: 'https://yourdomain.com',
+    url: 'https://titanizo.vercel.app',
   },
 
   // Image optimization
@@ -51,12 +51,8 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nitro configuration for SSG
+  // Nitro configuration
   nitro: {
-    prerender: {
-      crawlLinks: true,
-      routes: ['/'],
-    },
     compressPublicAssets: true,
   },
 
@@ -64,5 +60,10 @@ export default defineNuxtConfig({
   experimental: {
     payloadExtraction: true,
     renderJsonPayloads: true,
+    defaults: {
+      nuxtLink: {
+        prefetch: false,
+      },
+    },
   },
 })
