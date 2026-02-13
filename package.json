@@ -1,7 +1,17 @@
 {
   "name": "titanizo",
   "type": "module",
-  "private": true,
+  "description": "A modern full-stack blogging platform built with Nuxt 4 and PostgreSQL",
+  "author": "Kamil Owczarek",
+  "license": "MIT",
+  "homepage": "https://github.com/whoisarjen/titanizo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whoisarjen/titanizo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/whoisarjen/titanizo/issues"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

@@ -33,7 +33,7 @@ useSeoMeta({
   ogDescription:
     'Artykuly o nowoczesnym tworzeniu stron, designie i najlepszych praktykach programistycznych.',
   ogType: 'website',
-  ogUrl: 'https://yourdomain.com',
+  ogUrl: 'https://titanizo.whoisarjen.com',
   twitterCard: 'summary_large_image',
 })
 
@@ -47,7 +47,7 @@ useHead({
         '@type': 'Blog',
         name: 'Titanizo',
         description: 'Blog o nowoczesnym tworzeniu stron internetowych',
-        url: 'https://yourdomain.com',
+        url: 'https://titanizo.whoisarjen.com',
         inLanguage: 'pl-PL',
       }),
     },
