@@ -95,7 +95,7 @@
           :to="`${currentPath}/${article.slug}`"
           class="group block py-3.5 first:pt-0"
         >
-          <h3 class="text-[15px] font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-500 dark:group-hover:text-neutral-400 mb-0.5">
+          <h3 class="text-[15px] font-medium text-neutral-900 dark:text-neutral-100 mb-0.5 group-hover:underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600">
             {{ article.title || article.keyword }}
           </h3>
           <p v-if="article.description" class="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2 mb-1">

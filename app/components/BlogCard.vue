@@ -1,7 +1,7 @@
 <template>
   <article>
     <NuxtLink :to="articlePath" class="group block">
-      <h2 class="text-[15px] font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-500 dark:group-hover:text-neutral-400 leading-snug mb-1">
+      <h2 class="text-[15px] font-medium text-neutral-900 dark:text-neutral-100 leading-snug mb-1 group-hover:underline underline-offset-2 decoration-neutral-300 dark:decoration-neutral-600">
         {{ article.title || article.keyword }}
       </h2>
 
