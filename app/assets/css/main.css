@@ -4,27 +4,16 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-white text-gray-900;
-  }
-}
-
-@layer components {
-  .container-narrow {
-    @apply max-w-2xl mx-auto px-4 sm:px-6;
+    @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100;
   }
 
-  .container-blog {
-    @apply max-w-3xl mx-auto px-4 sm:px-6;
-  }
-
-  .container-wide {
-    @apply max-w-5xl mx-auto px-4 sm:px-6;
+  ::selection {
+    @apply bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900;
   }
 }

@@ -1,135 +1,110 @@
 <template>
   <!-- Article View -->
-  <article v-if="resolved?.type === 'article'" class="p-6 lg:p-8">
-    <!-- Breadcrumbs -->
-    <nav v-if="resolved.breadcrumbs.length" class="mb-6">
-      <ol class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
+  <article v-if="resolved?.type === 'article'">
+    <nav v-if="resolved.breadcrumbs.length" class="mb-8">
+      <ol class="flex items-center gap-1.5 text-xs text-neutral-400 dark:text-neutral-500 flex-wrap">
         <li>
-          <NuxtLink to="/" class="hover:text-gray-900 dark:hover:text-white transition-colors">
+          <NuxtLink to="/" class="hover:text-neutral-900 dark:hover:text-neutral-100">
             Strona glowna
           </NuxtLink>
         </li>
-        <li v-for="(crumb, index) in resolved.breadcrumbs" :key="crumb.path" class="flex items-center gap-2">
-          <span aria-hidden="true" class="text-gray-300 dark:text-gray-600">/</span>
-          <NuxtLink
-            v-if="index < resolved.breadcrumbs.length"
-            :to="crumb.path"
-            class="hover:text-gray-900 dark:hover:text-white transition-colors"
-          >
+        <li v-for="crumb in resolved.breadcrumbs" :key="crumb.path" class="flex items-center gap-1.5">
+          <span aria-hidden="true">/</span>
+          <NuxtLink :to="crumb.path" class="hover:text-neutral-900 dark:hover:text-neutral-100">
             {{ crumb.name }}
           </NuxtLink>
         </li>
       </ol>
     </nav>
 
-    <!-- Article Header -->
-    <header class="mb-8">
-      <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-        <span v-if="resolved.data.category" class="text-gray-600 dark:text-gray-400">
-          {{ resolved.data.category.name }}
-        </span>
-        <template v-if="resolved.data.publishedAt">
-          <span v-if="resolved.data.category" aria-hidden="true">&middot;</span>
-          <time :datetime="resolved.data.publishedAt">
-            {{ formatDate(resolved.data.publishedAt) }}
-          </time>
-        </template>
+    <header class="mb-10">
+      <div class="flex items-center gap-1.5 text-xs text-neutral-400 dark:text-neutral-500 mb-3">
+        <span v-if="resolved.data.category">{{ resolved.data.category.name }}</span>
+        <span v-if="resolved.data.category && resolved.data.publishedAt" aria-hidden="true">&middot;</span>
+        <time v-if="resolved.data.publishedAt" :datetime="resolved.data.publishedAt">
+          {{ formatDate(resolved.data.publishedAt) }}
+        </time>
       </div>
 
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
+      <h1 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight leading-tight mb-3">
         {{ resolved.data.title || resolved.data.keyword }}
       </h1>
 
-      <p v-if="resolved.data.description" class="text-gray-600 dark:text-gray-400 leading-relaxed">
+      <p v-if="resolved.data.description" class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
         {{ resolved.data.description }}
       </p>
     </header>
 
-    <!-- Article Content -->
     <div
       v-if="resolved.data.content"
-      class="prose prose-gray dark:prose-invert max-w-none"
+      class="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-p:leading-relaxed prose-a:underline-offset-2"
       v-html="renderedContent"
     />
-    <div v-else class="prose prose-gray dark:prose-invert max-w-none">
-      <p class="text-gray-500 dark:text-gray-400 italic">
-        Brak tresci artykulu.
-      </p>
-    </div>
+    <p v-else class="text-sm text-neutral-400 dark:text-neutral-500 italic">
+      Brak tresci artykulu.
+    </p>
   </article>
 
   <!-- Category View -->
-  <div v-else-if="resolved?.type === 'category'" class="p-6 lg:p-8">
-    <!-- Breadcrumbs -->
-    <nav v-if="resolved.breadcrumbs.length" class="mb-6">
-      <ol class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
+  <div v-else-if="resolved?.type === 'category'">
+    <nav v-if="resolved.breadcrumbs.length" class="mb-8">
+      <ol class="flex items-center gap-1.5 text-xs text-neutral-400 dark:text-neutral-500 flex-wrap">
         <li>
-          <NuxtLink to="/" class="hover:text-gray-900 dark:hover:text-white transition-colors">
+          <NuxtLink to="/" class="hover:text-neutral-900 dark:hover:text-neutral-100">
             Strona glowna
           </NuxtLink>
         </li>
-        <li v-for="(crumb, index) in resolved.breadcrumbs" :key="crumb.path" class="flex items-center gap-2">
-          <span aria-hidden="true" class="text-gray-300 dark:text-gray-600">/</span>
-          <template v-if="index < resolved.breadcrumbs.length - 1">
-            <NuxtLink :to="crumb.path" class="hover:text-gray-900 dark:hover:text-white transition-colors">
-              {{ crumb.name }}
-            </NuxtLink>
-          </template>
-          <span v-else class="text-gray-900 dark:text-white font-medium">
+        <li v-for="(crumb, index) in resolved.breadcrumbs" :key="crumb.path" class="flex items-center gap-1.5">
+          <span aria-hidden="true">/</span>
+          <NuxtLink v-if="index < resolved.breadcrumbs.length - 1" :to="crumb.path" class="hover:text-neutral-900 dark:hover:text-neutral-100">
             {{ crumb.name }}
-          </span>
+          </NuxtLink>
+          <span v-else class="text-neutral-900 dark:text-neutral-100">{{ crumb.name }}</span>
         </li>
       </ol>
     </nav>
 
-    <!-- Category Header -->
-    <header class="mb-8">
-      <h1 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
-        {{ resolved.data.name }}
-      </h1>
-    </header>
+    <h1 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight mb-8">
+      {{ resolved.data.name }}
+    </h1>
 
-    <!-- Subcategories -->
-    <section v-if="resolved.children.length" class="mb-8">
-      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">
+    <section v-if="resolved.children.length" class="mb-10">
+      <h2 class="text-[11px] font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
         Podkategorie
       </h2>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-1">
         <NuxtLink
           v-for="child in resolved.children"
           :key="child.id"
           :to="`${currentPath}/${child.slug}`"
-          class="p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          class="py-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
         >
-          <span class="text-sm font-medium text-gray-900 dark:text-white">
-            {{ child.name }}
-          </span>
+          {{ child.name }}
         </NuxtLink>
       </div>
     </section>
 
-    <!-- Articles in category -->
     <section v-if="resolved.articles.length">
-      <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">
+      <h2 class="text-[11px] font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
         Artykuly
       </h2>
-      <div class="divide-y divide-gray-100 dark:divide-gray-800">
+      <div class="divide-y divide-neutral-100 dark:divide-neutral-800">
         <NuxtLink
           v-for="article in resolved.articles"
           :key="article.id"
           :to="`${currentPath}/${article.slug}`"
-          class="block py-4 first:pt-0 hover:bg-gray-50 dark:hover:bg-gray-800/30 -mx-2 px-2 rounded transition-colors"
+          class="group block py-3.5 first:pt-0"
         >
-          <h3 class="font-medium text-gray-900 dark:text-white mb-1">
+          <h3 class="text-[15px] font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-500 dark:group-hover:text-neutral-400 mb-0.5">
             {{ article.title || article.keyword }}
           </h3>
-          <p v-if="article.description" class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+          <p v-if="article.description" class="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2 mb-1">
             {{ article.description }}
           </p>
           <time
             v-if="article.publishedAt"
             :datetime="article.publishedAt"
-            class="text-xs text-gray-500 dark:text-gray-500 mt-2 block"
+            class="text-xs text-neutral-400 dark:text-neutral-500"
           >
             {{ formatDate(article.publishedAt) }}
           </time>
@@ -144,25 +119,24 @@
       />
     </section>
 
-    <!-- Empty state -->
-    <div v-if="!resolved.children.length && !resolved.articles.length" class="text-center py-12">
-      <p class="text-gray-500 dark:text-gray-400">
+    <div v-if="!resolved.children.length && !resolved.articles.length" class="py-16">
+      <p class="text-sm text-neutral-400 dark:text-neutral-500">
         Brak artykulow w tej kategorii.
       </p>
     </div>
   </div>
 
   <!-- 404 -->
-  <div v-else class="p-6 lg:p-8 text-center py-16">
-    <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+  <div v-else class="py-20">
+    <h1 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
       Strona nie znaleziona
     </h1>
-    <p class="text-gray-600 dark:text-gray-400 mb-6">
+    <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
       Strona, ktorej szukasz, nie istnieje.
     </p>
     <NuxtLink
       to="/"
-      class="text-sm font-medium text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 underline underline-offset-4"
+      class="text-sm text-neutral-900 dark:text-neutral-100 underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-600 hover:decoration-neutral-900 dark:hover:decoration-neutral-100"
     >
       Wroc do strony glownej
     </NuxtLink>
@@ -232,7 +206,6 @@ const currentPath = `/blog/${slugParts.join('/')}`
 
 const page = computed(() => Number(route.query.page) || 1)
 
-// Fetch resolved content
 const { data: resolved, error } = await useFetch<ResolvedContent>('/api/resolve', {
   query: { path: slugParts.join('/'), page },
   watch: [page],
@@ -245,7 +218,6 @@ if (error.value || !resolved.value) {
   })
 }
 
-// Render markdown content
 const renderedContent = computed(() => {
   if (resolved.value?.type === 'article' && resolved.value.data.content) {
     return marked(resolved.value.data.content)
@@ -261,7 +233,6 @@ const formatDate = (dateString: string): string => {
   })
 }
 
-// SEO
 const pageTitle = computed(() => {
   if (resolved.value?.type === 'article') {
     return `${resolved.value.data.title || resolved.value.data.keyword} | Titanizo`

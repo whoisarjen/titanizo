@@ -13,74 +13,78 @@ export default <Partial<Config>>{
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        serif: ['Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: 'none',
-            color: '#374151',
+            color: '#404040',
             a: {
-              color: '#2563eb',
+              color: '#171717',
               textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              textDecorationColor: '#d4d4d4',
               '&:hover': {
-                color: '#1d4ed8',
+                textDecorationColor: '#171717',
               },
             },
             h2: {
-              color: '#111827',
-              fontWeight: '700',
+              color: '#171717',
+              fontWeight: '600',
+              letterSpacing: '-0.025em',
             },
             h3: {
-              color: '#111827',
+              color: '#171717',
               fontWeight: '600',
             },
             strong: {
-              color: '#111827',
+              color: '#171717',
             },
             code: {
-              color: '#111827',
-              backgroundColor: '#f3f4f6',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '0.25rem',
+              color: '#171717',
+              backgroundColor: '#f5f5f5',
+              padding: '0.2em 0.4em',
+              borderRadius: '3px',
               fontWeight: '400',
+              fontSize: '0.875em',
             },
-            'code::before': {
-              content: '""',
-            },
-            'code::after': {
-              content: '""',
-            },
+            'code::before': { content: '""' },
+            'code::after': { content: '""' },
             pre: {
-              backgroundColor: '#1f2937',
-              color: '#f9fafb',
+              backgroundColor: '#171717',
+              color: '#fafafa',
+              borderRadius: '0',
+            },
+            blockquote: {
+              borderLeftColor: '#d4d4d4',
+              color: '#525252',
+              fontStyle: 'normal',
             },
           },
         },
         invert: {
           css: {
-            color: '#d1d5db',
+            color: '#d4d4d4',
             a: {
-              color: '#60a5fa',
+              color: '#fafafa',
+              textDecorationColor: '#525252',
               '&:hover': {
-                color: '#93c5fd',
+                textDecorationColor: '#fafafa',
               },
             },
-            h2: {
-              color: '#f9fafb',
-            },
-            h3: {
-              color: '#f9fafb',
-            },
-            strong: {
-              color: '#f9fafb',
-            },
+            h2: { color: '#fafafa' },
+            h3: { color: '#fafafa' },
+            strong: { color: '#fafafa' },
             code: {
-              color: '#f9fafb',
-              backgroundColor: '#374151',
+              color: '#fafafa',
+              backgroundColor: '#262626',
             },
-            pre: {
-              backgroundColor: '#111827',
+            pre: { backgroundColor: '#0a0a0a' },
+            blockquote: {
+              borderLeftColor: '#404040',
+              color: '#a3a3a3',
             },
           },
         },
