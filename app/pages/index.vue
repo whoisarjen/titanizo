@@ -7,14 +7,21 @@
       </h1>
 
       <div class="divide-y divide-gray-100 dark:divide-gray-800">
-        <div v-for="article in articles || []" :key="article.slug" class="py-5 first:pt-0">
+        <div v-for="article in result?.articles || []" :key="article.slug" class="py-5 first:pt-0">
           <BlogCard :article="article" />
         </div>
       </div>
 
-      <div v-if="!articles || articles.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
+      <div v-if="!result?.articles?.length" class="text-center py-12 text-gray-500 dark:text-gray-400">
         Brak artykulow do wyswietlenia.
       </div>
+
+      <Pagination
+        v-if="result"
+        :page="result.page"
+        :total-pages="result.totalPages"
+        base-url="/"
+      />
     </section>
   </div>
 </template>
@@ -22,7 +29,20 @@
 <script setup lang="ts">
 import type { Article } from '~/types/blog'
 
-const { data: articles } = await useFetch<Article[]>('/api/articles')
+interface PaginatedArticles {
+  articles: Article[]
+  total: number
+  page: number
+  totalPages: number
+}
+
+const route = useRoute()
+const page = computed(() => Number(route.query.page) || 1)
+
+const { data: result } = await useFetch<PaginatedArticles>('/api/articles', {
+  query: { page },
+  watch: [page],
+})
 
 // SEO Meta
 useSeoMeta({

@@ -69,26 +69,34 @@ export default defineEventHandler(async (event) => {
   const category = await findCategoryByPath(slugs)
 
   if (category) {
-    // Get articles in this category
-    const articles = await prisma.article.findMany({
-      where: {
-        categoryId: category.id,
-        isPublished: true,
-        publishedAt: {
-          not: null,
-          lte: new Date(),
-        },
+    const page = Math.max(1, Number(getQuery(event).page) || 1)
+    const limit = 12
+    const skip = (page - 1) * limit
+
+    const articleWhere = {
+      categoryId: category.id,
+      isPublished: true,
+      publishedAt: {
+        not: null,
+        lte: new Date(),
       },
-      orderBy: { publishedAt: 'desc' },
-    })
+    } as const
 
-    // Get children categories
-    const children = await prisma.category.findMany({
-      where: { parentId: category.id },
-      orderBy: { name: 'asc' },
-    })
-
-    const breadcrumbs = await buildCategoryBreadcrumbs(category.id)
+    // Get articles, total count, and children in parallel
+    const [articles, totalArticles, children, breadcrumbs] = await Promise.all([
+      prisma.article.findMany({
+        where: articleWhere,
+        orderBy: { publishedAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.article.count({ where: articleWhere }),
+      prisma.category.findMany({
+        where: { parentId: category.id },
+        orderBy: { name: 'asc' },
+      }),
+      buildCategoryBreadcrumbs(category.id),
+    ])
 
     return {
       type: 'category' as const,
@@ -111,6 +119,11 @@ export default defineEventHandler(async (event) => {
         description: article.description,
         publishedAt: article.publishedAt?.toISOString() || null,
       })),
+      pagination: {
+        page,
+        totalPages: Math.ceil(totalArticles / limit),
+        total: totalArticles,
+      },
       breadcrumbs,
     }
   }

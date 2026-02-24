@@ -1,21 +1,28 @@
-export default defineEventHandler(async () => {
-  const articles = await prisma.article.findMany({
-    where: {
-      isPublished: true,
-      publishedAt: {
-        not: null,
-        lte: new Date(),
-      },
-    },
-    include: {
-      category: true,
-    },
-    orderBy: {
-      publishedAt: 'desc',
-    },
-  })
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event)
+  const page = Math.max(1, Number(query.page) || 1)
+  const limit = Math.min(100, Math.max(1, Number(query.limit) || 12))
+  const skip = (page - 1) * limit
 
-  // Build full paths for each article
+  const where = {
+    isPublished: true,
+    publishedAt: {
+      not: null,
+      lte: new Date(),
+    },
+  } as const
+
+  const [articles, total] = await Promise.all([
+    prisma.article.findMany({
+      where,
+      include: { category: true },
+      orderBy: { publishedAt: 'desc' },
+      skip,
+      take: limit,
+    }),
+    prisma.article.count({ where }),
+  ])
+
   const articlesWithPaths = await Promise.all(
     articles.map(async (article) => {
       const fullPath = await getArticleFullPath(article.slug, article.categoryId)
@@ -36,5 +43,10 @@ export default defineEventHandler(async () => {
     })
   )
 
-  return articlesWithPaths
+  return {
+    articles: articlesWithPaths,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  }
 })

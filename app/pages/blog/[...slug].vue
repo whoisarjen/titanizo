@@ -135,6 +135,13 @@
           </time>
         </NuxtLink>
       </div>
+
+      <Pagination
+        v-if="resolved.pagination"
+        :page="resolved.pagination.page"
+        :total-pages="resolved.pagination.totalPages"
+        :base-url="currentPath"
+      />
     </section>
 
     <!-- Empty state -->
@@ -208,18 +215,27 @@ interface CategoryArticle {
   publishedAt: string | null
 }
 
+interface Pagination {
+  page: number
+  totalPages: number
+  total: number
+}
+
 type ResolvedContent =
   | { type: 'article'; data: ArticleData; breadcrumbs: Breadcrumb[] }
-  | { type: 'category'; data: CategoryData; children: CategoryChild[]; articles: CategoryArticle[]; breadcrumbs: Breadcrumb[] }
+  | { type: 'category'; data: CategoryData; children: CategoryChild[]; articles: CategoryArticle[]; pagination: Pagination; breadcrumbs: Breadcrumb[] }
   | null
 
 const route = useRoute()
 const slugParts = route.params.slug as string[]
 const currentPath = `/blog/${slugParts.join('/')}`
 
+const page = computed(() => Number(route.query.page) || 1)
+
 // Fetch resolved content
 const { data: resolved, error } = await useFetch<ResolvedContent>('/api/resolve', {
-  query: { path: slugParts.join('/') },
+  query: { path: slugParts.join('/'), page },
+  watch: [page],
 })
 
 if (error.value || !resolved.value) {
