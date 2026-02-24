@@ -1,17 +1,18 @@
 <template>
-  <div>
+  <div class="p-6 lg:p-8">
+    <!-- Recent Articles List -->
     <section aria-labelledby="articles-heading">
-      <h1 id="articles-heading" class="text-[13px] font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-6">
+      <h1 id="articles-heading" class="text-lg font-semibold text-gray-900 dark:text-white mb-6">
         Najnowsze artykuly
       </h1>
 
-      <div class="divide-y divide-neutral-100 dark:divide-neutral-800">
-        <div v-for="article in result?.articles || []" :key="article.slug" class="py-4 first:pt-0">
+      <div class="divide-y divide-gray-100 dark:divide-gray-800">
+        <div v-for="article in result?.articles || []" :key="article.slug" class="py-5 first:pt-0">
           <BlogCard :article="article" />
         </div>
       </div>
 
-      <div v-if="!result?.articles?.length" class="py-16 text-sm text-neutral-400 dark:text-neutral-500">
+      <div v-if="!result?.articles?.length" class="text-center py-12 text-gray-500 dark:text-gray-400">
         Brak artykulow do wyswietlenia.
       </div>
 
@@ -43,6 +44,7 @@ const { data: result } = await useFetch<PaginatedArticles>('/api/articles', {
   watch: [page],
 })
 
+// SEO Meta
 useSeoMeta({
   title: 'Titanizo - Blog',
   description:
@@ -55,6 +57,7 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
+// JSON-LD
 useHead({
   script: [
     {

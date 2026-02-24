@@ -3,14 +3,17 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-11',
   devtools: { enabled: false },
 
+  // Enable SSR/SSG for maximum performance
   ssr: true,
 
+  // Modules
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
     '@nuxtjs/sitemap',
   ],
 
+  // App configuration
   app: {
     head: {
       htmlAttrs: {
@@ -21,12 +24,21 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+        },
       ],
     },
   },
 
+  // Sitemap configuration
   site: {
     url: 'https://titanizo.whoisarjen.com',
   },
@@ -36,6 +48,7 @@ export default defineNuxtConfig({
     cacheMaxAgeSeconds: 3600,
   },
 
+  // Image optimization
   image: {
     quality: 75,
     format: ['webp', 'avif'],
@@ -48,10 +61,12 @@ export default defineNuxtConfig({
     },
   },
 
+  // Nitro configuration
   nitro: {
     compressPublicAssets: true,
   },
 
+  // Experimental features for performance
   experimental: {
     payloadExtraction: true,
     renderJsonPayloads: true,

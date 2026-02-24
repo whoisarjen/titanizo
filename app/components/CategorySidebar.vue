@@ -1,17 +1,21 @@
 <template>
   <aside>
-    <nav class="lg:sticky lg:top-16 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
-      <h2 class="text-[11px] font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest mb-3">
+    <nav class="lg:sticky lg:top-20 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto">
+      <h2 class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-4 uppercase tracking-wider">
         Kategorie
       </h2>
 
-      <div v-if="categories && categories.length" class="space-y-px">
+      <div v-if="categories && categories.length" class="space-y-0.5">
         <CategoryTreeItem
           v-for="category in categories"
           :key="category.id"
           :category="category"
           :depth="0"
         />
+      </div>
+
+      <div v-else class="text-sm text-gray-500 dark:text-gray-400">
+        Ladowanie...
       </div>
     </nav>
   </aside>
