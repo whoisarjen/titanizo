@@ -71,6 +71,7 @@ useHead({
         inLanguage: 'pl-PL',
       }),
     },
+    { src: 'https://beamback.whoisarjen.com/widget.js', 'data-api-key': 'ak_CXqs20z8U9sGnLr9xyM03', defer: true },
   ],
 })
 </script>
