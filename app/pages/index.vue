@@ -74,4 +74,13 @@ useHead({
     { src: 'https://beamback.whoisarjen.com/widget.js', 'data-api-key': 'ak_CXqs20z8U9sGnLr9xyM03', defer: true },
   ],
 })
+
+useHead(() => ({
+  link: [{
+    rel: 'canonical',
+    href: page.value > 1
+      ? `https://titanizo.whoisarjen.com/?page=${page.value}`
+      : 'https://titanizo.whoisarjen.com/',
+  }],
+}))
 </script>
