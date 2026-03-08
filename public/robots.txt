@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://titanizo.whoisarjen.com/sitemap.xml
+Sitemap: https://titanizo.whoisarjen.com/sitemap_index.xml
