@@ -62,7 +62,7 @@ export default defineNuxtConfig({
         ]),
       ),
     },
-    cacheMaxAgeSeconds: 3600,
+    cacheMaxAgeSeconds: 86400, // 1 day
   },
 
   // Image optimization
