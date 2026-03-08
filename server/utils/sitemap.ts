@@ -1,5 +1,8 @@
 import { prisma } from './prisma'
 
+const ARTICLE_CHUNK_SIZE = 1000
+const CATEGORY_CHUNK_SIZE = 500
+
 // Build all category paths in memory efficiently (single DB query)
 export async function getAllCategoryPaths(): Promise<Map<string, string>> {
   const categories = await prisma.category.findMany()
@@ -39,7 +42,7 @@ export async function getAllCategoryPaths(): Promise<Map<string, string>> {
 }
 
 // Get sitemap-ready article entries
-export async function getArticleSitemapEntries() {
+export async function getArticleSitemapEntries(chunk: number = 0) {
   const categoryPaths = await getAllCategoryPaths()
 
   const articles = await prisma.article.findMany({
@@ -50,6 +53,9 @@ export async function getArticleSitemapEntries() {
         lte: new Date(),
       },
     },
+    orderBy: { publishedAt: 'desc' },
+    skip: chunk * ARTICLE_CHUNK_SIZE,
+    take: ARTICLE_CHUNK_SIZE,
     select: {
       slug: true,
       categoryId: true,
@@ -69,12 +75,25 @@ export async function getArticleSitemapEntries() {
 }
 
 // Get sitemap-ready category entries
-export async function getCategorySitemapEntries() {
+export async function getCategorySitemapEntries(chunk: number = 0) {
   const categoryPaths = await getAllCategoryPaths()
 
-  return Array.from(categoryPaths.values()).map((path) => ({
-    loc: `/blog/${path}`,
-    changefreq: 'weekly' as const,
-    priority: 0.6,
-  }))
+  const categories = await prisma.category.findMany({
+    skip: chunk * CATEGORY_CHUNK_SIZE,
+    take: CATEGORY_CHUNK_SIZE,
+    orderBy: { slug: 'asc' },
+    select: { id: true },
+  })
+
+  return categories
+    .map((cat) => {
+      const path = categoryPaths.get(cat.id)
+      if (!path) return null
+      return {
+        loc: `/blog/${path}`,
+        changefreq: 'weekly' as const,
+        priority: 0.6,
+      }
+    })
+    .filter(Boolean)
 }
