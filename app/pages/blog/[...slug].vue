@@ -283,10 +283,77 @@ const pageDescription = computed(() => {
 })
 
 useSeoMeta({
-  title: pageTitle.value,
-  description: pageDescription.value,
-  ogTitle: pageTitle.value,
-  ogDescription: pageDescription.value,
-  ogType: resolved.value?.type === 'article' ? 'article' : 'website',
+  title: () => pageTitle.value,
+  description: () => pageDescription.value,
+  ogTitle: () => pageTitle.value,
+  ogDescription: () => pageDescription.value,
+  ogType: () => resolved.value?.type === 'article' ? 'article' : 'website',
+})
+
+// Article JSON-LD + BreadcrumbList for article pages
+useHead(() => {
+  if (resolved.value?.type !== 'article') return {}
+
+  const article = resolved.value.data
+  const schemas: object[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title || article.keyword,
+      description: article.description || undefined,
+      datePublished: article.publishedAt || undefined,
+      dateModified: article.updatedAt,
+      inLanguage: 'pl-PL',
+      url: `https://titanizo.whoisarjen.com${currentPath}`,
+    },
+  ]
+
+  if (resolved.value.breadcrumbs.length) {
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Strona glowna', item: 'https://titanizo.whoisarjen.com' },
+        ...resolved.value.breadcrumbs.map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 2,
+          name: crumb.name,
+          item: `https://titanizo.whoisarjen.com${crumb.path}`,
+        })),
+      ],
+    })
+  }
+
+  return {
+    script: schemas.map((schema) => ({
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(schema),
+    })),
+  }
+})
+
+// BreadcrumbList for category pages
+useHead(() => {
+  if (resolved.value?.type !== 'category') return {}
+  if (!resolved.value.breadcrumbs.length) return {}
+
+  return {
+    script: [{
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Strona glowna', item: 'https://titanizo.whoisarjen.com' },
+          ...resolved.value.breadcrumbs.map((crumb, i) => ({
+            '@type': 'ListItem',
+            position: i + 2,
+            name: crumb.name,
+            item: `https://titanizo.whoisarjen.com${crumb.path}`,
+          })),
+        ],
+      }),
+    }],
+  }
 })
 </script>
