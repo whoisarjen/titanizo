@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const ARTICLE_CHUNKS = 3   // CHUNK_SIZE 1000 → handles up to 3000 articles
-const CATEGORY_CHUNKS = 2  // CHUNK_SIZE 500  → handles up to 1000 categories
+const ARTICLE_CHUNKS = 1   // CHUNK_SIZE 1000 → bump to 2 at 1000 articles, 3 at 2000
+const CATEGORY_CHUNKS = 1  // CHUNK_SIZE 500  → bump to 2 at 500 categories
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-11',
