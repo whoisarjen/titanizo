@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const ARTICLE_CHUNKS = 3   // CHUNK_SIZE 1000 → handles up to 3000 articles
+const CATEGORY_CHUNKS = 2  // CHUNK_SIZE 500  → handles up to 1000 categories
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-11',
   devtools: { enabled: false },
@@ -44,7 +47,21 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    sources: ['/api/__sitemap__/urls'],
+    sitemaps: {
+      pages: { includeAppSources: true },
+      ...Object.fromEntries(
+        Array.from({ length: ARTICLE_CHUNKS }, (_, i) => [
+          `articles-${i}`,
+          { sources: [`/api/__sitemap__/articles?chunk=${i}`], includeAppSources: false },
+        ]),
+      ),
+      ...Object.fromEntries(
+        Array.from({ length: CATEGORY_CHUNKS }, (_, i) => [
+          `categories-${i}`,
+          { sources: [`/api/__sitemap__/categories?chunk=${i}`], includeAppSources: false },
+        ]),
+      ),
+    },
     cacheMaxAgeSeconds: 3600,
   },
 
@@ -64,6 +81,9 @@ export default defineNuxtConfig({
   // Nitro configuration
   nitro: {
     compressPublicAssets: true,
+    routeRules: {
+      '/__sitemap__/**': { isr: 604800 }, // 7 days ISR
+    },
   },
 
   // Experimental features for performance
